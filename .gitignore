@@ -21,3 +21,4 @@
 *.fls
 *.gz
 *.dvi
+*.DS_store
