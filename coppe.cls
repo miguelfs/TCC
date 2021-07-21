@@ -68,10 +68,28 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 \def\CoppeTeX{{\rm C\kern-.05em{\sc o\kern-.025em p\kern-.025em
 p\kern-.025em e}}\kern-.08em
 T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
+\newboolean{maleauthor}
+\setboolean{maleauthor}{true}
 \newboolean{maledoc}
 \setboolean{maledoc}{false}
 \newif\if@english\@englishfalse
 \DeclareOption{english}{\@englishtrue}
+\newboolean{isTCC}
+\setboolean{isTCC}{false}
+\DeclareOption{tcc}{%
+ \newcommand{\@degree}{B.Sc.}
+  \newcommand{\@degreename}{Bacharelado}
+  \ifthenelse{\boolean{maleauthor}}{
+    \newcommand{\local@degname}{Engenheiro}
+  }{
+    \newcommand{\local@degname}{Engenheira}
+  }
+  \newcommand{\foreign@degname}{Engineer}
+  \setboolean{maledoc}{true}
+  \newcommand\local@doctype{Projeto de Gradua{\c c}{\~ a}o}
+  \newcommand\foreign@doctype{Undergraduate Project}
+  \setboolean{isTCC}{true}
+}
 \DeclareOption{msc}{%
   \newcommand{\@degree}{M.Sc.}
   \newcommand{\@degreename}{Mestrado}
@@ -162,6 +180,11 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
   \ifthenelse{\equal{#1}{PENT}}
     {\global\def\local@deptname{Engenharia de Nanotecnologia}
       \global\def\foreign@deptname{Nanotechnology Engineering}}{}
+    \ifthenelse{\equal{#1}{ELE}}
+    {\global\def\local@deptname{Engenharia Eletr{\^ o}nica e de Computa{\c c}{\~ a}o}
+     \global\def\local@career{{\MakeUppercase\local@degname} \ifthenelse{\boolean{maleauthor}}{ELETR{\^ O}NICO}{ELETR{\^ O}NICA} E DE COMPUTA{\c C}{\~ A}O}
+      \global\def\foreign@deptname{Electronic and Computer Engineering}}{}
+
 }
 \renewcommand\title[1]{%
   \global\def\local@title{#1}%
@@ -250,7 +273,8 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
   \vspace*{1.5mm}
   \setlength\baselineskip{0pt}
   \setlength\parskip{1mm}
-  \makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}
+  \ifthenelse{\boolean{isTCC}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics[scale=0.5]{poli-logo}}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}}
+  % \makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}
   \end{flushleft}
   \vspace{1.05cm}
   \begin{center}
@@ -752,14 +776,30 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
 \newcommand\local@statename{RJ}
 \newcommand\local@countryname{Brasil}
 \newcommand\frontcover@maintext{
-  \sloppy\nohyphens{\local@doctype\ de \@degreename\
-  \ifthenelse{\boolean{maledoc}}{apresentado}{apresentada}
-  ao Programa de P{\' o}s-gradua{\c c}{\~ a}o em \local@deptname,
-  COPPE, da \local@universityname, como parte dos requisitos
-  necess{\' a}rios {\` a} obten{\c c}{\~ a}o do t{\' i}tulo de
-  \local@degname\ em \local@deptname.}
+  \ifthenelse{\boolean{isTCC}}{
+    \sloppy\nohyphens{\local@doctype\
+    \ifthenelse{\boolean{maledoc}}{apresentado}{apresentada}
+    ao curso de \local@deptname\ da Escola Polit{\' e}cnica, \local@universityname,
+    como parte dos requisitos necess{\' a}rios {\` a} obten{\c c}{\~ a}o do t{\' i}tulo de
+    \local@degname.}
+  }{
+    \sloppy\nohyphens{\local@doctype\ de \@degreename\
+    \ifthenelse{\boolean{maledoc}}{apresentado}{apresentada}
+    ao Programa de P{\' o}s-gradua{\c c}{\~ a}o em \local@deptname,
+    COPPE, da \local@universityname, como parte dos requisitos
+    necess{\' a}rios {\` a} obten{\c c}{\~ a}o do t{\' i}tulo de
+    \local@degname\ em \local@deptname.}
+  }
 }
 \newcommand\frontpage@maintext{
+  \ifthenelse{\boolean{isTCC}}{
+    \noindent {\MakeUppercase\local@doctype}
+    \ifthenelse{\boolean{maledoc}}{SUBMETIDO}{SUBMETIDA}
+    \sloppy\nohyphens{AO CORPO DOCENTE DO CURSO DE {\MakeUppercase\local@deptname} DA
+    ESCOLA POLIT{\'E}CNICA DA UNIVERSIDADE FEDERAL DO RIO DE JANEIRO COMO PARTE DOS REQUISITOS
+    NECESS{\' A}RIOS PARA A OBTEN{\c C}{\~ A}O DO GRAU DE
+    {\local@career.\par}}%
+  }{
   \noindent {\MakeUppercase\local@doctype}
   \ifthenelse{\boolean{maledoc}}{SUBMETIDO}{SUBMETIDA}
   \sloppy\nohyphens{AO CORPO DOCENTE DO INSTITUTO ALBERTO LUIZ COIMBRA
@@ -768,6 +808,7 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
   NECESS{\' A}RIOS PARA A OBTEN{\c C}{\~ A}O DO GRAU DE
   {\MakeUppercase\local@degname} EM CI{\^E}NCIAS EM
   {\MakeUppercase\local@deptname.\par}}%
+}
 }
 \newcommand\frontpage@bottomtext{%
   \begin{center}
@@ -778,14 +819,14 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
 \newcommand\abstract@toptext{%
   \noindent Resumo \ifthenelse{\boolean{maledoc}}{do}{da}
   \local@doctype\ \ifthenelse{\boolean{maledoc}}{apresentado}{apresentada}
-  \sloppy\nohyphens{{\` a} COPPE/UFRJ como parte dos requisitos
+  \sloppy\nohyphens{{\` a} \ifthenelse{\boolean{isTCC}}{POLI}{COPPE}/UFRJ como parte dos requisitos
   necess{\' a}rios para a obten{\c c}{\~ a}o do grau de
-  \local@degname\ em Ci{\^ e}ncias (\@degree)}
+  \local@degname\ifthenelse{\boolean{isTCC}}{.}{ em Ci{\^ e}ncias (\@degree)}}
 }
 \newcommand\foreignabstract@toptext{%
   \noindent \sloppy\nohyphens{Abstract of \foreign@doctype\ presented to
-  COPPE/UFRJ as a partial fulfillment of the requirements for the
-  degree of \foreign@degname\ of Science (\@degree)}
+  \ifthenelse{\boolean{isTCC}}{POLI}{COPPE}/UFRJ as a partial fulfillment of the requirements for the
+  degree of \foreign@degname\ifthenelse{\boolean{isTCC}}{.}{ of Science (\@degree)}}
 }
 %% 
 %%
