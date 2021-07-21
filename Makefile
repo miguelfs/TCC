@@ -6,3 +6,5 @@ make clean:
 						 coppe-logo-eps-converted-to.pdf \
 						 *.dvi
 						 
+make run:
+	latexmk && pdflatex main && bibtex main && pdflatex main && pdflatex main
