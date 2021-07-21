@@ -4,4 +4,5 @@ make clean:
 						 *.gls *.out *~ coppe.pdf example.pdf \
 						 *.fdb_latexmk *.fls *.gz \
 						 coppe-logo-eps-converted-to.pdf \
+						 *.dvi
 						 
