@@ -1,3 +1,5 @@
+SUBDIRS = . latex
+
 make clean:
 	rm -f *.log *.aux *.idx *.blg *.bbl *.glo *.bz2 \
 		         *.toc *.lof *.lot *.syx *.abx *.lab *.ilg *.los *.ind \

@@ -51,7 +51,7 @@
 \def\fileversion{v3.0}
 \def\filedate{2020/03/02}
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{coppe}[\filedate\ \fileversion\ COPPE Dissertations and Thesis]
+\ProvidesClass{configs/coppe}[\filedate\ \fileversion\ COPPE Dissertations and Thesis]
 \LoadClass[12pt,a4paper,oneside]{book}
 \RequirePackage[sort&compress]{natbib}
 \RequirePackage{hyphenat}
@@ -273,7 +273,7 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
   \vspace*{1.5mm}
   \setlength\baselineskip{0pt}
   \setlength\parskip{1mm}
-  \ifthenelse{\boolean{isTCC}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics[scale=0.5]{poli-logo}}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}}
+  \ifthenelse{\boolean{isTCC}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics[scale=0.5]{configs/poli-logo}}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}}
   % \makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}
   \end{flushleft}
   \vspace{1.05cm}
