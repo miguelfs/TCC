@@ -22,3 +22,4 @@
 *.gz
 *.dvi
 *.DS_store
+latex/main.pdf
