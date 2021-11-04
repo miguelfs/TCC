@@ -1,15 +1,18 @@
-%%% Capítulos estão dentro da pasta /contents
 
 \documentclass[tcc,numbers]{coppe}
+% package below turns darkmode on
+\usepackage{xcolor} \pagecolor[rgb]{0,0,0} \color[rgb]{1,1,1}
 \usepackage{amsmath,amssymb}
+\usepackage{silence}
 \usepackage{hyperref}
+\WarningFilter[pdftoc]{hyperref}{Token not allowed in a PDF string}
 
 \makelosymbols
 \makeloabbreviations
 
 \begin{document}
-  \title{T\'itulo da Tese}
-  \foreigntitle{Thesis Title}
+  \title{Aplicação do Espectro de Modulação no Processamento de Fala}
+  \foreigntitle{Modulation Spectrum Application over Speech Processing}
   \author{Miguel}{Fernandes de Sousa}
   \advisor{Prof.}{Luiz Wagner}{Pereira Biscainho}{D.Sc.}
   \advisor{Prof.}{Nome do Segundo Orientador}{Sobrenome}{Ph.D.}
@@ -21,16 +24,20 @@
   \examiner{Prof.}{Nome do Quarto Examinador Sobrenome}{Ph.D.}
   \examiner{Prof.}{Nome do Quinto Examinador Sobrenome}{Ph.D.}
   \department{ELE}
-  \date{07}{2020}
+  \date{07}{2022}
 
   \keyword{Espectrograma de Modulação}
   \keyword{Segunda palavra-chave}
   \keyword{Terceira palavra-chave}
 
+  %TODO: remover \hbadness
+  \hbadness=\maxdimen
   \maketitle
 
+  % \hbadness=\maxdimen
   \frontmatter
-  \dedication{A algu\'em cujo valor \'e digno desta dedicat\'oria.}
+  \dedication{Lorem Ipsum Est Es Un.}
+  \hbadness=226
 
   \chapter*{Agradecimentos}
 
@@ -38,7 +45,7 @@
 
   \begin{abstract}
 
-  Apresenta-se, nesta tese, ...
+  Apresenta-se, nesta tese, \cite{timit} ...
 
   \end{abstract}
 
@@ -56,11 +63,11 @@
 
   \mainmatter
   %%________________________
-  %% CHAPTER 01
+  %% CHAPTER 01: Introdução
   \input{contents/chap01/chap01.tex}
   %%________________________
 
-    %%________________________
+  %%________________________
   %% CHAPTER 02
   \input{contents/chap02/chap02.tex}
   %%________________________
@@ -71,16 +78,11 @@
   % \input{documentation/template.tex}
   %%________________________
 
-
-
-
   \backmatter
+  
   \bibliographystyle{coppe-unsrt}
   \bibliography{main}
 
   \appendix
   \chapter{Algumas Demonstra{\c c}\~oes}
 \end{document}
-%% 
-%%
-%% End of file `example.tex'.

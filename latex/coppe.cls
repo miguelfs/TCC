@@ -828,6 +828,7 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
   \ifthenelse{\boolean{isTCC}}{POLI}{COPPE}/UFRJ as a partial fulfillment of the requirements for the
   degree of \foreign@degname\ifthenelse{\boolean{isTCC}}{.}{ of Science (\@degree)}}
 }
+
 %% 
 %%
 %% End of file `coppe.cls'.
