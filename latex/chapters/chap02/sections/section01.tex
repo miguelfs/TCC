@@ -1,19 +1,41 @@
 \section{Modulação em Amplitude e Demodulação}
-A modulação em amplitude (AM, do inglês Amplitude Modulation) é o processo no
-qual a amplitude de uma onda portadora varia linearmente em torno de um valor
-médio, conforme um sinal modulador em banda-base, isto é, conforme a banda de
-frequência que a fonte original de informação ocupa.
+A modulação em amplitude (AM, do inglês \textit{Amplitude Modulation}) é o
+processo no qual a envoltória de uma onda portadora oscila em torno de um valor
+médio, conforme um sinal modulador em baixa frequência~\cite{haykin2008}. No
+contexto de comunicações, a moduladora é um sinal em \todo{is it ok?} banda básica, isto é,
+contém a informação em um espectro delimitado a ser transmitida.
 
+Considerando a portadora como um tom puro de frequência $f_c$:
+\begin{equation}
+    c(t) = A_c \cos(2\pi f_c t),
+\end{equation}
+    
+    Um sinal $s(t)$ modulado em amplitude é definido pela composição de
+suas parcelas portadora $c(t)$ e moduladora $m(t)$:
 
-requency band occupied by an original source of information.
+\begin{align}
+\begin{split}
+    s(t) & = [1+k_a m(t)]c(t) \\
+    & = A_c[1+k_a m(t)]\cos(2\pi f_c t)
+\end{split}
+\end{align}
 
-Um sinal $x(t)$ modulado em amplitude é definido pela composição de suas parcelas portadora e moduladora:
+em que $k_a$ é a sensibilidade de amplitude da moduladora. Para que a envoltória
+dada pela função $1+k_a m(t)$ seja sempre positiva, evitando reversão de fase
+em decorrência de sobremodulação, basta que:
 
 \begin{equation}
-    c(t) = A_c \cos(2\pi f_c t)
+    |k_a m(t)| < 1, \quad \forall t
 \end{equation}
-\begin{equation}
-    x(t) = c(t)m(t)
-\end{equation}
-% Lathi
-% Haykin
+
+Uma notação mais simples, presente na maior parte da \todo{which one?}
+bibliografia , em que $k_a = 1$ e que desconsidera o \todo{trans- late?} \textit{offset}, é dada
+por:
+
+\begin{align}
+    s(t) &= m(t)c(t) \\
+    s[n] &= m[n]c[n] \label{mod_discrete}
+\end{align}
+
+Tal que a equação \ref{mod_discrete} seja no domínio discreto.
+
