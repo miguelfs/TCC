@@ -1,6 +1,5 @@
 # Ignore everything
 *
-
 # But not these files...
 !configs
 !coppe-plain.bst
@@ -14,5 +13,5 @@
 !example.tex
 !Makefile
 !.gitignore
-!chapters
+!chapters/
 !chapters/*
