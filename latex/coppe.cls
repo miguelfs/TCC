@@ -463,8 +463,10 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
         \advance\count1 by 1}
         \the\toks@
       \end{tabularx}}\par
-      \nohyphens{\local@doctype\ ({\MakeLowercase\@degreename}) --
-      UFRJ/COPPE/Programa de \local@deptname, \number\year.}\par
+      \nohyphens{\local@doctype\ --
+      % \nohyphens{\local@doctype\ ({\MakeLowercase\@degreename}) --
+      UFRJ/Curso de \local@deptname, \number\year.}\par
+      % UFRJ/COPPE/Programa de \local@deptname, \number\year.}\par
       Refer{\^ e}ncias Bibliogr{\' a}ficas: p. \pageref{bib:begin} -- \pageref{bib:end}.\par
       \count1=0
       \count2=1
@@ -475,7 +477,8 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
       I. \csname CoppeAdvisorSurname:0\endcsname,%
       \ \csname CoppeAdvisorName:0\endcsname%
       \ifthenelse{\@advisor>1}{\ \emph{et~al.}{}}.
-      II. \local@universityname, COPPE, Programa de \local@deptname.
+      II. \local@universityname, Escola Politécnica, Curso de \local@deptname.
+      % II. \local@universityname, COPPE, Programa de \local@deptname.
       III. T{\' i}tulo.}
     \end{minipage}}
   \end{center}
