@@ -1,16 +1,21 @@
 
-\documentclass[tcc,numbers]{configs/coppe}
+\documentclass[tcc,numbers]{coppe}
 % package below turns darkmode on
 \usepackage{xcolor} \pagecolor[rgb]{0,0,0} \color[rgb]{1,1,1}
 \usepackage{amsmath,amssymb}
 \usepackage{silence}
 \usepackage{hyperref}
-\WarningFilter[pdftoc]{hyperref}{Token not allowed in a PDF string}
+
+%TODO: remove these two lines when finishing
+\setlength{\marginparwidth}{2cm}
+\usepackage{todonotes}
 
 \makelosymbols
 \makeloabbreviations
 
 \begin{document}
+\listoftodos
+
   \title{Espectro de Modulação Aplicado ao Processamento de Fala}
   % \title{Aplicação do Espectro de Modulação no Processamento de Fala}
   \foreigntitle{Modulation Spectrum Applied over Speech Processing}
@@ -28,8 +33,8 @@
   \date{07}{2022}
 
   \keyword{Espectrograma de Modulação}
-  \keyword{Segunda palavra-chave}
-  \keyword{Terceira palavra-chave}
+  \keyword{Filtragem de Modulação}
+  \keyword{\textit{Speech Enhancement}}
 
   %TODO: remover \hbadness
   \hbadness=\maxdimen
@@ -37,7 +42,12 @@
 
   % \hbadness=\maxdimen
   \frontmatter
-  \dedication{Lorem Ipsum Est Es Un.}
+
+  \makecatalog
+
+  \dedication{"Potiusque sero quam nunquam."
+  
+  Lívio (59 a.C. - 17 d.C.)}
   \hbadness=226
 
   \chapter*{Agradecimentos}
@@ -61,7 +71,6 @@
   \listoftables
   \printlosymbols
   \printloabbreviations
-
   \mainmatter
   %%________________________
   %% CHAPTER 01: Introdução
@@ -90,7 +99,7 @@
 
   \backmatter
   
-  \bibliographystyle{configs/coppe-unsrt}
+  \bibliographystyle{coppe-unsrt}
   \bibliography{main}
 
   \appendix

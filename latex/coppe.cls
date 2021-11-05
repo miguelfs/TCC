@@ -51,7 +51,7 @@
 \def\fileversion{v3.0}
 \def\filedate{2020/03/02}
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{configs/coppe}[\filedate\ \fileversion\ COPPE Dissertations and Thesis]
+\ProvidesClass{coppe}[\filedate\ \fileversion\ COPPE Dissertations and Thesis]
 \LoadClass[12pt,a4paper,oneside]{book}
 \RequirePackage[sort&compress]{natbib}
 \RequirePackage{hyphenat}
@@ -77,18 +77,18 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
 \newboolean{isTCC}
 \setboolean{isTCC}{false}
 \DeclareOption{tcc}{%
- \newcommand{\@degree}{B.Sc.}
-  \newcommand{\@degreename}{Bacharelado}
-  \ifthenelse{\boolean{maleauthor}}{
+\newcommand{\@degree}{B.Sc.}
+\newcommand{\@degreename}{Bacharelado}
+\ifthenelse{\boolean{maleauthor}}{
     \newcommand{\local@degname}{Engenheiro}
   }{
     \newcommand{\local@degname}{Engenheira}
   }
-  \newcommand{\foreign@degname}{Engineer}
-  \setboolean{maledoc}{true}
-  \newcommand\local@doctype{Projeto de Gradua{\c c}{\~ a}o}
-  \newcommand\foreign@doctype{Undergraduate Project}
-  \setboolean{isTCC}{true}
+\newcommand{\foreign@degname}{Engineer}
+\setboolean{maledoc}{true}
+\newcommand\local@doctype{Projeto de Gradua{\c c}{\~ a}o}
+\newcommand\foreign@doctype{Undergraduate Project}
+\setboolean{isTCC}{true}
 }
 \DeclareOption{msc}{%
   \newcommand{\@degree}{M.Sc.}
@@ -273,7 +273,7 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
   \vspace*{1.5mm}
   \setlength\baselineskip{0pt}
   \setlength\parskip{1mm}
-  \ifthenelse{\boolean{isTCC}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics[scale=0.5]{configs/poli-logo}}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}}
+  \ifthenelse{\boolean{isTCC}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics[scale=0.5]{poli-logo}}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}}
   % \makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}
   \end{flushleft}
   \vspace{1.05cm}
@@ -463,8 +463,10 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
         \advance\count1 by 1}
         \the\toks@
       \end{tabularx}}\par
-      \nohyphens{\local@doctype\ ({\MakeLowercase\@degreename}) --
-      UFRJ/COPPE/Programa de \local@deptname, \number\year.}\par
+      \nohyphens{\local@doctype\ --
+      % \nohyphens{\local@doctype\ ({\MakeLowercase\@degreename}) --
+      UFRJ/Curso de \local@deptname, \number\year.}\par
+      % UFRJ/COPPE/Programa de \local@deptname, \number\year.}\par
       Refer{\^ e}ncias Bibliogr{\' a}ficas: p. \pageref{bib:begin} -- \pageref{bib:end}.\par
       \count1=0
       \count2=1
@@ -475,7 +477,8 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
       I. \csname CoppeAdvisorSurname:0\endcsname,%
       \ \csname CoppeAdvisorName:0\endcsname%
       \ifthenelse{\@advisor>1}{\ \emph{et~al.}{}}.
-      II. \local@universityname, COPPE, Programa de \local@deptname.
+      II. \local@universityname, Escola Politécnica, Curso de \local@deptname.
+      % II. \local@universityname, COPPE, Programa de \local@deptname.
       III. T{\' i}tulo.}
     \end{minipage}}
   \end{center}
