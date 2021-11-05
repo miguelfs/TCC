@@ -51,7 +51,7 @@
 \def\fileversion{v3.0}
 \def\filedate{2020/03/02}
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{configs/coppe}[\filedate\ \fileversion\ COPPE Dissertations and Thesis]
+\ProvidesClass{coppe}[\filedate\ \fileversion\ COPPE Dissertations and Thesis]
 \LoadClass[12pt,a4paper,oneside]{book}
 \RequirePackage[sort&compress]{natbib}
 \RequirePackage{hyphenat}
@@ -77,18 +77,18 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
 \newboolean{isTCC}
 \setboolean{isTCC}{false}
 \DeclareOption{tcc}{%
- \newcommand{\@degree}{B.Sc.}
-  \newcommand{\@degreename}{Bacharelado}
-  \ifthenelse{\boolean{maleauthor}}{
+\newcommand{\@degree}{B.Sc.}
+\newcommand{\@degreename}{Bacharelado}
+\ifthenelse{\boolean{maleauthor}}{
     \newcommand{\local@degname}{Engenheiro}
   }{
     \newcommand{\local@degname}{Engenheira}
   }
-  \newcommand{\foreign@degname}{Engineer}
-  \setboolean{maledoc}{true}
-  \newcommand\local@doctype{Projeto de Gradua{\c c}{\~ a}o}
-  \newcommand\foreign@doctype{Undergraduate Project}
-  \setboolean{isTCC}{true}
+\newcommand{\foreign@degname}{Engineer}
+\setboolean{maledoc}{true}
+\newcommand\local@doctype{Projeto de Gradua{\c c}{\~ a}o}
+\newcommand\foreign@doctype{Undergraduate Project}
+\setboolean{isTCC}{true}
 }
 \DeclareOption{msc}{%
   \newcommand{\@degree}{M.Sc.}
@@ -273,7 +273,7 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
   \vspace*{1.5mm}
   \setlength\baselineskip{0pt}
   \setlength\parskip{1mm}
-  \ifthenelse{\boolean{isTCC}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics[scale=0.5]{configs/poli-logo}}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}}
+  \ifthenelse{\boolean{isTCC}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics[scale=0.5]{poli-logo}}}{\makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}}
   % \makebox[20mm][c]{\hspace{4.8cm}\includegraphics{coppe-logo}}
   \end{flushleft}
   \vspace{1.05cm}
