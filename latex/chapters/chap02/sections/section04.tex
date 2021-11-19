@@ -1,1 +1,52 @@
 \section{Filtragem de Modulação}
+A filtragem de modulação é uma técnica para filtragem de envoltórias com
+oscilações lentas, presentes em sub-bandas de frequência em sinais
+não-estacionários.\cite{clark2009sum} \cite{li2005properties}. Essa técnica assume que um sinal $x[n]$ de valores reais é representado pela
+soma dos produtos entre moduladora e portadora que o compõem:
+\begin{equation}
+    x[n] = \sum_{k = 0}^{K - 1} x_k[n] = \sum_{k = 0}^{K - 1} m_k[n] c_k[n]
+\end{equation}
+
+
+A implementação genérica da filtragem de modulação está representada no diagrama de blocos abaixo.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[auto,>=latex']
+        \tikzstyle{block} = [draw, shape=rectangle, minimum height=3em, minimum
+        width=3em, node distance=4cm, line width=1pt]
+        %Creating Blocks and Connection Nodes
+        \node at (-2.5,0) (input) {$x[n]$};
+        \node [block] (filterbank) {Banco de filtros};
+        \node [block, right of=filterbank] (dem) {demodulação};
+        \node [block, right of=dem] (LP) {passa-baixas};
+        \node [block, below of = filterbank] (sintese) {síntese};
+        \node [block, below of=dem] (res) {reconstrução};
+        \node [left of=sintese, node distance=2.5cm] (output) {$x'[n]$};
+        %Conecting Blocks
+        \begin{scope}[line width=1pt]
+            \draw[->] (input) -- (filterbank);
+            \draw[->, line width=1mm] (filterbank) -- node[name=subband] {$x_k[n]$} (dem);
+            \draw[->, line width=1mm] (dem) -- node[name=mod] {$m_k[n]$} (LP);
+            \draw[->, line width=1mm] (dem) -- node[name=carrier] {$c_k[n]$} (res);
+            \draw[->, line width=1mm] (LP) |- node[name=new_mod] {$m'_k[n]$} (res);
+            \draw[->, line width=1mm] (res) -- node[name=new_subband] {$x'_k[n]$} (sintese);
+            \draw[->] (sintese) -- (output);
+        \end{scope}
+    \end{tikzpicture}
+\end{figure}
+
+O sinal banda-larga $x[n]$ passa por um banco de filtros, no
+qual as  $x_k[n]$ saídas do banco de filtros passam por um módulo de
+demodulação, que separa as parcelas moduladoras $m_k[n]$ e portadoras $c_k[n]$
+de cada subbanda. Cada parcela $m_k[n]$ é filtrada por um filtro passa-baixas.
+Em seguida, a sub-banda é reconstruída a partir da portadora $c_k[n]$ e da
+modulação filtrada $m'_k[n]$. Finalmente, o sinal de banda larga $x'_k[n]$ é
+sintetizado com as sub-bandas $x'_k[n]$ reconstruídas, obtidas a partir das
+modulações filtradas.
+
+Em aplicações de \textit{Speech Enhancement}, o projeto do banco de filtros
+emula a resposta em frequência da cóclea no sistema auditivo. Por sua vez, a
+frequência de corte do filtro passa-baixas tipicamente é 16Hz, tal que
+frequências abaixo desse valor estão associadas às periodicidades na construção
+de frases, palavras e sílabas.
