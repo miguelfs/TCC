@@ -1,8 +1,9 @@
 \section{Filtragem de Modulação}
 A filtragem de modulação é uma técnica para filtragem de envoltórias com
-oscilações lentas, presentes em sub-bandas de frequência em sinais
-não-estacionários.\cite{clark2009sum} \cite{li2005properties}. Essa técnica assume que um sinal $x[n]$ de valores reais é representado pela
-soma dos produtos entre moduladora e portadora que o compõem:
+oscilações lentas, presentes em sub-bandas de frequência, aplicada sobre sinais
+não-estacionários.\cite{clark2009sum} \cite{li2005properties}. Essa técnica
+assume que um sinal $x[n]$ de valores reais é representado pela soma dos
+produtos entre moduladora e portadora que compõem cada sub-banda $x_k[n]$:
 \begin{equation}
     x[n] = \sum_{k = 0}^{K - 1} x_k[n] = \sum_{k = 0}^{K - 1} m_k[n] c_k[n]
 \end{equation}
@@ -34,19 +35,20 @@ A implementação genérica da filtragem de modulação está representada no di
             \draw[->] (sintese) -- (output);
         \end{scope}
     \end{tikzpicture}
+    \caption{Filtro de modulação, em diagrama de blocos. Adaptado de \cite{li2005properties}.}
 \end{figure}
 
 O sinal banda-larga $x[n]$ passa por um banco de filtros, no
 qual as  $x_k[n]$ saídas do banco de filtros passam por um módulo de
-demodulação, que separa as parcelas moduladoras $m_k[n]$ e portadoras $c_k[n]$
-de cada subbanda. Cada parcela $m_k[n]$ é filtrada por um filtro passa-baixas.
-Em seguida, a sub-banda é reconstruída a partir da portadora $c_k[n]$ e da
+demodulação, no qual são separadas as parcelas moduladoras $m_k[n]$ e portadoras $c_k[n]$
+de cada sub-banda. Cada parcela $m_k[n]$ é filtrada por um filtro passa-baixas.
+Em seguida, cada sub-banda é reconstruída a partir da portadora $c_k[n]$ e da
 modulação filtrada $m'_k[n]$. Finalmente, o sinal de banda larga $x'_k[n]$ é
 sintetizado com as sub-bandas $x'_k[n]$ reconstruídas, obtidas a partir das
 modulações filtradas.
 
 Em aplicações de \textit{Speech Enhancement}, o projeto do banco de filtros
 emula a resposta em frequência da cóclea no sistema auditivo. Por sua vez, a
-frequência de corte do filtro passa-baixas tipicamente é 16Hz, tal que
+frequência de corte do filtro passa-baixas é tipicamente de 16Hz, tal que
 frequências abaixo desse valor estão associadas às periodicidades na construção
 de frases, palavras e sílabas.
