@@ -73,7 +73,6 @@ abordam sua evolução e suas formas mais sofisticadas, que carecem de uma
 apresentação da teoria em que se baseiam ao alcance de um leitor
 interessado.
 
-___
 ## Objetivo
 
 O objetivo geral do projeto é apresentar de forma acessível o espectrograma de
