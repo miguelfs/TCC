@@ -1,6 +1,5 @@
 # (WIP) ESPECTRO DE MODULAÇÃO APLICADO AO PROCESSAMENTO DE FALA 
-Trabalho de conclusão de curso para obtenção do grau de Engenheiro Eletrônico e da Computação pela Universidade Federal do Rio de Janeiro.
-
+ Projeto de graduação apresentado ao curso de Engenharia Eletrônica e de Computação da Escola Politécnica, Universidade Federal do Rio de Janeiro, como parte dos requisitos necessários à obtenção do título de Engenheiro.
 ## Tema
 O tema do trabalho é o espectro de modulação, que possibilita a
  análise de oscilações de segunda ordem em sinais, de modo a abordar técnicas de
