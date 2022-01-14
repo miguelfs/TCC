@@ -1,1 +1,102 @@
 \section{Espectro e Espectrograma de Modulação}
+
+O espectro de modulação e o espectrograma de modulação são nomes dados a
+representaçōes que evidenciam frequências associadas a modulaçōes presentes no
+sinal. \citet{greenberg1997} apresentam o espectrograma de modulação em 1997
+como "\textit{um novo formato de representação para a fala} [...] \textit{que
+exibe e codifica o sinal em termos da distribuição de modulações lentas em
+função do tempo e da frequência}". Trabalhos anteriores fizeram uso do espectro
+da envoltória do sinal e sua correspondência com a inteligibilidade de fala,
+como \citet{houtgast1973} \citet{houtgast1980} \cite{houtgast1985} a partir de 1973 e \citet{drullman1994} em 1994.
+
+O método apresentado por \citet{greenberg1997} consiste em obter a envoltória
+nas parcelas filtradas de um sinal por sub-bandas de um banco de filtros, para
+então calcular suas transformadas de Fourier. Essa abordagem tambêm é utilizada
+para o espectro de modulação apresentado por \citet{atlas2004} \cite{atlas2003}
+a partir de 2003, definido como "\textit{uma representação bidimensional} [...]
+\textit{onde a primeira dimensão é a célebre frequência acústica e a segunda
+dimensão é a frequência de modulação}". A principal novidade, nesse segundo
+caso, é a estimação e decomposição das partes moduladora e portadora de forma
+coerente, em vez da decomposição por módulo e fase.
+
+Em uma abordagem distinta da tradicional,
+\citet{paliwal2010}\cite{so2011modulation}\cite{paliwal2012mmse} utiliza a STFT 
+em vez do banco de filtros, de forma que as trajetórias dos módulos do espectro
+acústico no tempo são adequadas para o cálculo do espectro de modulação de tempo
+curto.
+
+Para compreender a representação do espectrograma de modulação, definem-se dois
+domínios, na bibliografia~\cite{paliwal2015}. O domínio acústico é uma
+representação bidimensional de um sinal na qual, para as frequências $f$ e os
+instantes de tempo $t$, mapeiam-se os respectivos coeficientes complexos de
+Fourier~\cite{muller2015}:\todo{chamo de STFT?}
+\begin{equation}
+X(t, f): \mathbb{R}  \times  \mathbb{R} \rightarrow \mathbb{C}.
+\end{equation}{sinal no domínio acústico}
+O chamado espectrograma de \todo{modulo?} magnitude é a representação do módulo desse domínio:
+\begin{equation}
+\mathrm{Spec}(t, f) = \left\lvert X(t, f)\right\rvert.
+\end{equation}\symbl{$X(t, f)$}{sinal no domínio acústico}
+
+Por sua vez, o domínio da modulação é capaz de representar esse mesmo sinal a
+partir das mesmas coordenadas do domínio acústico, acrescidas da frequência
+$\eta$ de oscilação de sua envoltória, mapeando-o também em coeficientes
+complexos de Fourier:
+\begin{equation}
+\mathcal{X}(\eta, f, t): \mathbb{R}  \times \mathbb{R}  \times  \mathbb{R} \rightarrow \mathbb{C}.
+\end{equation}\symbl{$\mathcal{X}(\eta, f, t)$}{sinal no domínio da modulação}
+
+O correspondente espectrograma de modulação é dado por
+\begin{equation}
+      \mathrm{Mod Spec}(\eta, f, t) = \left\lvert \mathcal{X}(\eta, f, t)\right\rvert.
+\end{equation}
+
+A seguir, serão apresentadas duas possibilidades de implementação: uma com banco
+de filtros, e outra com a STFT.
+
+Na implementação com banco de filtros, o espectro de modulação $P_k[\mu]$ segue da
+seguinte forma \cite{toolbox2010}:
+
+\begin{equation} \label{modspec_filterbank}
+    P_k[\mu] = \sum_{n = 0}^{N - 1} w[n]m_k[n] e^{-j \frac{2 \pi \mu}{N} n}
+\end{equation}
+
+em que $k$ é a k-ésima sub-banda do banco de filtros, $\mu$ é a frequência de
+modulação, $w[n]$ é a função-janela com tamanho de $N$ amostras e $m_k[n]$ é a
+parcela moduladora obtida pela demodulação da k-ésima sub-banda. A estimação das
+partes portadora e moduladora também é utilizada na filtragem de modulação,
+descrita na secção \ref{section_fil_mod}.
+
+Ao se utilizar a STFT, calcula-se $X[l,k]$ a partir do sinal $x[n]$, da taxa de
+amostragem do sinal, da função janela $w[n]$ de análise, do comprimento $M$ do
+\textit{frame} em amostras, do número $N$ de amostras da DFT, e do salto da janela
+em $H$ amostras~\cite{paliwal2015,mauricio}:
+ \begin{equation}
+      X[l, k] = \sum_{n = 0}^{M-1} x[n + l H] w[n]{\mathrm{e}^{-2\mathrm{j}\pi n k/N}}. 
+ \end{equation}
+Dessa forma, obtém-se os coeficientes de Fourier para cada \textit{bin} $k$ na
+ frequência e \textit{frame} $l$ no tempo, análogos às dimensões de
+ $f(t,\omega)$.
+
+Finalmente, obtêm-se os coeficientes complexos no domínio da modulação
+aplicando-se uma segunda STFT sobre o módulo das séries de \textit{frames}, para
+cada \textit{bin} $k$ do domínio acústico~\cite{paliwal2015}:
+\begin{equation}
+      % \label{eq2}
+      % \eqref{eq2}
+      \mathcal{X}[\ell, k, \mu] = \sum_{l = 0}^{\mathcal{M}-1}\left\lvert X[l+\ell \mathcal{H},k] \right\rvert v[l]{\mathrm{e}^{-2\mathrm{j}\pi \mu l/\mathcal{N}}},      
+\end{equation}
+no qual $\ell$ é o índice do \textit{frame} no domínio da modulação, $k$ é o
+ índice da frequência advinda do domínio acústico, $\mu$ é o índice do
+ \textit{bin} da frequência de modulação, $\mathcal{N}$ é o número de amostras
+ da DFT, $\mathcal{M}$ é o tamanho do \textit{frame} em amostras e $\mathcal{H}$
+ é o deslocamento da janela de análise $v[l]$ no domínio da modulação, em
+ amostras. O espectrograma de modulação é dado por
+\begin{equation}
+\mathrm{ModSpec}[\ell, k, \mu] = \left\lvert \mathcal{X}[\ell, k, \mu]\right\rvert. 
+\end{equation}
+
+\todo{inversa?}
+\todo{imagens?}
+\todo{specs de implementação}
+
