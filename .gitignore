@@ -1,2 +1,21 @@
 *.DS_store
 /tmp
+*.vscode
+
+# Ignore everything
+latex/*
+# But not these files...
+!configs
+!coppe-plain.bst
+!coppe-logo.eps
+!poli-logo.eps
+!coppe-unsrt.bst
+!coppe.cls
+!coppe.ist
+!latexmkrc
+!example.bib
+!example.tex
+!Makefile
+!.gitignore
+!chapters/
+!chapters/*

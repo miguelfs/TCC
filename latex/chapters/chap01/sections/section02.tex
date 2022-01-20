@@ -1,17 +1,44 @@
 \section{Trabalhos Relacionados}
+
 \citet{houtgast1973} descrevem a função de transferência em modulação
-(MTF\abbrev{MTF}{função de transferência em modulação}, do inglês modulation
-transfer function) para ambientes fechados como forma de medição de
-inteligibilidade da fala nesses locais. A MTF é calculada pela razão do espectro
-da envoltória do sinal de teste e o espectro medido, gerando uma representação
-de índices de modulação em função da frequência das envoltórias.
-\todo{STI}
+(MTF\abbrev{MTF}{função de transferência em modulação}, do inglês
+\textit{modulation transfer function}) para ambientes fechados como forma de
+medição de inteligibilidade da fala nesses locais, degradada por ruídos
+quasi-estacionários ou reverberação. A dupla de autores também introduziu o
+índice de transmissão de fala (STI, do inglês \textit{speech transmission
+index}) \cite{houtgast1980}, uma medida mais objetiva para a capacidade de um
+canal preservar a inteligibilidade da fala, cujo cálculo é efetuado a partir da
+MTF.\abbrev{STI}{índice de transmissão de fala}
+
+% A medição da MTF é realizada a partir de
+% sinal de teste com envoltória bem-definida, o qual é medido na saída do canal
+% com menor índice de modulação, em decorrência dos efeitos do ambiente. O valor
+% da MTF é calculado pela razão das amplitudes do espectro da envoltória do sinal
+% de teste e do espectro medido na saída do canal, gerando uma representação de
+% índices de modulação em função da frequência das envoltórias.
+
+% sobre cada banda oitavada, tal que cada parcela possua um peso
+% associado ao seu grau de contribuição para a inteligibilidade.
+% \abbrev{STI}{índice de transmissão de fala}
+
+\citet{drullman1994}, a partir de experimento em que varia a frequência de corte
+de um filtro passa-baixas sobre parcelas moduladoras em sub-bandas críticas de
+sinais de fala, identificaram, entre outras evidências, que as componentes
+abaixo de 16Hz são suficientes para uma boa compreensão da fala. Essas
+evidências justificam a aplicabilidade da filtragem de modulação.
+
 
 \citet{schimmel2007} traz um panorama da teoria e prática das ferramentas de
 análise, síntese e filtragem em modulação, com argumentos sustentados sobre as
 publicações de \citet{atlas2005, atlas2003} acerca de demodulação coerente,
 abordada com maior profundidade por \citet{clark2012}.
 
-Entre as aplicações disponíveis, \citet{markaki2009} utilizam a densidade
-espectral de potência no domínio da modulação como \textit{features} para um
-algoritmo classificador e detector de patologias nas cordas vocais.
+% Entre as aplicações disponíveis, há o uso da densidade espectral de potência no
+% domínio da modulação como \textit{features} para classificação e
+% detecção de patologias nas cordas vocais~\cite{markaki2009}. 
+
+Algumas aplicações que utilizam da análise no domínio da modulação realizam
+ tarefas como~\cite{paliwal2015}: classificação \cite{markaki2009},
+ reconhecimento de fala \cite{hermansky1994rasta} \cite{kanedera1999relative}
+ \cite{kingsbury1998} \cite{lu2010temporal} \cite{nadeu1997filtering}
+ \cite{tyagi2003mel} \cite{xiao2008normalization}.  

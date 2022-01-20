@@ -1,9 +1,10 @@
-\section{Modulação em Amplitude e Demodulação}
-A modulação em amplitude (AM\abbrev{AM}{modulação em amplitude}, do inglês \textit{Amplitude Modulation}) é o
-processo no qual a envoltória de uma onda portadora oscila em torno de um valor
-médio, conforme um sinal modulador em baixa frequência~\cite{haykin2008}. No
-contexto de comunicações, a moduladora é um sinal em banda básica, isto é,
-contém a informação em um espectro delimitado a ser transmitida.
+\section{Modulação em Amplitude}
+A modulação em amplitude (AM\abbrev{AM}{modulação em amplitude}, do inglês
+\textit{Amplitude Modulation}) é o processo no qual a envoltória de uma onda
+portadora oscila em torno de um valor médio, conforme um sinal modulador em
+baixa frequência~\cite{haykin2008}. No contexto de comunicações, a moduladora é
+um sinal em banda base, isto é, contém a informação em um espectro delimitado a
+ser transmitida.
 
 Considerando a portadora como um tom puro de frequência $f_c$ e amplitude $A_c$:
 \symbl{$c(t)$}{portadora no domínio contínuo}
@@ -13,17 +14,17 @@ Considerando a portadora como um tom puro de frequência $f_c$ e amplitude $A_c$
     c(t) = A_c \cos(2\pi f_c t).
 \end{equation}
 
-    Um sinal $s(t)$ modulado em amplitude é definido pela composição de
-suas parcelas portadora $c(t)$ e moduladora $m(t)$:
-\symbl{$k_a$}{sensibilidade de amplitude}
+    Um sinal $s(t)$ modulado em amplitude é definido pela composição de suas
+parcelas portadora $c(t)$ e moduladora $m(t)$:
+\symbl{$k_a$}{sensibilidade à amplitude}
 \symbl{$m(t)$}{moduladora no domínio contínuo}
 \symbl{$s(t)$}{sinal modulado no domínio contínuo}
 \begin{equation}
     s(t) = [1+k_a m(t)]c(t) = A_c[1+k_a m(t)]\cos(2\pi f_c t) \label{eq:mod_1}
 \end{equation}
-em que $k_a$ é a sensibilidade de amplitude da moduladora. Para que a envoltória
-dada pela função $1+k_a m(t)$ seja sempre positiva, evitando reversão de fase
-em decorrência de sobremodulação, basta que
+em que $k_a$ é a sensibilidade à amplitude da moduladora. Para que a envoltória
+dada pela função $1+k_a m(t)$ seja sempre positiva, evitando reversão de fase em
+decorrência de sobremodulação, basta que
 \begin{equation}
     |k_a m(t)| < 1, \quad \forall t.
 \end{equation}
@@ -42,16 +43,16 @@ da frequência.
 Pela equação \eqref{eq:mod_2}, observa-se que a parcela com impulsos unitários
 não contribui diretamente para a transmissão da informação contida em $M(f)$,
 além de despender grande parte da potência do sinal. Uma segunda característica
-de $S(f)$ é a existência de dois lóbulos simétricos no domínio da frequência, o
-que confere redundância na transmissão do sinal e maior largura de banda. Para
-solucionar essas duas características indesejáveis em telecomunicações, foram
-criadas as modulações com banda lateral dupla e supressão de portadora (DSB-SC,
-do inglês \textit{double-sideband suppressed-carrier}), banda lateral vestigial
-(VSB, do inglês \textit{vestigial sideband modulation}) e banda lateral
-suprimida (SSB, do inglês \textit{single-sideband modulation}), que vão além do
-escopo desse trabalho.
+de $S(f)$ \todo{add plot}é a existência de dois lóbulos simétricos no domínio da
+frequência, o que confere redundância na transmissão do sinal e maior largura de
+banda. Para solucionar essas duas características indesejáveis em
+telecomunicações, foram criadas as modulações com banda lateral dupla e
+supressão de portadora (DSB-SC, do inglês \textit{double-sideband
+suppressed-carrier}), banda lateral vestigial (VSB, do inglês \textit{vestigial
+sideband modulation}) e banda lateral suprimida (SSB, do inglês
+\textit{single-sideband modulation}), que vão além do escopo desse trabalho.
 
-\abbrev{DSB-DC}{banda lateral dupla e supressão de portadora}
+\abbrev{DSB-SC}{banda lateral dupla com supressão de portadora}
 \abbrev{VSB}{banda lateral vestigial}
 \abbrev{SSB}{banda lateral suprimida}
 
@@ -78,7 +79,5 @@ As parcelas moduladoras $m(t)$ e $m[n]$ podem assumir valores complexos
 \begin{equation}
     m(t) \geq s(t), \forall t.
 \end{equation}
-
-\todo{imagens?}
-\todo{demod não coerente}
-\todo{demod coerente}
+A decomposição do sinal em envoltória e portadora em valores complexos é
+abordada por \citet{atlas2004}.\todo{explorar mais}

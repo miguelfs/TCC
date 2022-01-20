@@ -1,10 +1,11 @@
-\section{Filtragem de Modulação} \label{section_fil_mod}
-A filtragem de modulação é uma técnica para filtragem de envoltórias com
-oscilações lentas, presentes em sub-bandas de frequência, aplicada sobre sinais
+\section{Filtragem de Modulação} \label{section_fil_mod} A filtragem de
+modulação é uma técnica para filtragem de envoltórias com oscilações lentas,
+presentes em sub-bandas de frequência, aplicada sobre sinais
 não-estacionários.\cite{clark2009sum} \cite{li2005properties}. O objetivo, em
 aplicações de fala, é obter um sinal mais inteligível na saída, composto apenas
 pela composição de tons com modulações de baixa frequência associadas à
-articulação vocal, eliminando as demais parcelas.
+articulação vocal, eliminando as demais parcelas, as quais, quando presentes,
+podem conter ruído e artefatos que degradam a compreensão da fala.
 
 Essa técnica assume que um sinal $x[n]$ de valores reais é
 representado pela soma dos produtos entre moduladora e portadora que compõem
@@ -13,8 +14,8 @@ cada sub-banda $x_k[n]$:
     x[n] = \sum_{k = 0}^{K - 1} x_k[n] = \sum_{k = 0}^{K - 1} m_k[n] c_k[n]
 \end{equation}
 
-
-A implementação genérica da filtragem de modulação está representada no diagrama de blocos abaixo.
+A implementação genérica da filtragem de modulação está representada no diagrama
+de blocos abaixo.
 
 \begin{figure}[h]
     \centering
@@ -29,7 +30,7 @@ A implementação genérica da filtragem de modulação está representada no di
         \node [block, below of = filterbank] (sintese) {síntese};
         \node [block, below of=dem] (res) {reconstrução};
         \node [left of=sintese, node distance=2.5cm] (output) {$x'[n]$};
-        %Conecting Blocks
+        %Connecting Blocks
         \begin{scope}[line width=1pt]
             \draw[->] (input) -- (filterbank);
             \draw[->, line width=1mm] (filterbank) -- node[name=subband] {$x_k[n]$} (dem);
@@ -52,7 +53,7 @@ $c_k[n]$ e da modulação filtrada $m'_k[n]$. Finalmente, o sinal de banda larga
 $x'_k[n]$ é sintetizado com as sub-bandas $x'_k[n]$ reconstruídas, obtidas a
 partir das modulações filtradas.
 
-Em aplicações de \textit{Speech Enhancement}, o projeto do banco de filtros
+Em aplicações de \textit{speech enhancement}, o projeto do banco de filtros
 emula a resposta em frequência da cóclea no sistema auditivo. Por sua vez, a
 frequência de corte do filtro passa-baixas é tipicamente de 16Hz
 \cite{drullman1994}, tal que frequências abaixo desse valor estão associadas às
