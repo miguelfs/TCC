@@ -1,4 +1,4 @@
-\section{Demodulação Coerente e Incoerente}
+\section{Demodulação Incoerente e Coerente}
 A demodulação, no contexto de telecomunicações, consiste em recuperar a parcela
 original em banda base de um sinal modulado, transladando seu espectro para sua
 posição original~\cite{lathi2017}. Os métodos disponíveis na bibliografia de
@@ -10,74 +10,200 @@ estimam a portadora a partir da frequência instantânea do sinal
 Uma demodulação incoerente é a detecção de envoltória feita a partir da
 transformada de Hilbert. A transformada de Hilbert é capaz de gerar o sinal em
 quadratura, deslocando sua fase em $\pi/2$ radianos. Sua definição, no domínio
-contínuo, é dada por:
-
+do tempo contínuo e seu
+espectro~\cite{haykin2014digital}\cite{goulart2017efeitos}, são dados por:
+\symbl{$\mathcal{H}\{\cdot\}$}{operador para transformada de Hilbert}
+\symbl{$\ast$}{operador para convolução}
+\symbl{$\hat{x}(t)$}{sinal em quadratura}
 \begin{equation}
     \mathcal{H}\{x(t)\} = x(t) \ast \frac{1}{\pi t} = \frac{1}{\pi} \int_{-\infty}^{+\infty} \frac{x(\tau)}{t - \tau}  \,dx 
 \end{equation}
-\symbl{$\mathcal{H}\{x(t)\}$}{operador para transformada de Hilbert}
-\symbl{$\ast$}{operador para convolução}
-
-em que $\mathcal{H}\{\cdot\}$ é o operador para a transformada de Hilbert,
-$\ast$ é o operador para convolução e $x(t)$ é uma função real. O método
-consiste em decompor um sinal real em partes moduladora e portadora a partir de
-um sinal analítico, obtido pela soma do sinal em questão com sua transformada de
-Hilbert:\todo{hilbert discreto?}
-% \symbl{$s_{+}[n]$}{sinal analítico no domínio discreto}
 \begin{equation}
-      s_{+}[n] = s[n] + \mathrm{j}\mathcal{H}\{s[n]\}
+    \hat{x}(t) = \mathcal{H}\{x(t)\}
 \end{equation}
+\begin{equation}
+    \mathrm{sgn}(\omega) = \begin{cases}
+        1,& \omega < 0\\
+        0, & \omega = 0\\
+        -1, & \omega < 0
+        \end{cases}
+\end{equation}
+\begin{equation}
+    \hat{X}(\omega) = -j\,\mathrm{sgn}(\omega)X(\omega) 
+\end{equation}
+em que $\mathcal{H}\{\cdot\}$ é o operador para a transformada de Hilbert,
+$x(t)$ é um sinal de valores reais, $\ast$ é o operador para convolução,
+$\hat{x}(t)$ é o sinal em quadratura, $\mathrm{sgn}(\omega)$ é a função sinal e
+$\hat{X}(\omega)$ é o espectro do sinal em quadratura.
 
-em que $s_{+}[n]$ é o sinal analítico. Em seguida, decompõem-se a moduladora e a
-portadora a partir do módulo e fase do sinal analítico:
+O método consiste em
+decompor um sinal real em partes moduladora e portadora a partir de um sinal
+analítico, obtido pela soma do sinal em questão com sua transformada de
+Hilbert:\todo{hilbert discreto?} \symbl{$x_{+}(t)$}{sinal analítico no domínio
+do tempo}
+\begin{equation} \label{eqn:x_analitico}
+      x_{+}(t) = x(t) + \mathrm{j}\mathcal{H}\{x(t)\}
+\end{equation}
+\begin{equation}
+    |x_{+}(t)| = \sqrt{x^2(t) + \hat{x}^2(t)}
+\end{equation}
+\begin{equation}
+    \phi(t) = \arctan\left( \frac{\hat{x}(t)}{x(t)} \right)
+\end{equation}
+\begin{equation}
+    X_{+}(\omega) = X(\omega) + \mathrm{sgn}(\omega)\hat{X}(\omega)
+\end{equation}
+\begin{equation}
+    X_{+}(\omega) = \begin{cases}
+        2X(\omega),& \omega < 0\\
+        X(0), & \omega = 0\\
+        0, & \omega < 0
+        \end{cases}
+\end{equation}
+em que $x_{+}(t)$, $|x_{+}(t)|$ e $\phi(t)$ são, respectivamente, o sinal
+analítico, seu módulo e fase, $X_{+}(\omega)$ é o espectro do sinal analítico.
+
+Em seguida,
+decompõem-se a moduladora e a portadora a partir do módulo e fase do sinal
+analítico:
+\symbl{$a(t)$}{envoltória no domínio do tempo contínuo}
 \begin{equation}  \label{eqn:a_k}
-      m[n] = |s_{+}[n]|
+      a(t) = |x_{+}(t)|
 \end{equation}
 \begin{equation}  \label{eqn:c_k}
-      c[n] = \cos \phi[n] = \mathrm{e}^{\mathrm{j} \phi[n]}
+      c(t) = \cos \phi(t) = \mathrm{e}^{\mathrm{j} \phi(t)}
 \end{equation}
-% \symbl{$phi[n]$}{fase do sinal analítico}
-em que, $m[n]$ é a envoltória de Hilbert, $c[n]$ é a portadora de Hilbert e
-$\phi[n]$ é a fase do sinal analítico. Note que, ao estimar a envoltória a
-partir do módulo do sinal analítico, seus valores serão reais não-negativos.\todo{discreto e sub banda}
+\symbl{$\phi(t)$}{fase do sinal analítico}
+em que, $a(t)$ é a envoltória, $c(t)$ é a portadora. Note
+que, ao estimar a envoltória a partir do módulo do sinal analítico, seus valores
+serão reais não-negativos.\todo{discreto e sub banda}
 
+No contexto de sub-bandas, em que as envoltórias e portadoras são estimadas para
+cada sub-banda $k$, tal como na etapa de demodulação na filtragem de modulação,
+as equações \ref{eqn:x_analitico}, \ref{eqn:a_k} e \ref{eqn:c_k} são aplicadas
+em cada sub-banda:
+\symbl{$m_k(t)$}{moduladora da k-ésima sub-banda, no domínio do tempo contínuo}
+\symbl{$c_k(t)$}{portadora da k-ésima sub-banda, no domínio do tempo contínuo}
+\symbl{$a_k(t)$}{envoltória da k-ésima sub-banda, no domínio do tempo contínuo}
+\begin{equation}
+    x_{k,+}(t) = x_{k}(t) + \mathrm{j}\mathcal{H}\{x_k(t)\}
+\end{equation}
+\begin{equation}
+    m_k(t) = a_k(t) = |x_{k,+}(t)|
+\end{equation}
+\begin{equation}
+    c_k(t) = \cos \phi_k(t) = \mathrm{e}^{\mathrm{j} \phi_k(t)}
+\end{equation}
 
 O método acima possui limitações importantes~\cite{schimmel2007}. A largura de
 banda da portadora estimada espalha-se além dos limites da banda original do
 sinal. Esse aspecto inviabiliza a etapa de reconstrução em bancos de filtros,
-como na filtragem de modulação, a ser explicada com mais detalhes no capítulo
-\ref{section_fil_mod} . Para exemplificar essa limitação, considere o sinal complexo $y(t)$:
+como na filtragem de modulação. Para exemplificar essa limitação, considere o
+sinal complexo $y(t)$:
 \begin{equation}
-    y(t) = e^{j\omega_c t}\cos(\omega_m t), \quad \omega_c > \omega_m 
+    y(t) = \cos(\omega_m t) e^{j\omega_c t}, \quad \omega_c > \omega_m 
 \end{equation}
-em que $\omega_c$ e $\omega_m$ são as frequências da portadora e moduladora. O módulo ao quadrado do sinal é dado por
+em que $\omega_c$ e $\omega_m$ são as frequências da portadora e moduladora. O
+módulo ao quadrado do sinal é dado por
 \begin{equation}
     |y(t)|^2  = y(t)y^*(t)
 \end{equation}
 \begin{equation}
-    = \cos^2(\omega_m t)
+    |y(t)|^2 = \cos^2(\omega_m t)
 \end{equation}
 \begin{equation}
-    = \frac{1}{2}\cos(2 \omega_m t) + \frac{1}{2}
+    |y(t)|^2 = \frac{1}{2}\cos(2 \omega_m t) + \frac{1}{2}
 \end{equation}
-cujo espectro é limitado em banda. Por sua vez, o módulo de $x(t)$ é dado
+cujo espectro é limitado em banda. Por sua vez, o módulo de $y(t)$ é dado
 por:
+\symbl{$\omega_m$}{frequência angular de modulação}
+\symbl{$\omega_c$}{frequência angular da portadora}
 \begin{equation}
-    m(t) = |y(t)| = |e^{j\omega_c t}\cos(\omega_m t)| = |\cos(\omega_m t)|
+   |y(t)| = |e^{j\omega_c t}\cos(\omega_m t)|
+\end{equation}
+\begin{equation}
+    |y(t)| = |\cos(\omega_m t)|
 \end{equation}
 que contém descontinuidades em:
 \begin{equation}
-t = \frac{\pi}{\omega_m} (\frac{1}{2}+ \mathbf{k}) , \quad \mathbf{k} \in \mathbb{Z} .
+t = \frac{\pi}{\omega_m} (\frac{1}{2}+ \mathbf{k}), \quad \mathbf{k} \in \mathbb{Z} .
 \end{equation}
-Para representar essas descontinuidades, são necessárias infinitas frequências.
-O espectro do módulo do sinal é dado por:
+Para representar essas descontinuidades, são necessárias infinitas frequências.\todo{calcular limite?}
+O espectro do módulo de $y(t)$ é dado pela equação~\ref{eq_spec_mod_tone}:
 \begin{equation}
-    M(\omega) = \mathcal{F}\{|y(t)|\} = \sum_{\mathbf{k} = 1}^{\infty}\frac{4}{-(-1)^\mathbf{k} ((2\mathbf{k})^2) - 1)} \delta(\omega - 2 \mathbf{k} \omega_m)   
+     m(t) = |y(t)|
 \end{equation}
-% \symbl{\mathbf{k}}{índice do somatório, $\in  \mathbb{Z}}
-\todo{eq 2.18 apêndice}
+\begin{equation}
+    M(\omega) = \mathcal{F}\{|y(t)|\}
+\end{equation}
+\begin{equation} \label{eq_spec_mod_tone}
+    M(\omega) = \sum_{\mathbf{k} = 1}^{\infty}\frac{4}{-(-1)^\mathbf{k} ((2\mathbf{k})^2) - 1)} \delta(\omega - 2 \mathbf{k} \omega_m)   
+\end{equation}
+\symbl{$\mathbb{Z}$}{Conjunto dos números inteiros}
+% \symbl{$\mathbf{k}$}{índice do somatório}
+\todo{eq acima apêndice}
+em que $\mathcal{F\{\cdot\}}$ é o operador para a transformada de Fourier.
+\citet{cohen1999ambiguity} demonstra que a representação de módulo e fase não é
+única, de forma que um sinal complexo possui múltiplos pares módulo-fase que o
+representam. Tal como na demodulação incoerente, haverão descontinuidades nessas
+representações caso sua amplitude não seja positiva definida.\todo{adicionar
+grafico exemplificando}
 
-em que $\mathcal{F\{\cdot\}}$ é o operador para a transformada de Fourier. Como
-alternativa a essa forma de decomposição, há a detecção coerente de
-portadora~\cite{atlas2005,clark2009time,clark2009sum}, que visa à detecção de
-uma portadora com banda estreita.
+Como alternativa, há
+a detecção coerente de portadora~\cite{atlas2005,clark2009time,clark2009sum},
+que visa à detecção de uma portadora com banda estreita.
+
+Para compreender as diferenças entre demodulação coerente e incoerente,
+representamos a equação \ref{eq:signal_eq} na forma polar \cite{schimmel2007}:
+
+\begin{equation}  \label{eq:polar}
+    a_x(t) e^{j \phi_x(t)} = \left[ a_m(t) e^{j \phi_m(t)} \right] \left[ a_c(t) e^{j \phi_c(t)}\right]
+\end{equation}
+nessa representação, a envoltória $a_x(t)$ e fase $\phi_x(t)$ do sinal são dados
+pela composição das envoltórias e fases da portadora e moduladora
+
+\begin{equation}
+    a_x(t) = a_m(t) a_c(t)
+\end{equation}
+\begin{equation}
+    \phi_x(t) = \phi_m(t) + \phi_c(t)    
+\end{equation}
+Como discutido por \citet{cohen1999ambiguity}, há múltiplas soluções
+para a equação \ref{eq:polar}. A detecção incoerente assume que:
+\begin{equation}
+    \phi_m(t) = 0
+\end{equation}
+\begin{equation}
+    a_c(t) = 1
+\end{equation}
+\begin{equation}
+    a_m(t) = a_x(t)
+\end{equation}
+\begin{equation}
+    \phi_c(t) = \phi_x(t)
+\end{equation}
+Diferentemente, a detecção coerente considera que a parcela moduladora assuma
+valores complexos, de forma que $\phi_m(t)$ tenha valores não-nulos. Para
+resolver a ambiguidade na decomposição das fases de $\phi_m(t)$ e $\phi_c(t)$,
+impõe-se a restrição de que $\phi_c(t)$ recebe apenas componentes de fase com
+lenta variação, em relação à fase do sinal original. Finalmente, a parte
+moduladora é obtida ao descontar do sinal original a estimativa de sua parcela
+portadora, o que preserva a largura de banda. A fase da portadora é calculada a
+partir da frequência instantânea, na qual aplica-se um filtro passa-baixas:
+
+\begin{equation}
+    \alpha_c(t) = \mathrm{IF}\lbrack\phi_x(t)\rbrack * h_{lp}(t)
+\end{equation}\todo{parei aqui}
+
+
+% Uma das formas de demodulação coerente baseia-se na
+% suavização da largura de banda da portadora~\cite{atlas2005}. Esse método
+% expressa, para uma sub-banda $k$, a fase como a composição de um termo de fase
+% linear $\omega_kt$ e de fase constante $\phi_{k,0}$~, acrescidos de um desvio
+% $\theta_k(t)$ com média zero:
+
+% \begin{equation}
+%     \phi_k(t) = \omega_kt + \phi_{k,0} + \theta_k(t)
+% \end{equation}
+% A frequência $\omega_k$ é a frequência ``média'' da sub-banda $x_k(t)$,
+% na qual não necessariamente encontra-se no meio da mesma.
