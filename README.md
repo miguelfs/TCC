@@ -16,7 +16,7 @@ O tema do trabalho é o espectro de modulação, que possibilita a
 Aplicações que dependam de captação de voz, como chamadas de voz sobre IP (VoIP,
  do inglês *voice over IP* e reconhecimento de fala, podem ter sua
  experiência de uso e assertividade melhoradas quando a fala captada é mais
- inteligível, o que pode ser potencializado com técnicas de \*speech
+ inteligível, o que pode ser potencializado com técnicas de *speech
  enhancement* aplicadas sobre o áudio analisado.
 
 No conjunto das técnicas de *speech enhancement*, as que utilizam a
