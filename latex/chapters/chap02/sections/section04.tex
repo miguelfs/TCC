@@ -7,9 +7,17 @@ pela composição de tons com modulações de baixa frequência associadas à
 articulação vocal, eliminando as demais parcelas, as quais, quando presentes,
 podem conter ruído e artefatos que degradam a compreensão da fala.
 
-Essa técnica assume que um sinal $x[n]$ de valores reais é
-representado pela soma dos produtos entre moduladora e portadora que compõem
-cada sub-banda $x_k[n]$:
+\symbl{$x \lbrack n \rbrack$}{sinal de valores reais, no domínio do tempo discreto}
+\symbl{$x_k \lbrack n \rbrack$}{k-ésima sub-banda do sinal, no domínio do tempo discreto}
+
+Essa técnica assume que um sinal $x[n]$ de valores reais é representado pela
+soma dos produtos entre moduladora e portadora que compõem cada sub-banda
+$x_k[n]$, obtidas a partir da filtragem por um filtro passa-bandas $h_k[n]$:
+\symbl{$m_k \lbrack n \rbrack$}{moduladora da k-ésima sub-banda, no domínio do tempo discreto}
+\symbl{$c_k \lbrack n \rbrack$}{portadora da k-ésima sub-banda, no domínio do tempo discreto}
+\begin{equation}
+    x_k[n] = h_k[n] \ast x[n]
+\end{equation}
 \begin{equation}
     x[n] = \sum_{k = 0}^{K - 1} x_k[n] = \sum_{k = 0}^{K - 1} m_k[n] c_k[n]
 \end{equation}
@@ -44,7 +52,7 @@ de blocos abaixo.
     \caption{Filtro de modulação, em diagrama de blocos. Adaptado de \cite{li2005properties}.}
 \end{figure}
 
-O sinal banda-larga $x[n]$ passa por um banco de filtros, no qual as  $x_k[n]$
+O sinal banda-larga $x[n]$ passa por um banco de filtros $h_k[n]$, no qual as  $x_k[n]$
 saídas do banco de filtros passam por um módulo de demodulação, no qual são
 separadas as parcelas moduladoras $m_k[n]$ e portadoras $c_k[n]$ de cada
 sub-banda. Cada parcela $m_k[n]$ é filtrada por um filtro passa-baixas, cuja
