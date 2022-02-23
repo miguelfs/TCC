@@ -36,11 +36,10 @@ $x(t)$ é um sinal de valores reais, $\ast$ é o operador para convolução,
 $\hat{x}(t)$ é o sinal em quadratura, $\mathrm{sgn}(\omega)$ é a função sinal e
 $\hat{X}(\omega)$ é o espectro do sinal em quadratura.
 
-O método consiste em
-decompor um sinal real em partes moduladora e portadora a partir de um sinal
-analítico, obtido pela soma do sinal em questão com sua transformada de
-Hilbert:\todo{hilbert discreto?} \symbl{$x_{+}(t)$}{sinal analítico no domínio
-do tempo}
+O método consiste em decompor um sinal real em partes moduladora e portadora a
+partir de um sinal analítico, obtido pela soma do sinal em questão com sua
+transformada de Hilbert:\todo{hilbert discreto?} \symbl{$x_{+}(t)$}{sinal
+analítico no domínio do tempo}
 \begin{equation} \label{eqn:x_analitico}
       x_{+}(t) = x(t) + \mathrm{j}\mathcal{H}\{x(t)\}
 \end{equation}
@@ -63,9 +62,8 @@ do tempo}
 em que $x_{+}(t)$, $|x_{+}(t)|$ e $\phi(t)$ são, respectivamente, o sinal
 analítico, seu módulo e fase, $X_{+}(\omega)$ é o espectro do sinal analítico.
 
-Em seguida,
-decompõem-se a moduladora e a portadora a partir do módulo e fase do sinal
-analítico:
+Em seguida, decompõem-se a moduladora e a portadora a partir do módulo e fase do
+sinal analítico:
 \symbl{$a(t)$}{envoltória no domínio do tempo contínuo}
 \begin{equation}  \label{eqn:a_k}
       a(t) = |x_{+}(t)|
@@ -74,9 +72,9 @@ analítico:
       c(t) = \cos \phi(t) = \mathrm{e}^{\mathrm{j} \phi(t)}
 \end{equation}
 \symbl{$\phi(t)$}{fase do sinal analítico}
-em que, $a(t)$ é a envoltória, $c(t)$ é a portadora. Note
-que, ao estimar a envoltória a partir do módulo do sinal analítico, seus valores
-serão reais não-negativos.\todo{discreto e sub banda}
+em que, $a(t)$ é a envoltória, $c(t)$ é a portadora. Note que, ao estimar a
+envoltória a partir do módulo do sinal analítico, seus valores serão reais
+não-negativos.\todo{discreto e sub banda}
 
 No contexto de sub-bandas, em que as envoltórias e portadoras são estimadas para
 cada sub-banda $k$, tal como na etapa de demodulação na filtragem de modulação,
@@ -114,8 +112,7 @@ módulo ao quadrado do sinal é dado por
 \begin{equation}
     |y(t)|^2 = \frac{1}{2}\cos(2 \omega_m t) + \frac{1}{2}
 \end{equation}
-cujo espectro é limitado em banda. Por sua vez, o módulo de $y(t)$ é dado
-por:
+cujo espectro é limitado em banda. Por sua vez, o módulo de $y(t)$ é dado por:
 \symbl{$\omega_m$}{frequência angular de modulação}
 \symbl{$\omega_c$}{frequência angular da portadora}
 \begin{equation}
@@ -128,8 +125,9 @@ que contém descontinuidades em:
 \begin{equation}
 t = \frac{\pi}{\omega_m} (\frac{1}{2}+ \mathbf{k}), \quad \mathbf{k} \in \mathbb{Z} .
 \end{equation}
-Para representar essas descontinuidades, são necessárias infinitas frequências.\todo{calcular limite?}
-O espectro do módulo de $y(t)$ é dado pela equação~\ref{eq_spec_mod_tone}:
+Para representar essas descontinuidades, são necessárias infinitas
+frequências.\todo{calcular limite?} O espectro do módulo de $y(t)$ é dado pela
+equação~\ref{eq_spec_mod_tone}:
 \begin{equation}
      m(t) = |y(t)|
 \end{equation}
@@ -149,9 +147,9 @@ representam. Tal como na demodulação incoerente, haverão descontinuidades nes
 representações caso sua amplitude não seja positiva definida.\todo{adicionar
 grafico exemplificando}
 
-Como alternativa, há
-a detecção coerente de portadora~\cite{atlas2005,clark2009time,clark2009sum},
-que visa à detecção de uma portadora com banda estreita.
+Como alternativa, há a detecção coerente de
+portadora~\cite{atlas2005,clark2009time,clark2009sum}, que visa à detecção de
+uma portadora com banda estreita.
 
 Para compreender as diferenças entre demodulação coerente e incoerente,
 representamos a equação \ref{eq:signal_eq} na forma polar \cite{schimmel2007}:
@@ -160,16 +158,15 @@ representamos a equação \ref{eq:signal_eq} na forma polar \cite{schimmel2007}:
     a_x(t) e^{j \phi_x(t)} = \left[ a_m(t) e^{j \phi_m(t)} \right] \left[ a_c(t) e^{j \phi_c(t)}\right]
 \end{equation}
 nessa representação, a envoltória $a_x(t)$ e fase $\phi_x(t)$ do sinal são dados
-pela composição das envoltórias e fases da portadora e moduladora
-
+pela composição das envoltórias e fases da portadora e moduladora:
 \begin{equation}
     a_x(t) = a_m(t) a_c(t)
 \end{equation}
 \begin{equation}
     \phi_x(t) = \phi_m(t) + \phi_c(t)    
 \end{equation}
-Como discutido por \citet{cohen1999ambiguity}, há múltiplas soluções
-para a equação \ref{eq:polar}. A detecção incoerente assume que:
+Como discutido por \citet{cohen1999ambiguity}, há múltiplas soluções\todo{falar
+da fase} para a equação \ref{eq:polar}. A detecção incoerente assume que:
 \begin{equation}
     \phi_m(t) = 0
 \end{equation}
@@ -186,24 +183,81 @@ Diferentemente, a detecção coerente considera que a parcela moduladora assuma
 valores complexos, de forma que $\phi_m(t)$ tenha valores não-nulos. Para
 resolver a ambiguidade na decomposição das fases de $\phi_m(t)$ e $\phi_c(t)$,
 impõe-se a restrição de que $\phi_c(t)$ recebe apenas componentes de fase com
-lenta variação, em relação à fase do sinal original. Finalmente, a parte
-moduladora é obtida ao descontar do sinal original a estimativa de sua parcela
-portadora, o que preserva a largura de banda. A fase da portadora é calculada a
-partir da frequência instantânea, na qual aplica-se um filtro passa-baixas:
+lenta variação, em relação à fase do sinal original.
+% O que preserva a largura de banda.
+
+A fase $\phi_c(t)$ da portadora é estimada a partir da frequência instantânea do
+sinal $x(t)$, na qual aplica-se um filtro passa-baixas $h_{lp}(t)$, integrando-a
+no tempo:
+\begin{equation}
+    \alpha_c(t) = \frac{d\phi_x(t)}{dt} * h_{lp}(t)
+\end{equation}
+\begin{equation}\label{eqn:carrier_integral}
+    \phi_c(t) = \int_{0}^{t}\alpha_c(t)\,d\tau 
+\end{equation}
+
+Em que $\alpha_c(t)$ é a frequência instantânea filtrada. Note que a derivada de
+$\phi_x(t)$ no tempo expressa a frequência instantânea de $x(t)$. Finalmente, a
+parte moduladora é obtida ao descontar do sinal original a estimativa de sua
+parcela portadora:
+\begin{equation} \label{eqn:carrier}
+    c(t) = e^{j\phi_c(t)}
+\end{equation}
+\begin{equation}
+    m(t) = \frac{x(t)}{c(t)} = x(t) \cdot  c^*(t)
+\end{equation}
+Substituindo a equação:
+\begin{equation}\label{eqn:demod_coh}
+    m(t) = \frac{x(t)}{e^{j\phi_c(t)}} = x(t)e^{-j\phi_c(t)}.
+\end{equation}
+Existem formas distintas de realizar a demodulação coerente. Em comum,
+compartilham a estimativa das componentes a partir da fase do sinal, preservando
+a largura de banda final.
+
+A demodulação coerente por centro de gravidade espectral \cite{clark2009time}
+\cite{clark2009sum} \cite{toolbox2010} estima a portadora da equação
+\ref{eqn:carrier} a partir da frequência que corresponde ao centróide da
+distribuição, denotada por $\omega_0$:
+\begin{equation} \label{eqn:cog}
+    \omega_0 = \frac{\int_{-\infty}^{+\infty}\omega S_{xx}(\omega)\,d\omega}{\int_{-\infty}^{+\infty}S_{xx}(\omega)\,d\omega} 
+\end{equation}
+\begin{equation} \label{eqn:cog_carrier}
+    c(t) = e^{j\omega_0 t}
+\end{equation}
+em que $S_{xx}(\omega)$ é a densidade espectral de potência do sinal original
+$x(t)$. Note que a equação \ref{eqn:cog} aplica-se para sinais estacionários,
+enquanto que a equação \ref{eqn:cog_carrier} equivale à equação
+\ref{eqn:carrier_integral}, com a fase proporcional ao tempo.
+% fase proporcional ao tempo, apenas para w_0
+% 
+
+No domínio discreto, para sinais não-estacionários, a frequência instantânea
+para o $l$-ésimo \textit{frame} é estimada a partir da STFT. No contexto de
+filtragem por sub-bandas:
 
 \begin{equation}
-    \alpha_c(t) = \mathrm{IF}\lbrack\phi_x(t)\rbrack * h_{lp}(t)
-\end{equation}\todo{parei aqui}
+    f_k[l] = \frac{\sum_{\mathcal{K}=0}^{M-1} r[l] |X_k[l,\mathcal{K}]|^2}{|X_k[l,\mathcal{K}]|^2}
+\end{equation}
+em que $f_k[n]$ é a frequência instantânea da $k$-ésima sub-banda, $\mathcal{K}$
+é o índice do \textit{bin} e $M$ é metade do tamanho do \textit{frame} $N$, sendo
+$   $ par, em amostras.
 
-
-% Uma das formas de demodulação coerente baseia-se na
-% suavização da largura de banda da portadora~\cite{atlas2005}. Esse método
-% expressa, para uma sub-banda $k$, a fase como a composição de um termo de fase
-% linear $\omega_kt$ e de fase constante $\phi_{k,0}$~, acrescidos de um desvio
-% $\theta_k(t)$ com média zero:
-
-% \begin{equation}
-%     \phi_k(t) = \omega_kt + \phi_{k,0} + \theta_k(t)
-% \end{equation}
-% A frequência $\omega_k$ é a frequência ``média'' da sub-banda $x_k(t)$,
-% na qual não necessariamente encontra-se no meio da mesma.
+Uma segunda demodulação coerente, também presente na bibliografia, estima a
+portadora a partir da detecção de frequência fundamental $F_0$ do sinal
+original, de forma análoga à equação \ref{eqn:carrier_integral}, no domínio do
+tempo discreto:
+\begin{equation}
+    \phi_0[n] = \sum_{p=0}^n F_0[n]
+\end{equation}
+Em que $F_0$ é o \textit{pitch} estimado para $x[n]$. Esse método, chamado
+demodulação coerente harmônica, considera que cada sub-banda está relacionada a
+um harmônico múltiplo da frequência fundamental, tal que a portadora seja obtida
+por:
+\begin{equation}
+    c_k[n] = e^{jk\phi_0[n]}
+\end{equation}
+\begin{equation}
+    m_k[n] = \sum^n_{p=0} h_{lp}[n-p] \cdot x[p] \cdot c^*_k[p].
+\end{equation}
+Tal que a parcela moduladora seja obtida ao aplicar filtragem passa-baixas no
+sinal original, previamente deduzido de sua portadora.
