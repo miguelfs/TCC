@@ -1,4 +1,9 @@
 import numpy as np
+from scipy import signal
+
+from modulation_toolbox.modulation_toolbox.filter.firpmord import firpmord
+from modulation_toolbox.modulation_toolbox.filter.halfbandfir import halfbandfir
+
 
 def parseInputs(filterband: tuple, filtertype: str, transband: float, dev: tuple):
     for freq in filterband:
@@ -54,49 +59,79 @@ def parseInputs(filterband: tuple, filtertype: str, transband: float, dev: tuple
         ValueError('The specified transition band is too large given the bandpass cutoff frequencies.')
 
     fstop = fpass + transband
-    if (dev[0] + dev[1] <= 0):
+    if dev[0] + dev[1] <= 0:
         ValueError('the DEV vector must contain two positive elements')
     h['dev'] = dev
-    return (h, fpass, fstop)
+    return h, fpass, fstop
+
 
 def getTransband(transband, filterband):
-    if transband is None:
-        if filterband[0] == 0:
-            return min(filterband[0], 1 - filterband[1]) / 5 # TODO - is the same transband?
-        else:
-            return min(filterband[1] - filterband[0], min(filterband[0], 1 - filterband[1])) / 5;
+    if transband is not None:
+        return transband
+    if filterband[0] == 0:
+        return min(filterband[0], 1 - filterband[1]) / 5  # TODO - is the same transband?
+    return min(filterband[1] - filterband[0], min(filterband[0], 1 - filterband[1])) / 5
 
 
-def designFilter(filterband: tuple, filtertype: str, transband: float = None, dev: tuple = (.001, .01) ):
+def designFilter(filterband: tuple, filtertype: str, transband: float = None, dev: tuple = (.001, .01)):
     """
 Designs a multirate narrowband FIR filter with linear phase for use with
 NARROWBANDFILTER.
     Parameters
     ----------
-    filterband: A two-element vector defining a frequency band, normalized such that Nyquist = 1, formatted as:
+    filterband A two-element vector defining a frequency band, normalized such that Nyquist = 1, formatted as:
 [0 FC]  - lowpass or highpass
 [F1 F2] - bandpass or bandstop
-    filtertype: A string indicating the type of filter to implement:
+    filtertype A string indicating the type of filter to implement:
 'pass' for lowpass and bandpass, 'stop' for highpass and bandstop.
-    transband: A scalar defining the transition bandwidth between passband and stopband,
+    transband A scalar defining the transition bandwidth between passband and stopband,
 in normalized frequency units.
 The default is 1/5 the passband bandwidth.
     dev: A two-element vector defining passband and stopband ripple,
 in linear units. The default is [.001 and .01], or approximately 0.01 and -40 dB.
     """
-    fs  = 2
+    fs = 2
     transband = getTransband(transband, filterband)
     h, fpass, fstop = parseInputs(filterband, filtertype, transband, dev)
     delta0 = min(dev)
-
-    idx = 1
-    while idx == 1:
-        if fs/2 <= 4 * fstop: # leads t unstable half-band filter designs
+    h['filters'] = []
+    idx = 0
+    while 1:
+        if fs / 2 <= 4 * fstop:  # leads t unstable half-band filter designs
             do_hb = 0
         else:
-            nhb = len(halfbandfir('minorder', fstop / (fs / 2), delta0)) - 1
-            f = [fpass fstop]
-            a = [1 0]
-            nfb = remord(f, a, dev, fs)
-            do_hb = nhb < nfb/4
+            nhb = len(halfbandfir(minOrder=True, fp=fstop / (fs / 2), Dev=delta0)) - 1
+            f = [fpass, fstop]
+            a = [1, 0]
+            nfb, _, _, _ = firpmord(f, a, dev, fs)
+            nfb = nfb + (nfb % 2)
 
+            do_hb = nhb < nfb / 4
+        # if decimation is needed, design half-band filter
+        if do_hb:
+            hb = halfbandfir(minOrder=True, fp=fstop / (fs / 2), Dev=delta0)
+            # DC correction, must have DC = 1
+            h['filters'][idx] = hb / sum(hb)
+            fs = fs / 2
+            idx = idx + 1
+        else:
+            f = [fpass, fstop]
+            a = [1, 0]
+            fir_parameters = firpmord(f, a, dev, fs)
+            order = fir_parameters[0] + fir_parameters[0] % 2
+            h['filters'].append([])
+            h['filters'][idx] = signal.remez(
+                numtaps=order + 1,
+                bands=fir_parameters[1],
+                desired=fir_parameters[2],
+                weight=fir_parameters[3],
+                fs=fs,
+            )
+            break
+#     compute delay of filter
+    h['delay'] = 0
+    idx += 1
+    l = list(range(idx)) + list(reversed(range(idx)))[1:]
+    for i in l:
+        h['delay'] = int(h['delay'] + ((len(h['filters'][i]) - 1) / 2) * 2 ** (i))
+    return h

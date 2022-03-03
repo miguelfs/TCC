@@ -10,6 +10,12 @@ O tema do trabalho é o espectro de modulação, que possibilita a
  decomposição e filtragem de frequências moduladoras com vistas a maior
  inteligibilidade da fala.
  
+## Pré-requisitos e instalação
+- Python 3.9 ou superior.
+- Para executar os testes, Matlab engine for Python. Os testes visam comparar os resultados do Toolbox em Matlab com o
+toolbox do Python.
+
+#  Descrição
 
 ## Justificativa
 

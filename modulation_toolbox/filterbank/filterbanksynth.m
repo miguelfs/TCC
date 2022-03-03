@@ -116,7 +116,7 @@ else
     % General multirate filterbank synthesis
     
     % Compute the final post-processing length
-    L = length( S(1,:) );
+        L = length( S(1,:) );
             
     % Cut off transients from both ends in order to make the reconstructed
     % signal equal in length to the original. To do this properly, we need
