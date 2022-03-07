@@ -32,8 +32,7 @@ def synthesis_by_filterbank(S, filterbankparams):
 
         if np.shape(S)[0] == filterbankparams['numbands']:  # S came from real-valued signal
             yk = np.real(yk)
-        elif np.shape(S)[0] == filterbankparams[
-            'numhalfbands'] and center != 0 and center != 1:  # S came from complex-valued signal
+        elif np.shape(S)[0] == filterbankparams['numhalfbands'] and center != 0 and center != 1:  # S came from complex-valued signal
             if filterbankparams['centers'][0] == 0:
                 ind = filterbankparams['numhalfbands'] - k + 2
             else:
@@ -44,8 +43,8 @@ def synthesis_by_filterbank(S, filterbankparams):
         y = y + matchLen(yk, finalLen)
 
 
-def matchLen(x, L): # TODO: test this
-    return [x, np.zeros((1, L - len(x)))] if len(x) < L else x[0:L]
+def matchLen(x, L: int): # TODO: test this
+    return np.concatenate((x, np.zeros((L - len(x))))).reshape((1,L)) if len(x) < L else x[0:L]
 
 
 def bandpassExpansion(subband, center, g, dfactor, fshift):
@@ -92,18 +91,18 @@ def synthesis_by_stft(S, filterbankparams) -> np.array:
     fshift = filterbankparams['fshift']
     freqdownsample = len(filterbankparams['afilters'][0]) / filterbankparams['numhalfbands']
     if np.shape(S)[0] == filterbankparams['numbands']:  # S is associated with subband signals from analytic signal.
-        hilbertGain = 1 + int(filterbankparams['centers'] != 0 & (filterbankparams['centers'] != 1))
+        hilbertGain = (1 + np.bitwise_and(filterbankparams['centers'] != 0, filterbankparams['centers'] != 1))
         # val = np.diag(1 / sparse.csr_matrix(hilbertGain).toarray())
-        S = (1 / hilbertGain) * S
+        S = np.diag(1 / hilbertGain) @ S
 
         if filterbankparams['numhalfbands'] % 2 == 1:  # odd number of subbands, no nyquist band
             S = np.vstack((S, np.conj(np.flipud(S)[:-1])))
         else:
             S = np.vstack((S, np.conj(S[1:-1])))
-    nmid = len(filterbankparams['afilters'][0]) - 1 / 2  # scalar
+    nmid = (len(filterbankparams['afilters'][0])-1) / 2  # scalar
     W = windowphaseterm(nmid, nfft)
-    S = np.diag(W) * S
-    if filterbankparams['keeptransients']:  # delay the subband array
+    S = np.diag(W) @ S
+    if not filterbankparams['keeptransients']:  # delay the subband array # TODO: test this
         n1 = np.ceil((1 + filterbankparams['afilterorders'][0] / 2) / filterbankparams['dfactor'])
         S = np.hstack([np.zeros((len(S), n1 - 1)), S])  # TODO: should be dtype = np.complex_ ?
     y, grpDelay = ISTFT(S, win, hop, fshift, freqdownsample)
@@ -163,30 +162,31 @@ def windowphaseterm(nmid, nfft: int):
         W[0:(nfft // 2) + 1] = np.exp(2j * np.pi * np.array(range((nfft // 2) + 1)) / nfft * nmid).reshape(
             (nfft // 2) + 1, 1)
         W[(nfft // 2) + 1:] = np.conj(W[1:(nfft // 2) + 1][::-1])
-    return W
+    return W.reshape(-1)
 
 
 def parseInputs(S: np.array, fbparams):
-    winlen = len(fbparams['afilters'][0])
-    # if fbparams['stft']:
-    if winlen < 2:
-        ValueError('window length must be greater than 1')
-    if type(fbparams['fshift']) is not bool:
-        TypeError('fshift must be boolean')
-    if type(fbparams['dfactor']) is not int or fbparams['dfactor'] <= 0:
-        TypeError('dfactor must be int greater than zero')
-    if winlen > fbparams['numhalfbands'] and winlen / fbparams['numhalfbands'] % 2 != 1:
-        ValueError('The analysis window length divided by numhalfbands must be an odd integer.')
-    if not all(fbparams['centers'][i] <= fbparams['centers'][i + 1] for i in range(len(fbparams['centers']) - 1)):
-        raise ValueError('subband center frequencies must be strictly increasing')
-    if min(fbparams['centers']) < 0 or max(fbparams['centers']) > 1:
-        raise ValueError('subband center frequencies must be between 0 and 1, inclusive')
-    if min(fbparams['bandwidths']) <= 0 or max(fbparams['bandwidths']) >= 2:
-        raise ValueError('subband bandwidths must be between 0 and 2, non-inclusive')
-    if len(fbparams['bandwidths']) > 1 and len(fbparams['bandwidths']) != len(fbparams['centers']):
-        raise ValueError('The number of subband bandwidths must be one or equal to the number of subband centers.')
-    t_b_zip = zip(fbparams['transbands'], fbparams['bandwidths'])
-    if sum([1 if t <= 0 else 0 for t in fbparams['transbands']]) or sum([1 if t > b else 0 for t, b in t_b_zip]):
-        raise ValueError('Subband transition bandwidths must be nonzero positive and less than the -6dB bandwidths.')
-    if np.shape(S)[0] != fbparams['numbands'] and np.shape(S)[0] != fbparams['numhalfbands']:
-        raise IndexError('rows count in S matrix must equal the number of subbands specified by FILTBANKPARAMS.')
+    if fbparams['stft']:
+        winlen = len(fbparams['afilters'][0])
+        if winlen < 2:
+            ValueError('window length must be greater than 1')
+        if type(fbparams['fshift']) is not bool:
+            TypeError('fshift must be boolean')
+        if type(fbparams['dfactor']) is not int or fbparams['dfactor'] <= 0:
+            TypeError('dfactor must be int greater than zero')
+        if winlen > fbparams['numhalfbands'] and winlen / fbparams['numhalfbands'] % 2 != 1:
+            ValueError('The analysis window length divided by numhalfbands must be an odd integer.')
+        if not all(fbparams['centers'][i] <= fbparams['centers'][i + 1] for i in range(len(fbparams['centers']) - 1)):
+            raise ValueError('subband center frequencies must be strictly increasing')
+        if min(fbparams['centers']) < 0 or max(fbparams['centers']) > 1:
+            raise ValueError('subband center frequencies must be between 0 and 1, inclusive')
+    else:
+        if min(fbparams['bandwidths']) <= 0 or max(fbparams['bandwidths']) >= 2:
+            raise ValueError('subband bandwidths must be between 0 and 2, non-inclusive')
+        if len(fbparams['bandwidths']) > 1 and len(fbparams['bandwidths']) != len(fbparams['centers']):
+            raise ValueError('The number of subband bandwidths must be one or equal to the number of subband centers.')
+        t_b_zip = zip(fbparams['transbands'], fbparams['bandwidths'])
+        if sum([1 if t <= 0 else 0 for t in fbparams['transbands']]) or sum([1 if t > b else 0 for t, b in t_b_zip]):
+            raise ValueError('Subband transition bandwidths must be nonzero positive and less than the -6dB bandwidths.')
+        if np.shape(S)[0] != fbparams['numbands'] and np.shape(S)[0] != fbparams['numhalfbands']:
+            raise IndexError('rows count in S matrix must equal the number of subbands specified by FILTBANKPARAMS.')
