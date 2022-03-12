@@ -67,14 +67,17 @@ class TestFilterBankSynth(unittest.TestCase):
 
     def test_filterbanksynth(self):
         Scog = openS('fb1_mock/Scog.csv')
-        Shilb = openS('fb1_mock/Shilb.csv')
-        yhilb = np.genfromtxt('fb1_mock/yhilb.csv', delimiter=',')
-        ycog = np.genfromtxt('fb1_mock/ycog.csv', delimiter=',')
+        ycog_real = np.genfromtxt('fb1_mock/y_cog_real.csv', delimiter=',').reshape(1, -1)
+        ycog_imag = np.genfromtxt('fb1_mock/y_cog_imag.csv', delimiter=',').reshape(1, -1)
 
         fb1 = get_fb1()
-
-        y_out_cog = filterbanksynth(Scog, fb1)
-        np.testing.assert_array_almost_equal(ycog, y_out_cog)
+        a = np.reshape(np.linspace(-1, 1, fb1['numbands'] ** 2), (fb1['numbands'], fb1['numbands'])).T
+        b = np.hstack((a, a, a, a, a, a, a, a))
+        y_out = filterbanksynth(b, fb1)
+        print(y_out)
+        # np.equal(np.shape(y_out_cog), np.shape(ycog_real))
+        # np.testing.assert_array_almost_equal(ycog_real, np.real(y_out_cog), decimal=1)
+        # np.testing.assert_array_almost_equal(ycog_imag, np.imag(y_out_cog), decimal=1)
 
 
 def openS(path):
@@ -84,6 +87,10 @@ def openS(path):
 
 def get_params():
     return designfilterbank([.1, .2, .3, .4, .5, .6], [.01, .01, .01, .02, .02, .02])
+
+
+# def design(numhalfbands=64, sharpness=9, decFactor=64 / 4):
+#     return designfilterbank(numHalfbands, sharpness, decFactor);
 
 
 def get_fb1():

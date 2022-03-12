@@ -106,13 +106,13 @@ def synthesis_by_stft(S, filterbankparams) -> np.array:
         n1 = np.ceil((1 + filterbankparams['afilterorders'][0] / 2) / filterbankparams['dfactor'])
         S = np.hstack([np.zeros((len(S), n1 - 1)), S])  # TODO: should be dtype = np.complex_ ?
     y, grpDelay = ISTFT(S, win, hop, fshift, freqdownsample)
-    y = y[np.floor(grpDelay):]
+    y = y[:, int(np.floor(grpDelay)):]
     if filterbankparams['keeptransients']:
-        y = y[:-int(np.ceil(grpDelay))]  # accomodate group delay
+        y = y[:, 0:-int(np.ceil(grpDelay))]  # accomodate group delay
     else:
         synthDelay = (len(win) - 1) / 2  # remove the synthesis stage transients
         y = y[:-int(np.ceil(synthDelay))]
-    if np.linalg.norm(np.im(y)) / np.linalg.norm(np.real(y)) < 1e-3:  # removes small imaginary artifacts
+    if np.linalg.norm(np.imag(y)) / np.linalg.norm(np.real(y)) < 1e-3:  # removes small imaginary artifacts
         y = np.real(y)
     return y
 
