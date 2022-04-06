@@ -1,6 +1,6 @@
 import unittest
 
-from modulation_toolbox.filterbank.designfilterbank import designfilterbank
+from modulation_toolbox_py.filterbank.designfilterbank import designfilterbank
 
 
 class TestDesignFilterBank(unittest.TestCase):

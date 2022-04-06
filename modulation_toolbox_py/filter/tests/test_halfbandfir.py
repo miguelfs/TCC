@@ -1,4 +1,4 @@
-from modulation_toolbox.modulation_toolbox.filter.halfbandfir import halfbandfir
+from modulation_toolbox_py.filter.halfbandfir import halfbandfir
 import unittest
 import matlab.engine
 import numpy as np

@@ -1,8 +1,8 @@
 import numpy as np
 from scipy import signal
 
-from modulation_toolbox.modulation_toolbox.filter.firpmord import firpmord
-from modulation_toolbox.modulation_toolbox.filter.halfbandfir import halfbandfir
+from modulation_toolbox_py.filter.firpmord import firpmord
+from modulation_toolbox_py.filter.halfbandfir import halfbandfir
 
 
 def parseInputs(filterband: tuple, filtertype: str, transband: float, dev: tuple):

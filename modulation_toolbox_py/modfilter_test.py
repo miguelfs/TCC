@@ -1,5 +1,5 @@
 import unittest
-from modulation_toolbox.modfilter import modfilter
+from modulation_toolbox_py.modfilter import modfilter
 import numpy as np
 
 

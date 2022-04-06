@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 import pandas as pd
-from modulation_toolbox.filterbank.filterbanksynth import windowphaseterm, upsample, ISTFT, matchLen, filterbanksynth
-from modulation_toolbox.filterbank.designfilterbank import designfilterbank
+from modulation_toolbox_py.filterbank.filterbanksynth import windowphaseterm, upsample, ISTFT, matchLen, filterbanksynth
+from modulation_toolbox_py.filterbank.designfilterbank import designfilterbank
 
 
 class TestFilterBankSynth(unittest.TestCase):

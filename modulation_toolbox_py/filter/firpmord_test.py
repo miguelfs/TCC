@@ -1,5 +1,5 @@
 import unittest
-from modulation_toolbox.modulation_toolbox.filter.firpmord import firpmord, db_to_dev
+from modulation_toolbox_py.filter.firpmord import firpmord, db_to_dev
 import numpy as np
 import scipy.signal as signal
 

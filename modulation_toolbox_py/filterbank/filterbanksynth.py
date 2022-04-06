@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.signal as signal
+from modulation_toolbox_py.filter.fftfilt import fftfilt
 
 
 def filterbanksynth(S: np.array, filterbankparams):
@@ -73,7 +74,7 @@ def upsample(x: np.array, dfactor):
 
 def fastconv(h, x):
     z = np.zeros((np.size(h) - 1, np.shape(x)[1]))
-    return signal.filtfilt(b=h, x=np.vstack([x, z]))
+    return fftfilt(b=h, x=np.vstack([x, z]))
 
 
 def vmult(x1, x2):  # multiplies two vectors element-wise, regardless of orientation. Output shape matches x1.
