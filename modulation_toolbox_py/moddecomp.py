@@ -1,5 +1,7 @@
 import numpy as np
 
+from modulation_toolbox_py.demod.moddecompcog import moddecompcog
+from modulation_toolbox_py.demod.moddecomphilb import moddecomphilb
 from modulation_toolbox_py.filterbank.cutoffs2fbdesign import cutoffs2fbdesign
 from modulation_toolbox_py.filterbank.designfilterbank import designfilterbank
 from modulation_toolbox_py.filterbank.designfilterbank_stft import designfilterbankstft
@@ -17,7 +19,14 @@ def demod(x: np.ndarray, fs: float, filterbankparams, demodparams, dfactor):
         raise TypeError('demodparams must be a cell array')
     if demodparams[0] == 'hilb' or demodparams[0] == 'hilbert':
         S = filtersubbands(x, filterbankparams)
-
+        M, C, _ = moddecomphilb(S)
+        modbandwidth = min(fs/filterbankparams['dfactor'], max(filterbankparams['bandwidths']/2*fs))
+    elif demodparams[0] == 'cog':
+        S = filtersubbands(x, filterbankparams)
+        M, C, _ = moddecompcog(S, carrWin= demodparams[1], carrWinHop=demodparams[2], centers=demodparams[3], bandwidths=demodparams[5])
+        modbandwidth = min(fs/filterbankparams['dfactor'], max(filterbankparams['bandwidths']/2*fs))
+    elif demodparams[0] == 'harm' or demodparams[1] == 'harmonic':
+        F0 = detectpitch()
     return None, None, None, None
     pass
     # if demodparams['which'] == 'hilb' or demodparams['which'] == 'hilbert':
