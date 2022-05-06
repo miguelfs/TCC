@@ -261,7 +261,7 @@ for i = 1:numFrames
         
         % Least-squares fit
         tempF0 = lsharm( B(:,i), fs, lowerBound:F0step:upperBound, modelOrder );
-        
+        m( data, fs, freqs, order, weight )
         freqRes = F0step;
     end
     
