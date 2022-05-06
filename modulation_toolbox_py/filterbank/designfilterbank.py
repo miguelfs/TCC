@@ -1,6 +1,8 @@
 import numpy as np
 from scipy import signal
 
+from modulation_toolbox_py.index import index
+
 
 def designfilterbank(centers: list, bandwidths: list, transbands=None, dfactor: int = 1,
                      keeptransients: bool = 1):
@@ -23,10 +25,6 @@ def designfilterbank(centers: list, bandwidths: list, transbands=None, dfactor: 
         filterbankparams['sfilters'].append(_dfactor * h if _dfactor > 1 else 1)
         filterbankparams['sfilterorders'].append(order if _dfactor > 1 else 0)
     return filterbankparams
-
-
-def index(l: list, i: int):
-    return l[i] if type(l) is list else l
 
 
 def parseInputs(centers, bandwidths, transbands, dfactor, fshift, keeptransients) -> dict:

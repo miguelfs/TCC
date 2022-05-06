@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.signal as signal
 from modulation_toolbox_py.filter.fftfilt import fftfilt
+from modulation_toolbox_py.index import index
 
 
 def filterbanksynth(S: np.array, filterbankparams):
@@ -79,10 +80,6 @@ def fastconv(h, x):
 
 def vmult(x1, x2):  # multiplies two vectors element-wise, regardless of orientation. Output shape matches x1.
     return x1 * x2.reshape(x1.shape)
-
-
-def index(l: list, i: int):
-    return l[i] if type(l) is list else l
 
 
 def synthesis_by_stft(S, filterbankparams) -> np.array:

@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+from modulation_toolbox_py.index import index
+
+
 def filterbankfreqz(filterbankparams: dict, nfft: int, fs: float = 2):
     nfft = max(512, max(filterbankparams['afilterorders']) + 1) if nfft is None else nfft
     for k in range(len(filterbankparams['numbands'])):
@@ -18,8 +21,6 @@ def filterbankfreqz(filterbankparams: dict, nfft: int, fs: float = 2):
     leftPad = np.floor((nfft - 1)/2)
     rightPad = np.ceil((nfft-1)/2)
     impSubbands = filter
-def index(l: list, i: int):
-    return l[i] if type(l) is list else l
 
 
 def vmult(x1, x2):  # multiplies two vectors element-wise, regardless of orientation. Output shape matches x1.

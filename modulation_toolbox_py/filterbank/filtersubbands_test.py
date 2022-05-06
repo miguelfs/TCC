@@ -3,7 +3,8 @@ import numpy as np
 
 from modulation_toolbox_py.filterbank.designfilterbank import designfilterbank
 from modulation_toolbox_py.filterbank.filtersubbands import buffer, convbuffer, colcircshift, STFT, \
-    trimfiltertransients, filtersubbands, fastconv, bandpassFilter, index
+    trimfiltertransients, filtersubbands, fastconv, bandpassFilter
+from modulation_toolbox_py.index import index
 
 
 class TestFiltersubbands(unittest.TestCase):
@@ -132,6 +133,20 @@ class TestFiltersubbands(unittest.TestCase):
              [-1, .5, 0, 0],
              [-1j, .5 + .5j, 0, 0],
              [.5, 0, 0, 0]]
+        )
+
+    def test_buffer_new(self):
+        np.testing.assert_array_equal(
+            buffer([1, 2, 3, 4, 5, 6, 7, 8], 1, -1, 0),
+            [[1, 3, 5, 7]]
+        )
+        np.testing.assert_array_equal(
+            buffer([1, 2, 3, 4, 5, 6, 7, 8], 1, -2, 0),
+            [[1, 4, 7]]
+        )
+        np.testing.assert_array_equal(
+            buffer([1, 2, 3, 4, 5, 6, 7, 8], 2, -2, 0),
+            [[1, 5], [2, 6]]
         )
 
     def test_buffer(self):

@@ -1,6 +1,8 @@
 import numpy as np
 from scipy import signal
 
+from modulation_toolbox_py.index import index
+
 
 def filtersubbands(x: np.array, filtbankparams: dict) -> np.array:
     parseInputs(x, filtbankparams)
@@ -75,21 +77,6 @@ def downsample(x: np.array, dfactor, phase: int = 0):
     return x[phase::dfactor]
 
 
-def index(l, i: int):
-    if type(l) is np.ndarray and l.shape == (1, 1):
-        return l[0, 0]
-    # if (l is np.ndarray and l.shape == (1,)) or (l is list and len(l) == 1):
-    #     return l[0]
-    if type(l) is np.ndarray and len(l.shape) == 2 and l.shape[0] == 1:
-        return l[0, i]
-    if type(l) is np.ndarray and len(l) == 1:
-        return l[0]
-    if type(l) is list or (type(l) is np.ndarray and len(l.shape) == 1):
-        return l[i]
-    if type(l) is not np.array and type(l) is not list:
-        return l
-    raise ValueError('invalid type or invalid size')
-
 def vmult(x1, x2):  # multiplies two vectors element-wise, regardless of orientation. Output shape matches x1.
     return x1 * x2.reshape(x1.shape)
 
@@ -136,21 +123,17 @@ def buffer(data, duration, dataOverlap=0, opt=None):
     if len(np.shape(data)) > 1 and np.shape(data)[1] == 1:
         data = data.reshape(-1)
     # opt =np.zeros(dataOverlap, 1) if opt is None else opt
-    data = np.append(np.zeros(dataOverlap), data) if opt != 'nodelay' else data
+    data = np.append(np.zeros(dataOverlap), data) if opt != 'nodelay' and dataOverlap > -1 else data
     numberOfSegments = int(np.ceil((len(data) - dataOverlap) / (duration - dataOverlap)))
     tempBuf = [data[i:i + duration] for i in range(0, len(data), (duration - int(dataOverlap)))]
-    tempBuf[numberOfSegments - 1] = np.pad(tempBuf[numberOfSegments - 1],
-                                           (0, duration - np.shape(tempBuf[numberOfSegments - 1])[0]), 'constant')
+    if dataOverlap >= 0:
+        tempBuf[numberOfSegments - 1] = np.pad(tempBuf[numberOfSegments - 1],
+                                               (0, duration - np.shape(tempBuf[numberOfSegments - 1])[0]), 'constant')
     tempBuf2 = np.vstack(tempBuf[:numberOfSegments])
     tempBuf2 = tempBuf2.T
     if opt == 'nodelay':
         return tempBuf2
     return tempBuf2
-    # elif opt is None:
-    #     first_column = tempBuf2[:,1]
-    #     for i in range(len(first_column - 1)):
-    #         tempBuf2 = [tempBuf2[:,1], tempBuf]
-    #     return tempBuf2
 
 
 def STFT(x, win, hop, nfft: int, fshift):
