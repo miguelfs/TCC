@@ -3,11 +3,11 @@ import numpy as np
 from modulation_toolbox_py.filterbank.cutoffs2fbdesign import cutoffs2fbdesign
 
 
-class TestCutoffs2fbdesign_test(unittest.TestCase):
+class TestCutoffs2fbDesignTest(unittest.TestCase):
     def test_properly(self):
         centers, bandwidths = cutoffs2fbdesign([.1, .2, .3, .4])
-        np.testing.assert_array_equal(centers, [.15, .25, .35])
-        np.testing.assert_array_equal(bandwidths, [.1, .1, .1])
+        np.testing.assert_array_almost_equal(centers, [.15, .25, .35])
+        np.testing.assert_array_almost_equal(bandwidths, [.1, .1, .1])
 
         centers, bandwidths = cutoffs2fbdesign([.25, .75])
         np.testing.assert_array_equal(centers, [.5])
