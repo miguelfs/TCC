@@ -239,7 +239,12 @@ def lsharm_freqtrack(x, freqs=None, weights=None, fs=2.0, skip=1):
 
 def nonIntGroupDelay(x: np.array, delay):
     x = x.reshape(-1, 1) if type(x) is not list and x.shape[0] > 1 and len(x.shape) == 1 else np.array(x, ndmin=2)
-    len_x = x.shape[1]
+    if len(x.shape) == 2 and x.shape[0] == 1:
+        len_x = x.shape[1]
+    elif len(x.shape) == 2 and x.shape[1] == 1:
+        len_x = x.shape[0]
+    else:
+        raise IndexError('should be 2 dimensional')
     DCIndex = int(np.floor(len_x / 2))
     linearPhaseTerm = np.exp(-2j * np.pi * delay / len_x * (np.arange(len_x) - DCIndex).T)
     linearPhaseTerm = np.roll(linearPhaseTerm, -DCIndex).reshape(-1, 1)
