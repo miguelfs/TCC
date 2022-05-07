@@ -34,21 +34,21 @@ def detectPitch(x: np.ndarray, fs: float, voicingSens=.5, medFiltLen=3, freqCuto
     R = np.real(np.fft.ifft(np.abs(np.fft.fft(np.diag(win) @ B, xcorrlen)) ** 2))
     R = R[0:winLen, :]
     frameRMS = np.sqrt(sum(np.abs(B) ** 2))
-    voicing = signal.medfilt(float(detectVoicing(np.log(frameRMS), voicingSens)), 3)
-    if any(voicing):
+    voicing = signal.medfilt(detectVoicing(np.log(frameRMS), voicingSens).astype(int), 3)
+    if not any(voicing):
         voicing = np.ones(np.size(voicing))
         print('No voicing detected, so this signal will be treated as ''voiced''. Consider revising parameter values.')
-    F0m = np.zeros(numFrames, 1)
+    F0m = np.zeros((numFrames, 1))
     for i in range(numFrames):
         if not voicing[i]:
             continue
         if i > 0:
-            bw = whiten(B[:, i], ARorder, B[winHop - ARorder: winHop, i])
+            bw = whiten(B[:, i].reshape(-1, 1), ARorder, B[winHop - ARorder: winHop, i])
         else:
-            bw = whiten(B[:, i], ARorder)
-        R2 = np.correlate(bw)[winLen:]
+            bw = whiten(B[:, i].reshape(-1, 1), ARorder)
+        R2 = np.correlate(bw.ravel(), bw.ravel(), mode='full')[winLen - 1:].reshape(-1, 1)
         numPeaks = useHalfSampleDelay = 1
-        peakInd1, _ = findPeaks(R[:, i], np.round(fs / F0max), numPeaks, useHalfSampleDelay)
+        peakInd1, _ = findPeaks(R[:, i].reshape(-1, 1), int(np.round(fs / F0max)), numPeaks, useHalfSampleDelay)
         peakInd2, _ = findPeaks(R2, np.round(fs / F0max), numPeaks, useHalfSampleDelay)
         tempF01 = fs / (peakInd1 - 1)
         tempF02 = fs / (peakInd2 - 1)
@@ -68,33 +68,36 @@ def detectPitch(x: np.ndarray, fs: float, voicingSens=.5, medFiltLen=3, freqCuto
         else:
             voicing[i] = 0
             continue
-        freqRes = fs / winLen
+        freqRes = int(round(fs / winLen))
         numRecursions = int(np.floor(-np.log(1 / freqRes) / np.log(5)))
         for k in range(numRecursions):
-            lowerBound = tempF0 - freqRes / 2
-            upperBound = tempF0 + freqRes / 2
-            F0step = freqRes / 5
-            # TODO: fix bounds
-            tempF0 = lsharm_freqtrack(x=B[:i], fs=fs, weights=np.ones(modelOrder, 1))
+            lowerBound = int(round((tempF0 - freqRes) / 2))
+            upperBound = int(round((tempF0 + freqRes) / 2))
+            F0step = int(round(freqRes / 5))
+            tempF0 = lsharm_freqtrack(x=B[:, i], freqs=np.arange(lowerBound, upperBound + F0step, F0step), fs=fs,
+                                      weights=np.ones((modelOrder, 1)))
             freqRes = F0step
         F0m[i] = tempF0
     F0m[F0m < F0min] = 0
     F0m[F0m > F0max] = 0
-    F0 = F0m = signal.medfilt(float(detectVoicing(np.log(frameRMS), voicingSens)), 3)
+    F0m = signal.medfilt(F0m.ravel().T, medFiltLen).reshape((-1, 1))
+    F0 = F0m
     voicing = F0 != 0
     if all(F0 == 0):
         F0 = np.zeros((1, origLen)) if isRowVector else np.zeros((origLen, 1))
         return F0, F0m, voicing
     voicing2 = voicing
     if voicing[0] == 0:
-        F0[0] = F0[np.where(voicing2 == 1)[0]]
+        F0[0] = F0[np.where(voicing2 == 1)[0][0]]
         voicing2[0] = 1
     if voicing[-1] == 0:
-        F0[-1] = F0[np.where(voicing2 == 1)[-1]]
+        F0[-1] = F0[np.where(voicing2 == 1)[0][-1]]
         voicing2[-1] = 1
-    vSamples = np.argwhere(voicing2 == 1)
+    vSamples = np.argwhere(voicing2 == 1)[:, 0]
     if interpMethod == "linear":
-        F0 = interpolate.interp1d(vSamples, F0[vSamples], np.arange(0, len(F0m)))
+
+        fn = interpolate.interp1d(vSamples, F0[vSamples].ravel())
+        F0 = fn(np.arange(0, len(F0m)))
     else:
         F0 = interpolate.pchip_interpolate(vSamples, F0[vSamples], np.arange(0, len(F0m)))
     L = min(4, int(np.floor((numFrames - 1) / 2)))
@@ -111,11 +114,13 @@ def detectPitch(x: np.ndarray, fs: float, voicingSens=.5, medFiltLen=3, freqCuto
     return F0, F0m, voicing
 
 
-def findPeaks(x, minDistance, numPeaks, halfSampleShift):
+def findPeaks(x, minDistance: int, numPeaks, halfSampleShift):
     x = np.array(x)
-    if len(np.shape(x)) > 1 and x.shape[1] == len(x):
+    minDistance = int(minDistance)
+    if len(np.shape(x)) == 2 and x.shape[1] == 1:
         transposed = True
         x = x.T
+        x = x.ravel()
     else:
         transposed = False
     if halfSampleShift:
@@ -144,7 +149,7 @@ def findPeaks(x, minDistance, numPeaks, halfSampleShift):
     if transposed:
         peakPosOut = peakPosOut.T
         peakValOut = peakValOut.T
-    return peakPosOut, peakValOut
+    return peakPosOut.ravel()[0], peakValOut.ravel()[0]
 
 
 def factor(n):  # https://stackoverflow.com/a/16996439
@@ -170,11 +175,12 @@ def factorinterp(x, R, L, cutoff):
 
 
 # https://github.com/staticfloat/libsquiggly/blob/79c63c119a60e2e9c558aefcda6b1c1ac413a47a/libsquiggly/instfreq/lsharm.py
-def lsharm_freqtrack(x, freqs=None, weights=None, fs=2.0, win_len=100, skip=1):
+def lsharm_freqtrack(x, freqs=None, weights=None, fs=2.0, skip=1):
+    win_len = len(x)
     if weights is None:
         weights = [1, .5, .5]
     if freqs is None:
-        freqs = np.linspace(.5 * fs / len(weights), fs / len(weights), 100)
+        freqs = np.linspace(.5 * fs / len(weights), fs / len(weights), win_len)
 
     # Build Goertzel filterbanks, excluding any filters that exceed nyquist
     fundamental_filters = {}
@@ -197,7 +203,7 @@ def lsharm_freqtrack(x, freqs=None, weights=None, fs=2.0, win_len=100, skip=1):
     for idx in range(datalen // skip):
         # Grab the window of data centered about x[idx] in the original
         # non-padded signal
-        window = x[idx * skip:idx * skip + win_len]
+        windowed_x = x[idx * skip:idx * skip + win_len]
 
         # Calculate total power of each fundamental frequency, as well as error
         P = np.zeros(len(freqs))
@@ -210,7 +216,7 @@ def lsharm_freqtrack(x, freqs=None, weights=None, fs=2.0, win_len=100, skip=1):
 
             for k in range(len(filterbank)):
                 # Filter with Goertzel filter
-                temp = np.lfilter(filterbank[k][0], filterbank[k][1], window)
+                temp = scipy.signal.lfilter(filterbank[k][0], filterbank[k][1], windowed_x)
 
                 # Phase-correct last element of Goertzel filter and square it
                 # away in C
@@ -224,7 +230,11 @@ def lsharm_freqtrack(x, freqs=None, weights=None, fs=2.0, win_len=100, skip=1):
         lsharm_estimate[idx] = freqs[np.argmax(P)]
 
     # Return the goods, after upsampling them
-    return np.resample(lsharm_estimate, datalen)
+    # return np.resample(lsharm_estimate, datalen)
+    #  Select the f0 which describes the data in terms of capturing the most signal energy...
+    maxP, index = np.max(P), np.argmax(P)
+    f0 = freqs[index]
+    return f0
 
 
 def nonIntGroupDelay(x: np.array, delay):
@@ -354,7 +364,6 @@ def custom_lpc(y, m):
 
 
 def whiten(x, ARorder: int, xPrev=None):
-    # a = librosa.lpc(x.ravel(), ARorder)
     a = custom_lpc(y=x.ravel(), m=ARorder)
     hankel_arg = x.ravel()[ARorder - 1::-1] if xPrev is None else xPrev
     zi = a[:0:-1] @ scipy.linalg.hankel(hankel_arg)
@@ -367,7 +376,7 @@ def whiten(x, ARorder: int, xPrev=None):
 def buffer2(x, winlen: int, hop: int, startindex: int, numframes: int):
     x = x.reshape(1, -1) if type(x) is np.ndarray and len(x.shape) == 1 else x
     if startindex <= -1:
-        x = x.T
+        x = x.T if not x.shape[1] == 1 else x
         prepend = np.zeros((-startindex, 1))
         x = np.vstack((prepend, x))
     else:
