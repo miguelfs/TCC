@@ -1,6 +1,5 @@
 import numpy as np
 from scipy import signal
-
 from modulation_toolbox_py.index import index
 
 
@@ -9,15 +8,15 @@ def filtersubbands(x: np.array, filtbankparams: dict) -> np.array:
     if np.shape(x)[0] == 1:
         x = x.T
     if filtbankparams['stft']:
-        win = filtbankparams['afilters{1}']
-        hop = filtbankparams['dfactor(1)']
+        win = filtbankparams['afilters'][0]
+        hop = filtbankparams['dfactor']
         nfft = filtbankparams['numhalfbands']
         fshift = filtbankparams['fshift']
         S = STFT(x, win, hop, nfft, fshift)
         nmid = (len(win) - 1) / 2
         W = windowphaseterm(nmid, nfft)
-        S = np.diag(np.conj(W)) @ S
-        S = S[:filtbankparams['numsubbands'], :] if not any(np.imag(x)) else S
+        S = np.diag(np.conj(W[:, 0])) @ S
+        S = S[:filtbankparams['numbands'], :] if not any(np.imag(x)) else S
     else:
         maxLen = maxSubbandLen(len(x), filtbankparams)
         S = np.zeros((filtbankparams[('numbands' if np.isrealobj(x) else 'numhalfbands')], maxLen), dtype=np.complex_)
@@ -37,7 +36,7 @@ def filtersubbands(x: np.array, filtbankparams: dict) -> np.array:
                 ind = filtbankparams['numhalfbands'] - k + (filtbankparams['centers'][0] == 0)
                 S[ind, :] = W * padToMatch(subband, maxLen)
     if not any(np.imag(x)):  # TODO: np.isrealobj
-        hilbertGain = 1 + np.array([f != 0 for f in filtbankparams['centers']] and [f != 1 for f in filtbankparams['centers']])
+        hilbertGain = (1 + np.bitwise_and(filtbankparams['centers'] != 0, filtbankparams['centers'] != 1))
         S = np.diag(hilbertGain) @ S
     if not filtbankparams['keeptransients']:
         S = trimfiltertransients(S, filtbankparams, len(x))
@@ -63,7 +62,8 @@ def bandpassFilter(x, center, h, dfactor, fshift):
     xmod = vmult(x, np.exp(-1j * np.pi * center * np.arange(0, x.shape[0]))) if fshift else x
     h = vmult(h, np.exp(1j * np.pi * center * np.arange(0, len(h)))) if not fshift else h
     # h = vmult(h, np.exp(1j * np.pi * center * np.arange(0, len(h)))) if not fshift else h.reshape(1, -1)
-    subband = signal.upfirdn(h, xmod.T, 1, dfactor).T if dfactor >= (len(h) - 1) / 128 else downsample(fastconv(h.reshape(1, -1), xmod), dfactor)
+    subband = signal.upfirdn(h, xmod.T, 1, dfactor).T if dfactor >= (len(h) - 1) / 128 else downsample(
+        fastconv(h.reshape(1, -1), xmod), dfactor)
     return subband
 
 
@@ -82,9 +82,9 @@ def vmult(x1, x2):  # multiplies two vectors element-wise, regardless of orienta
 
 
 def windowphaseterm(nmid, nfft: int):
-    W = np.zeros(nfft, 1)
+    W = np.zeros((nfft, 1), dtype=np.complex_)
     if nfft % 2 == 0:
-        W[:nfft // 2] = np.exp(2j * np.pi * np.arange(0, nfft // 2) / nfft * nmid)
+        W[:nfft // 2] = np.exp(2j * np.pi * np.arange(0, nfft // 2) / nfft * nmid).reshape(-1, 1)
         W[nfft // 2] = 1
         W[:nfft // 2:-1] = np.conj(W[1:nfft // 2])
     else:
@@ -143,7 +143,7 @@ def STFT(x, win, hop, nfft: int, fshift):
     S = np.diag(winpoly[:, 0]) @ S
     for k in range(2, 1 + int(np.ceil(winLen / nfft))):
         Stemp = convbuffer(x, nfft, -winLen + 1 + (k - 1) * nfft, hop)
-        Stemp = winpoly[:, k] * Stemp
+        Stemp = np.diag(winpoly[:, k - 1]) @ Stemp
         Ltemp = len(Stemp[0, :])
         S[:, 0:Ltemp] = S[:, 0:Ltemp] + Stemp
     S = colcircshift(S, np.arange(-winLen + 1, len(x) + 1, hop) % nfft) if fshift else np.roll(S, - winLen + 1)
@@ -169,7 +169,7 @@ def parseInputs(x, fbparams):
             raise ValueError('winlen must be greather than 1')
         if fbparams['dfactor'] is list and len(fbparams['dfactor'] > 1):
             raise ValueError('dfactor is scalar')
-        if fbparams['dfactor'] < 1 or fbparams['dfactor'] is not int:
+        if fbparams['dfactor'] < 1 or type(fbparams['dfactor']) is not int:
             raise ValueError('dfactor must be positive integer greater than zero')
         if fbparams['numhalfbands'] < 1 or winlen / fbparams['numhalfbands'] % 2 != 1:
             raise ValueError('The analysis window length divided by numhalfbands must be an odd integer.')
