@@ -84,7 +84,7 @@ def vmult(x1, x2):  # multiplies two vectors element-wise, regardless of orienta
 
 def synthesis_by_stft(S, filterbankparams) -> np.array:
     win = filterbankparams['sfilters'][0]
-    hop = filterbankparams['dfactor'][0]
+    hop = filterbankparams['dfactor'] if type(filterbankparams['dfactor']) == int else filterbankparams['dfactor'][0]
     nfft = filterbankparams['numhalfbands']
     fshift = filterbankparams['fshift']
     freqdownsample = len(filterbankparams['afilters'][0]) / filterbankparams['numhalfbands']
@@ -93,9 +93,11 @@ def synthesis_by_stft(S, filterbankparams) -> np.array:
         # val = np.diag(1 / sparse.csr_matrix(hilbertGain).toarray())
         S = np.diag(1 / hilbertGain) @ S
 
-        if filterbankparams['numhalfbands'] % 2 == 1:  # odd number of subbands, no nyquist band
+        if filterbankparams['numhalfbands'] % 2 == 1:
+            # odd number of subbands, no nyquist band
             S = np.vstack((S, np.conj(np.flipud(S)[:-1])))
         else:
+            # Even number of subbands --> there is Nyquist band
             S = np.vstack((S, np.conj(S[1:-1])))
     nmid = (len(filterbankparams['afilters'][0])-1) / 2  # scalar
     W = windowphaseterm(nmid, nfft)
