@@ -2,23 +2,36 @@ import unittest
 import numpy as np
 
 from modulation_toolbox_py.filterbank.designfilterbank import designfilterbank
+from modulation_toolbox_py.filterbank.designfilterbank_stft import designfilterbankstft
 from modulation_toolbox_py.filterbank.filtersubbands import buffer, convbuffer, colcircshift, STFT, \
-    trimfiltertransients, filtersubbands, fastconv, bandpassFilter
+    trimfiltertransients, filtersubbands, fastconv, bandpassFilter, windowphaseterm
 from modulation_toolbox_py.index import index
 
 
 class TestFiltersubbands(unittest.TestCase):
+
+    def test_filtersubbands_stft(self):
+        numHalfBands = 64
+        sharpness = 9
+        decFactor = 64 // 4
+        fb1 = designfilterbankstft(numHalfBands, sharpness, decFactor)
+        S = filtersubbands(np.zeros((576, 1)), fb1)
+
+    def test_filtersubbands_impulse_response(self):
+        numHalfBands = 64
+        sharpness = 9
+        decFactor = 64 // 4
+        fb1 = designfilterbankstft(numHalfBands, sharpness, decFactor)
+        S = filtersubbands([0, 1, 0], fb1)
+        import matplotlib.pyplot as plt
+        plt.plot(np.abs(S))
+        plt.show()
 
     def test_filtersubbands(self):
         filtbankparams = designfilterbank([.2, .4], [.05, .08], [.01, .01], 4, True)
         x = np.sin(2 * np.pi * np.arange(0, 1.1, .1)).reshape(1, -1)
         S = filtersubbands(x, filtbankparams)
         self.assertEqual(np.shape(S), (2, 168))
-        import matplotlib.pyplot as plt
-        plt.plot(np.abs(S))
-        plt.show()
-        plt.plot(np.abs(S[0, :]))
-        plt.show()
         pass
 
     def test_STFT(self):
@@ -79,6 +92,7 @@ class TestFiltersubbands(unittest.TestCase):
                                                  [1, 0, 0],
                                                  [2, 0, 0]
                                              ]))
+
     def test_index(self):
         self.assertEqual(index(42, 0), 42)
         self.assertEqual(index(42, 1), 42)
@@ -93,7 +107,6 @@ class TestFiltersubbands(unittest.TestCase):
         self.assertEqual(index(np.array([1, 42]), 1), 42)
         self.assertEqual(index(np.array([[1, 42]]), 0), 1)
         self.assertEqual(index(np.array([[1, 42]]), 1), 42)
-
 
     def test_trimfiltertransients(self):
         filtbankparams = {'dfactor': 2, 'afilterorders': [[1]]}
@@ -134,6 +147,23 @@ class TestFiltersubbands(unittest.TestCase):
              [-1j, .5 + .5j, 0, 0],
              [.5, 0, 0, 0]]
         )
+
+    def test_windowphaseterm(self):
+        np.testing.assert_array_almost_equal(
+            windowphaseterm(nmid=4, nfft=8),
+            np.array([[1, -1, 1, -1, 1, -1, 1, -1]]).T
+            , decimal=15)
+        np.testing.assert_array_almost_equal(
+            windowphaseterm(nmid=3.5, nfft=8),
+            np.array([[1.0000 + 0.0000j,
+                       - 0.9239 + 0.3827j,
+                       0.7071 - 0.7071j,
+                       - 0.3827 + 0.9239j,
+                       1.0000 + 0.0000j,
+                       - 0.3827 - 0.9239j,
+                       0.7071 + 0.7071j,
+                       - 0.9239 - 0.3827j, ]]).T
+            , decimal=4)
 
     def test_buffer_new(self):
         np.testing.assert_array_equal(

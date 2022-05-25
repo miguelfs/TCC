@@ -1,11 +1,27 @@
 import unittest
 import numpy as np
 import pandas as pd
+
+from modulation_toolbox_py.filterbank.designfilterbank_stft import designfilterbankstft
 from modulation_toolbox_py.filterbank.filterbanksynth import windowphaseterm, upsample, ISTFT, matchLen, filterbanksynth
 from modulation_toolbox_py.filterbank.designfilterbank import designfilterbank
+from modulation_toolbox_py.filterbank.filtersubbands import filtersubbands
 
 
 class TestFilterBankSynth(unittest.TestCase):
+
+    def test_impulse_responmnse(self):
+        nfft = 576
+        numHalfBands = 64
+        sharpness = 9
+        decFactor = 64 // 4
+        filterbankparams = designfilterbankstft(numHalfBands, sharpness, decFactor)
+        leftPad = int(np.floor((nfft - 1) / 2))
+        rightPad = int(np.ceil((nfft - 1) / 2))
+        impSubbands = filtersubbands(
+            np.vstack((np.zeros((leftPad, 1)), np.array([[1]]), np.zeros((rightPad, 1)))), filterbankparams)
+        result = filterbanksynth(impSubbands, filterbankparams)
+        self.assertEqual(np.abs(np.max(result)), 1)
 
     def testUpsample(self):
         x = [0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0]
@@ -18,18 +34,18 @@ class TestFilterBankSynth(unittest.TestCase):
 
     def testPhaseWindow(self):
         np.testing.assert_array_almost_equal(
-            windowphaseterm(4, 4),
+            windowphaseterm(4, 4).reshape(-1,1),
             [[1 + 0j], [1 + 0j], [1 + 0j], [1 + 0j]],
             decimal=15)
-        self.assertEqual(windowphaseterm(8, 1), 1)
-        np.testing.assert_array_almost_equal(windowphaseterm(4, 2), [[1], [1]])
+        self.assertEqual(windowphaseterm(8, 1).reshape(-1,1), 1)
+        np.testing.assert_array_almost_equal(windowphaseterm(4, 2).reshape(-1,1), [[1], [1]])
         np.testing.assert_array_almost_equal(
-            windowphaseterm(4, 6),
+            windowphaseterm(4, 6).reshape(-1,1),
             [[1 + 0j], [-0.5 - 0.866025403784439j], [-.5 + 0.866025403784439j], [1 + 0j], [-.5 - 0.866025403784439j],
              [-.5 + 0.866025403784439j]],
             decimal=15)
         np.testing.assert_array_almost_equal(
-            windowphaseterm(3, 5),
+            windowphaseterm(3, 5).reshape(-1,1),
             [[1 + 0j],
              [-0.809016994374948 - 0.587785252292473j],
              [0.309016994374948 + 0.951056516295154j],
