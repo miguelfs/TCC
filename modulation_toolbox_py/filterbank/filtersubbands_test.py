@@ -23,9 +23,6 @@ class TestFiltersubbands(unittest.TestCase):
         decFactor = 64 // 4
         fb1 = designfilterbankstft(numHalfBands, sharpness, decFactor)
         S = filtersubbands([0, 1, 0], fb1)
-        import matplotlib.pyplot as plt
-        plt.plot(np.abs(S))
-        plt.show()
 
     def test_filtersubbands(self):
         filtbankparams = designfilterbank([.2, .4], [.05, .08], [.01, .01], 4, True)

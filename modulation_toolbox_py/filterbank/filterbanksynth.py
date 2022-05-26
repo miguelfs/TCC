@@ -8,7 +8,7 @@ def filterbanksynth(S: np.array, filterbankparams):
     parseInputs(S, filterbankparams)
     if filterbankparams['stft']:  # Synthesis based on the inverse short-time Fourier transform
         return synthesis_by_stft(S, filterbankparams)
-    return synthesis_by_filterbank(S, filterbankparams)  # General multirate filterbank synthesis
+    return synthesis_by_filterbank(S, filterbankparams)  # General multirate filter bank synthesis
 
 
 def synthesis_by_filterbank(S, filterbankparams):
@@ -34,7 +34,8 @@ def synthesis_by_filterbank(S, filterbankparams):
 
         if np.shape(S)[0] == filterbankparams['numbands']:  # S came from real-valued signal
             yk = np.real(yk)
-        elif np.shape(S)[0] == filterbankparams['numhalfbands'] and center != 0 and center != 1:  # S came from complex-valued signal
+        elif np.shape(S)[0] == filterbankparams['numhalfbands'] and center != 0 and center != 1:
+            # S came from complex-valued signal
             if filterbankparams['centers'][0] == 0:
                 ind = filterbankparams['numhalfbands'] - k + 2
             else:
@@ -45,8 +46,8 @@ def synthesis_by_filterbank(S, filterbankparams):
         y = y + matchLen(yk, finalLen)
 
 
-def matchLen(x, L: int): # TODO: test this
-    return np.concatenate((x, np.zeros((L - len(x))))).reshape((1,L)) if len(x) < L else x[0:L]
+def matchLen(x, L: int):  # TODO: test this
+    return np.concatenate((x, np.zeros((L - len(x))))).reshape((1, L)) if len(x) < L else x[0:L]
 
 
 def bandpassExpansion(subband, center, g, dfactor, fshift):
@@ -56,7 +57,7 @@ def bandpassExpansion(subband, center, g, dfactor, fshift):
         yk = signal.upfirdn(x=subband, h=g, up=dfactor, down=1)  # efficient for large upsampling
     else:
         pass
-        yk = fastconv(g, upsample(subband.T, dfactor)).T;
+        yk = fastconv(g, upsample(subband.T, dfactor)).T
     if fshift:  # shift the subbband in frequency back to its original position
         yk = vmult(yk, np.exp(1j * np.pi * center * np.arange(0, len(yk))))
     return yk
@@ -98,8 +99,9 @@ def synthesis_by_stft(S, filterbankparams) -> np.array:
             S = np.vstack((S, np.conj(np.flipud(S)[:-1])))
         else:
             # Even number of subbands --> there is Nyquist band
-            S = np.vstack((S, np.conj(S[1:-1])))
-    nmid = (len(filterbankparams['afilters'][0])-1) / 2  # scalar
+            # S = np.vstack((S, np.conj(S[1:-1])))
+            S = np.vstack((S, np.conj(S[-2:0:-1,])))
+    nmid = (len(filterbankparams['afilters'][0]) - 1) / 2  # scalar
     W = windowphaseterm(nmid, nfft)
     S = np.diag(W) @ S
     if not filterbankparams['keeptransients']:  # delay the subband array # TODO: test this
@@ -136,7 +138,8 @@ def ISTFT(S, win, hop, fshift, freqdownsample):
         analysisWinLen = freqdownsample * nfft
 
     y = np.zeros((1, (numFrames - 1) * hop + winLen), dtype=np.complex_)
-    S = np.fft.ifft(S)
+    # S = np.fft.ifft(S)
+    S = np.fft.ifft(S, axis=0)
 
     winPosition = -winLen + 1  # window starts with its left edge at winPosition
 
@@ -145,7 +148,8 @@ def ISTFT(S, win, hop, fshift, freqdownsample):
         frame = win * S[ind, i]  # apply synthesis window
         n1 = i * hop
         n2 = n1 + winLen
-        y[:, n1:n2] = y[:, n1:n2] + frame
+        new_val = y[:, n1:n2] + frame
+        y[:, n1:n2] = new_val
         if fshift:
             winPosition = winPosition + hop
     grpDelay = (winLen - 1 + analysisWinLen - 1) / 2
@@ -187,6 +191,7 @@ def parseInputs(S: np.array, fbparams):
             raise ValueError('The number of subband bandwidths must be one or equal to the number of subband centers.')
         t_b_zip = zip(fbparams['transbands'], fbparams['bandwidths'])
         if sum([1 if t <= 0 else 0 for t in fbparams['transbands']]) or sum([1 if t > b else 0 for t, b in t_b_zip]):
-            raise ValueError('Subband transition bandwidths must be nonzero positive and less than the -6dB bandwidths.')
+            raise ValueError(
+                'Subband transition bandwidths must be nonzero positive and less than the -6dB bandwidths.')
         if np.shape(S)[0] != fbparams['numbands'] and np.shape(S)[0] != fbparams['numhalfbands']:
             raise IndexError('rows count in S matrix must equal the number of subbands specified by FILTBANKPARAMS.')

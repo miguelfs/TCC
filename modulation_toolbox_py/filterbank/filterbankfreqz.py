@@ -45,7 +45,6 @@ def filterbankfreqz(filterbankparams: dict, nfft: int, fs: float = 2):
     plt.xlabel('Frequency (Hz)')
     plt.ylabel('dB magnitude')
     plt.show()
-    print('abuble')
 
 
 def vmult(x1, x2):  # multiplies two vectors element-wise, regardless of orientation. Output shape matches x1.
