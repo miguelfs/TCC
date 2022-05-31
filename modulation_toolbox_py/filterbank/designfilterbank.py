@@ -1,6 +1,6 @@
 import numpy as np
 from scipy import signal
-
+import matplotlib.pyplot as plt
 from modulation_toolbox_py.index import index
 
 
@@ -18,7 +18,7 @@ def designfilterbank(centers: list, bandwidths: list, transbands=None, dfactor: 
         wc = B / 2
         trans = index(transbands, i)
         order = nearestEven(np.ceil(6.6 / trans))
-        h = signal.firwin(numtaps=int(order), cutoff=wc)
+        h = signal.firwin(numtaps=int(order+1), cutoff=wc)
         filterbankparams['afilters'].append(h)
         filterbankparams['afilterorders'].append(order)
         _dfactor = index(filterbankparams['dfactor'], i)
@@ -53,7 +53,7 @@ def parseInputs(centers, bandwidths, transbands, dfactor, fshift, keeptransients
     filterbankparams['numbands'] = numbands
     filterbankparams['numhalfbands'] = numhalfbands
     filterbankparams['dfactor'] = dfactor
-    filterbankparams['centers'] = centers
+    filterbankparams['centers'] = np.array(centers)
     filterbankparams['bandwidths'] = bandwidths
     filterbankparams['afilters'] = []
     filterbankparams['afilterorders'] = []

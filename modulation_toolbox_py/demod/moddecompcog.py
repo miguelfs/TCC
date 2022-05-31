@@ -8,7 +8,7 @@ import torchaudio.functional as torch_f
 
 def moddecompcog(S: np.ndarray, carrWin: list, carrWinHop=None, centers: [int] = None, bandwidths: [int] = None):
     """"demodulates using center-of-gravity"""
-    carrWin = np.array(carrWin)
+    carrWin = np.array([carrWin])
     if bandwidths is None:
         bandwidths = [2]
     if centers is None:

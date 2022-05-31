@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import signal
 from modulation_toolbox_py.index import index
-
+import matplotlib.pyplot as plt
 
 def filtersubbands(x: np.array, filtbankparams: dict) -> np.array:
     parseInputs(x, filtbankparams)
@@ -26,8 +26,8 @@ def filtersubbands(x: np.array, filtbankparams: dict) -> np.array:
             dfactor = index(filtbankparams['dfactor'], k)
             subband = bandpassFilter(x, center, h, dfactor, filtbankparams['fshift'])
             S[k, :] = padToMatch(subband, maxLen).ravel()
-            if center != 0 and center != 1:
-                break
+            if center == 0 or center == 1:
+                continue
             n0 = (len(h) - 1) / 2
             W = np.exp(1j * np.pi * center * n0)
             S[k, :] = np.conj(W) * S[k, :]
@@ -94,8 +94,7 @@ def windowphaseterm(nmid, nfft: int):
 
 
 def maxSubbandLen(L, fbparams) -> int:
-    return int(max(np.ceil((L + np.array(fbparams['afilterorders'])) / fbparams['dfactor']))
-               )
+    return int(max(np.ceil((L + np.array(fbparams['afilterorders'])) / fbparams['dfactor'])))
 
 
 def convbuffer(x, winlen, startindex, hop):

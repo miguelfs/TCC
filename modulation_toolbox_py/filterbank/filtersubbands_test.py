@@ -4,7 +4,7 @@ import numpy as np
 from modulation_toolbox_py.filterbank.designfilterbank import designfilterbank
 from modulation_toolbox_py.filterbank.designfilterbank_stft import designfilterbankstft
 from modulation_toolbox_py.filterbank.filtersubbands import buffer, convbuffer, colcircshift, STFT, \
-    trimfiltertransients, filtersubbands, fastconv, bandpassFilter, windowphaseterm
+    trimfiltertransients, filtersubbands, fastconv, bandpassFilter, windowphaseterm, maxSubbandLen
 from modulation_toolbox_py.index import index
 
 
@@ -17,12 +17,19 @@ class TestFiltersubbands(unittest.TestCase):
         fb1 = designfilterbankstft(numHalfBands, sharpness, decFactor)
         S = filtersubbands(np.zeros((576, 1)), fb1)
 
-    def test_filtersubbands_impulse_response(self):
+    def test_filtersubbands_stft_impulse_response(self):
         numHalfBands = 64
         sharpness = 9
         decFactor = 64 // 4
         fb1 = designfilterbankstft(numHalfBands, sharpness, decFactor)
         S = filtersubbands([0, 1, 0], fb1)
+
+    def test_filtersubbands_impulse_response(self):
+        centers = [0.009375, 0.01875, 0.0375, 0.0750, 0.1500, 0.3000, 0.6000, ]
+        bandwidths = [0.00625, 0.0125, 0.0250, 0.0500, 0.1000, 0.2000, 0.4000]
+        fb = designfilterbank(centers, bandwidths)
+        S = filtersubbands(np.array([[0, 1, 0]]), fb)
+
 
     def test_filtersubbands(self):
         filtbankparams = designfilterbank([.2, .4], [.05, .08], [.01, .01], 4, True)
@@ -30,6 +37,13 @@ class TestFiltersubbands(unittest.TestCase):
         S = filtersubbands(x, filtbankparams)
         self.assertEqual(np.shape(S), (2, 168))
         pass
+
+    def test_max_subband_len(self):
+        centers = [0.009375, 0.01875, 0.0375, 0.0750, 0.1500, 0.3000, 0.6000, ]
+        bandwidths = [0.00625, 0.0125, 0.0250, 0.0500, 0.1000, 0.2000, 0.4000]
+        fb = designfilterbank(centers, bandwidths)
+        val = maxSubbandLen(3, fb)
+        self.assertEqual(val, 10563)
 
     def test_STFT(self):
         np.testing.assert_array_equal(

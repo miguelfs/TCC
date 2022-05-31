@@ -2,8 +2,12 @@ import numpy as np
 
 
 def index(l, i: int):
+    # if type(l) == list and len(l) == 1:
+    #     return index(l, 0)
     if type(l) is np.ndarray and l.shape == (1, 1):
         return l[0, 0]
+    if type(l) == list and len(l) == 1:
+        return l[0]
     # if (l is np.ndarray and l.shape == (1,)) or (l is list and len(l) == 1):
     #     return l[0]
     if type(l) is np.ndarray and len(l.shape) == 2 and l.shape[0] == 1:

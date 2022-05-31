@@ -2,7 +2,8 @@ import unittest
 import numpy as np
 import pandas as pd
 from modulation_toolbox_py.filterbank.designfilterbank_stft import designfilterbankstft
-from modulation_toolbox_py.filterbank.filterbanksynth import windowphaseterm, upsample, ISTFT, matchLen, filterbanksynth
+from modulation_toolbox_py.filterbank.filterbanksynth import windowphaseterm, upsample, ISTFT, matchLen, \
+    filterbanksynth, bandpassExpansion
 from modulation_toolbox_py.filterbank.designfilterbank import designfilterbank
 from modulation_toolbox_py.filterbank.filtersubbands import filtersubbands
 
@@ -21,6 +22,11 @@ class TestFilterBankSynth(unittest.TestCase):
         impSubbands = filtersubbands(input_pulse, filterbankparams)
         result = filterbanksynth(impSubbands, filterbankparams)
         np.testing.assert_almost_equal(np.abs(np.max(result)), 1, decimal=7)
+
+    def test_bandpassExpansion(self):
+        ones = np.ones((7, 14))
+        val = bandpassExpansion(ones, 0.005, 1, 1, 0)
+        np.testing.assert_array_equal(ones, val)
 
     def testUpsample(self):
         x = [0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0]

@@ -1,4 +1,4 @@
-reuniao 29/04
+ reuniao 29/04
 - 22 de julho, terminar a implementacao.
 - texto todo pronto ate 19 de agosto, pois sao 10 dias antes de acabar o periodo 
 - 29 de agosto acaba o periodo
@@ -118,7 +118,8 @@ equispaced subbands and near-perfect synthesis.
 Designs a filterbank with equispaced subbands
 based on the short-time Fourier transform
 
-[] filterbankfreqz
+[x] filterbankfreqz
+- tests [x]
 Plots the frequency responses of the subbands in a
 filterbank design.
 

@@ -17,6 +17,11 @@ class TestDesignFilterBank(unittest.TestCase):
     def test_runs_successfully(self):
         self.assertTrue(ValueError, designfilterbank(centers=[.1, .2, .3], bandwidths=[.01, .01, .01]))
 
+    def test_tutorial3_example(self):
+        centers = [0.009375, 0.01875, 0.0375, 0.0750, 0.1500, 0.3000, 0.6000, ]
+        bandwidths = [0.00625, 0.0125, 0.0250, 0.0500, 0.1000, 0.2000, 0.4000]
+        designfilterbank(centers, bandwidths)
+
     def test_result(self):
         result = designfilterbank([.1, .2, .3, .4, .5, .6], [.01, .01, .01, .02, .02, .02])
         self.assertEqual(result['numbands'], 6)
