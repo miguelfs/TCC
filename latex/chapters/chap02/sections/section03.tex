@@ -75,7 +75,7 @@ Ao se utilizar a STFT, calcula-se $X[l,k]$ a partir do sinal $x[n]$, da taxa de
 amostragem do sinal, da função janela $w[n]$ de análise, do comprimento $M$ do
 \textit{frame} em amostras, do número $N$ de amostras da DFT, e do salto da janela
 em $H$ amostras~\cite{paliwal2015,mauricio}:
- \begin{equation}
+ \begin{equation}  \label{stft}
       X[l, k] = \sum_{n = 0}^{M-1} x[n + l H] w[n]{\mathrm{e}^{-2\mathrm{j}\pi n k/N}}. 
  \end{equation}
  
@@ -86,7 +86,7 @@ Dessa forma, obtém-se os coeficientes de Fourier para cada \textit{bin} $k$ na
 Finalmente, obtêm-se os coeficientes complexos no domínio da modulação
 aplicando-se uma segunda STFT sobre o módulo das séries de \textit{frames}, para
 cada \textit{bin} $k$ do domínio acústico~\cite{paliwal2015}:
-\begin{equation}
+\begin{equation} \label{modspec_stft}
       % \label{eq2}
       % \eqref{eq2}
       \mathcal{X}[\ell, k, \mu] = \sum_{l = 0}^{\mathcal{M}-1}\left\lvert X[l+\ell \mathcal{H},k] \right\rvert v[l]{\mathrm{e}^{-2\mathrm{j}\pi \mu l/\mathcal{N}}},      

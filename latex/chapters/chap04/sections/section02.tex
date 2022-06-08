@@ -1,1 +1,109 @@
-\section{\textit{Beamformers}}
+\section{\textit{Speech Enhancement} no Domínio Acústico}
+\subsection{Subtração Espectral no Domínio Acústico}
+
+A subtração espectral no domínio acústico, em sua forma mais simples, estima que
+o espectro do sinal limpo é dado pela espectro do sinal de entrada subtraído da
+estimativa do espectro do ruído. Assume-se também que a fase da parcela ruidosa
+é substituível pela fase do sinal de entrada \cite{loizou}. Dessa forma,
+temos:
+
+\begin{equation} \label{chap_4:sub_magn}
+    \hat{S}[l, k] =
+    \begin{cases}
+     [|X[l, k]| - |\hat{D}[l, k]|]e^{j\angle{X[l, k]}}, & |X[l, k]| > |\hat{D}[l, k]| \\
+     0, & |X[l, k]| \leq |\hat{D}[l, k]|
+    \end{cases}
+\end{equation}
+em que $\hat{S}[l, k]$ é a estimativa do sinal de fala desejado. Note que a
+parcela de módulo $|\hat{S}[l, k]|$ na expressão seria negativa caso o módulo do
+ruído fosse superior ao do sinal. Para tratar esse caso, retifica-se a parcela de
+módulo obtida, tal que todos os valores negativos sejam truncados a zero.
+
+Para descrever a subtração espectral em termos de densidade espectral de
+potência, obtém-se a densidade espectral do sinal de fala a partir da equação
+\eqref{chap_3:stft_sum}:
+\begin{equation}
+    |X[l, k]|^2 = |S[l, k]|^2 + |D[l, k]|^2 + S[l, k]\cdot D^*[l,k] + S^*[l,k] \cdot D[l,k]  
+\end{equation}
+\begin{equation}
+    |X[l, k]|^2 = |S[l, k]|^2 + |D[l, k]|^2 + 2\operatorname{Re}(S[l, k]\cdot D^*[l,k])  
+\end{equation}
+
+A densidade espectral de potência na saída é composta pela soma das densidades
+espectrais de potência do sinal de fala e do ruído, acrescidos de um termo
+cruzado. O operador $\operatorname{Re}(\cdot)$ descreve a parte real de um
+número complexo, enquanto o operador $*$ descreve o conjugado complexo. Uma vez
+que $|D[l, k]|^2$, $S[l, k]\cdot D^*[l,k]$ e $ S^*[l,k] \cdot D[l,k]$ não são
+conhecidos \textit{a priori}, esses termos são aproximados pelos valores
+esperados $\mathbb{E}\{|D[l,k]|^2\}$,  $\mathbb{E}\{S[l, k]\cdot D^*[l,k]\}$ e
+$\mathbb{E}\{S^*[l,k] \cdot D[l,k]\}$, sendo $\mathbb{E}\{\cdot \}$ o operador
+para valor esperado. Ao assumir que as parcelas que compõem o sinal são
+estacionárias, que o ruído tem média igual a zero e é descorrelacionado com o sinal
+de fala, temos que:
+
+\begin{equation}
+    \mathbb{E}\{S[l, k]\cdot D^*[l,k]\} = \mathbb{E}\{S[l, k]\} \cdot \mathbb{E}\{^*D[l, k]\} = 0
+\end{equation}
+\begin{equation}
+    \mathbb{E}\{S^*[l, k]\cdot D[l,k]\} = \mathbb{E}\{S^*[l, k]\} \cdot \mathbb{E}\{D[l, k]\} = 0
+\end{equation}
+\begin{equation} \label{chap_4:density_spectrum}
+    |X[l, k]|^2 = |S[l, k]|^2 + |D[l, k]|^2
+\end{equation}
+
+Finalmente, ao aplicar a estimativa do ruído na equação
+\eqref{chap_4:density_spectrum} e truncando valores negativos tal como na
+equação \eqref{chap_4:sub_magn}, a estimativa do sinal original é descrita por:
+
+\begin{equation}
+    |\hat{S}[l, k]|^2 = |X[l, k]|^2 - |\hat{D}[l, k]|^2
+\end{equation}
+
+\begin{equation} \label{chap_4:sub_pow}
+    \hat{S}[l, k] =
+    \begin{cases}
+        |\hat{S}[l, k]|^2 = |X[l, k]|^2 - |\hat{D}[l, k]|^2, & |X[l, k]|^2 > |\hat{D}[l, k]|^2 \\
+     0, & |X[l, k]| \leq |\hat{D}[l, k]|
+    \end{cases}
+\end{equation}
+
+Na prática, é importante salientar que o sinal de fala não é estacionário. Mesmo
+em janelas curtas de tempo da ordem de milissegundos, assume-se que o sinal é
+quasi-estacionário. Além disso, dependendo da aplicação, o ruído pode ter
+correlação com o sinal de fala desejado. Esses dois fatores contribuem para que
+os termos cruzados permaneçam presentes em $|\hat{S}[l, k]|^2$. Apesar disso,
+por questão de simplicidade, assume-se que o valor dos termos seja igual a zero.
+\todo{adicionar efeito da fase}
+\todo{citar quem fala das solucoes}
+
+Ao retificar parte dos valores obtidos, também ocorre um segundo problema: são
+gerados picos espectrais na vizinhança dos valores truncados. Esses picos geram
+tons na estimativa obtida do sinal de fala, que não estão presentes no sinal
+original.
+
+Um método para a subtração espectral no domínio acústico é dado por
+\cite{zhang2013} \label{berouti1979enhancement}: 
+
+\begin{equation} \label{chap_04:berouti}
+    |\hat{S}[l, k]|^\gamma =
+    \begin{cases}
+        |\hat{S}[l, k]|^\gamma - \alpha(k)|\hat{N}[l, k]|^\gamma, &  \text{caso } |\hat{S}[l, k]|^\gamma > (\alpha(k) + \beta)|\hat{N}[l, k]|^\gamma \\
+        \beta|\hat{N}[l, k]|^\gamma&  \text{caso contrário}
+    \end{cases}
+\end{equation}
+
+No qual $\alpha(k) \geq 1$  é o fator de subtração, $0 < \beta \ll 1 $ é o
+parâmetro de piso espectral e $\gamma$ é o fator de potência.
+
+A partir da escolha de $\alpha(k)$, é possível reduzir a intensidade dos picos
+tonais característicos da subtração espectral. O parâmetro $\beta$ suaviza os
+vales na vizinhança dos picos ao aumentar a intensidade nas vizinhanças,
+evitando a permanência de picos estreitos. Finalmente, $\gamma = 1$ corresponde
+à subtração espectral de módulo, enquanto que $\gamma = 2$ corresponde à
+subtração espectral de potência. Note que, para $\alpha(k) = 1$, $\beta = 0$ e
+$\gamma = 2$, a equação \eqref{chap_04:berouti} corresponde à equação
+\eqref{chap_4:sub_pow}.
+\todo{descrever como escolher parametros}
+
+
+\subsection{Filtro de Wiener no Domínio Acústico}
