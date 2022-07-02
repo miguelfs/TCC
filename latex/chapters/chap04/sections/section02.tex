@@ -1,4 +1,5 @@
 \section{\textit{Speech Enhancement} no Domínio Acústico}
+\todo{enhancement por melhoramento}
 \subsection{Subtração Espectral no Domínio Acústico}
 
 A subtração espectral no domínio acústico, em sua forma mais simples, estima que
@@ -54,16 +55,15 @@ de fala, temos que:
 Finalmente, ao aplicar a estimativa do ruído na equação
 \eqref{chap_4:density_spectrum} e truncando valores negativos tal como na
 equação \eqref{chap_4:sub_magn}, a estimativa do sinal original é descrita por:
-
-\begin{equation}
-    |\hat{S}[l, k]|^2 = |X[l, k]|^2 - |\hat{D}[l, k]|^2
-\end{equation}
+% \begin{equation}
+%     |\hat{S}[l, k]|^2 = |X[l, k]|^2 - |\hat{D}[l, k]|^2
+% \end{equation}
 
 \begin{equation} \label{chap_4:sub_pow}
-    \hat{S}[l, k] =
+    |\hat{S}[l, k]|^2 =
     \begin{cases}
-        |\hat{S}[l, k]|^2 = |X[l, k]|^2 - |\hat{D}[l, k]|^2, & |X[l, k]|^2 > |\hat{D}[l, k]|^2 \\
-     0, & |X[l, k]| \leq |\hat{D}[l, k]|
+     |X[l, k]|^2 - |\hat{D}[l, k]|^2, & \text{se }|X[l, k]|^2 > |\hat{D}[l, k]|^2 \\
+     0, & \text{caso contrário.}
     \end{cases}
 \end{equation}
 
@@ -87,23 +87,173 @@ Um método para a subtração espectral no domínio acústico é dado por
 \begin{equation} \label{chap_04:berouti}
     |\hat{S}[l, k]|^\gamma =
     \begin{cases}
-        |\hat{S}[l, k]|^\gamma - \alpha(k)|\hat{N}[l, k]|^\gamma, &  \text{caso } |\hat{S}[l, k]|^\gamma > (\alpha(k) + \beta)|\hat{N}[l, k]|^\gamma \\
-        \beta|\hat{N}[l, k]|^\gamma&  \text{caso contrário}
+        |X[l, k]|^\gamma - \alpha|\hat{D}[l, k]|^\gamma, &  \text{caso } |X[l, k]|^\gamma > (\alpha + \beta)|\hat{D}[l, k]|^\gamma \\
+        \beta|\hat{D}[l, k]|^\gamma&  \text{caso contrário}
     \end{cases}
 \end{equation}
 
 No qual $\alpha(k) \geq 1$  é o fator de subtração, $0 < \beta \ll 1 $ é o
-parâmetro de piso espectral e $\gamma$ é o fator de potência.
+parâmetro de piso espectral\cite{berouti1979enhancement} e $\gamma$ é o fator de potência.
 
-A partir da escolha de $\alpha(k)$, é possível reduzir a intensidade dos picos
+A partir da escolha de $\alpha$, é possível reduzir a intensidade dos picos
 tonais característicos da subtração espectral. O parâmetro $\beta$ suaviza os
 vales na vizinhança dos picos ao aumentar a intensidade nas vizinhanças,
-evitando a permanência de picos estreitos. Finalmente, $\gamma = 1$ corresponde
+evitando a permanência de picos estreitos.\todo{falar o q acontece com $\beta$ alto ou baixo, $\alpha$ alto ou baixo}
+$\gamma = 1$ corresponde
 à subtração espectral de módulo, enquanto que $\gamma = 2$ corresponde à
-subtração espectral de potência. Note que, para $\alpha(k) = 1$, $\beta = 0$ e
-$\gamma = 2$, a equação \eqref{chap_04:berouti} corresponde à equação
+subtração espectral de potência. Note que, para $\alpha = 1$, $\beta = 0$ e
+$\gamma = 2$, a equação \eqref{chap_04:berouti} é idêntica à equação
 \eqref{chap_4:sub_pow}.
-\todo{descrever como escolher parametros}
+
+
+Uma vez que $\alpha$ deve ser pequeno para \textit{frames} com razão sinal-ruído
+baixas e vice-versa, temos que:
+
+\begin{equation}
+    \alpha = 
+    \begin{cases}
+        5, & \operatorname{SNR} < -5\operatorname{dB} \\
+        \alpha_0 - \frac{\operatorname{SNR}}{s}, & -5\operatorname{dB} \leq \operatorname{SNR} \leq 20\operatorname{dB}\\
+        1, & \operatorname{SNR} \geq 20\operatorname{dB}
+    \end{cases}
+\end{equation}
+no qual $\alpha_0$ é o valor de $\alpha$ para $\operatorname{SNR} =
+0\operatorname{dB}$, $\frac{1}{s}$ é a inclinação da reta entre $\alpha_0$ em
+$0\operatorname{dB}$ e $\alpha = 1$ em $20\operatorname{dB}$. \todo{descrever
+como escolher parametros}. Para a estimativa da parcela de ruído do sinal, é
+necessário identificar em quais instantes há ausência de fala a partir de um
+detector de atividade vocal (VAD, do inglês \textit{voice activity detector}).
 
 
 \subsection{Filtro de Wiener no Domínio Acústico}
+
+O filtro de Wiener é o filtro ótimo e linear com erro mínimo entre o sinal
+desejado e sua estimativa. Seu projeto pode ser tanto de resposta ao impulso de
+duração finita (FIR, do inglês \textit{finite-duration impulse response}) quanto
+de resposta ao impulso de duração infinita (IIR, do inglês
+\textit{infinite-duration impulse response})\cite{loizou}.
+
+Para um projeto de filtro FIR no domínio do tempo discreto, a estimativa do
+sinal desejado é obtida ao multiplicar cada coeficiente à amostra correspondente
+na saída do sinal: 
+
+\begin{eqnarray}
+    \hat{d}[n] &=& \sum_{k=0}^{M-1}h_k x[n-k]\\
+    \hat{d}[n] &=& \textbf{h}^\top \textbf{x}
+    \end{eqnarray}
+em que $M$ é a quantidade de coeficientes, $h_k$ é o k-ésimo coeficiente do
+filtro FIR, $\textbf{h}$ é o vetor de coeficientes, $(\cdot) ^\top$ é o operador
+de matriz transposta e $\mathbf{x}$ é o vetor com últimas $M$ amostras na saída.
+O erro ao estimar o sinal desejado é descrito por:
+\begin{eqnarray}
+  \label{chap_04:error}  e[n] &=& d[n] - \hat{d}[n]\\
+    e[n] &=& d[n] - \textbf{h}^\top \textbf{y}
+\end{eqnarray}
+
+
+Por sua vez, no projeto do filtro de Wiener IIR no domínio do tempo contínuo, a
+saída $\hat{d}[n]$ depende tanto de amostras passadas quanto futuras de $x[n]$,
+no qual $(*)$ denota a operação de convolução linear:
+\begin{eqnarray}
+    \hat{d}[n] &=& \sum_{k=-\infty}^{\infty}h_k x[n-k], \quad -\infty < n < \infty\\
+    \label{chap_04:d_n}\hat{d}[n] &=& h[n] \ast x[n]
+\end{eqnarray}
+Ao descrever a equação \ref{chap_04:d_n} no domínio da frequência discreta,
+obtemos a equação \ref{chap_04:d_k}, em que $\hat{D}[k]$, $H[k]$ e
+$X[k]$ são as DFTs de $\hat{d}[n]$, $h[n]$ e $x[n]$, respectivamente:
+\begin{equation} \label{chap_04:d_k}
+    \hat{D}[k] = H[k] X[k]
+\end{equation}
+
+Em aplicações de \textit{Speech Enhancement}, partirmos das equações
+\ref{chap_04:base} e \ref{chap_04:error}, que descrevem o sinal impregnado pela
+parcela de ruído e a parcela de erro. No domínio da frequência:r
+\begin{eqnarray}
+    E[k] &=& D[k] - \hat{D}[k] \\
+    E[k] &=& D[k] - H[k]X[k]
+\end{eqnarray}
+Para minimizar o erro quadrático médio que torna o filtro ótimo, obtém-se a expressão do erro:
+\begin{eqnarray}
+    \mathbb{E}[|E^2[k]|] &=& \mathbb{E}[D[k]-H[k]Y[k]]^\ast [D[k]-H[k]Y[k]] \\
+    \mathbb{E}[|E^2[k]|] &=& \mathbb{E}[|D^2[k]|] - H[k]S_{xd}[k] - H^\ast[k]S_{dx}[k] + |H[k]|^2S_{xx}[k]
+    % = \mathbb{E}[|D^2[k]|] \mathbb{E}[D^\ast[k]-H[k]Y[k]] - H^\ast[k] \mathbb{E}[Y^\ast[k]D[k] + |H[k]|^2 \mathbb{E}[|Y[k]|^2]
+\end{eqnarray}
+em que $S_{xx}[k]$ e $S_yd[k]$ são o espectro de potência de $x[n]$ e o espectro
+de potência cruzado de $y[n]$ e $d[n]$, respectivamente:
+\begin{eqnarray}
+    S_{xx}[k] &=& \mathbb{E}[|X[k]|^2] \\
+    S_yd[k] &=& \mathbb{E}[X[k   ]]
+\end{eqnarray}
+
+Uma implementação do filtro de Wiener no domínio acústico com a STFT, com 
+\textit{overlap} de 50\% e tamanho fixo $L_w$ de janela pode ser feita da seguinte forma:
+
+ \begin{eqnarray}
+    S_{xr}[l, k] &=& X[l, k] R^{*}[l, k]\\
+    S_{xx}[l, k] &=& X[l, k] X^{*}[l, k]\\
+    Y[l,k] &=& \sum_{n = 0}^N\frac{S_{xr}[l, k]}{S_{xx}[l, k]} X[l, k]
+ \end{eqnarray}
+
+% O erro ao estimar o sinal desejado é descrito por:
+% \begin{eqnarray}
+%     e[n] &=& d[n] - \hat{d}[n]\\
+%     e[n] &=& d[n] - \textbf{h}^\top \textbf{y}
+% \end{eqnarray}
+
+% Ao assumir que $y[n]$ e $d[n]$ são processos aleatórios estacionários no sentido
+% amplo, o erro quadrático médio de $e[n]$ é descrito por:
+% \begin{eqnarray}
+%     \mathbb{E}[e^2[n]] &=& \mathbb{E}[(d[n] - \textbf{h}^\top \textbf{y})^2]\\
+%     \mathbb{E}[e^2[n]] &=& \mathbb{E}[d^2[n]] -2\textbf{h}^\top\mathbb{E}[\textbf{y}d[n]] + \textbf{h}^\top\mathbb{E}[\textbf{y}\textbf{y}^\top]\textbf{h}\\
+%     \label{chap_04:quadratic}\mathbb{E}[e^2[n]] &=& r_{dd}[0] -2\textbf{h}^\top \textbf{r}_{yd} + \textbf{h}^\top \mathbf{R}_{yy} \textbf{h}
+% \end{eqnarray}
+% em que $\mathbf{R}_{yy}$ é a matriz de autocorrelação do sinal na entrada e
+% $\textbf{r}_{yd}$ é a autocorrelação entre os sinais de entrada e desejado. A
+% equação \ref{chap_04:quadratic} descreve a função quadrática do vetor
+% $\mathbf{h}$ com um único mínimo global, cujo gradiente é zero
+% \cite{vaseghi2008advanced}. A equação que descreve o gradiente é:
+
+% \begin{equation}
+%     \frac{\partial}{\partial{\mathbf{h}}}\mathbb{E}[e^2[n]] = -2\textbf{r}_{yd} + 2\textbf{h}^\top \mathbf{R}_{yy}
+% \end{equation}
+% Uma vez que o vetor gradiente de $\mathbf{h}$ é igual a zero no valor mínimo,
+% temos que os coeficientes para o filtro ótimo são dados por:
+% \begin{eqnarray}
+%     \label{chap_04:wiener_solution} \mathbf{R}_{yy}\textbf{h} &=& \textbf{r}_{yd}\\
+%     \textbf{h} &=& \mathbf{R}_{yy}^{-1}\textbf{r}_{yd}
+% \end{eqnarray}
+% Ao substituir a equação \ref{chap_04:wiener_solution} em
+% \ref{chap_04:quadratic}, temos o valor do erro quadrático médio:
+% \begin{eqnarray}
+%     \mathbb{E}[e^2[n]] &=& r_{dd}[0] -\textbf{h}^\top \textbf{r}_{yd}\\
+%     \mathbb{E}[e^2[n]] &=& r_{dd}[0] -\textbf{h}^\top \mathbf{R}_{yy}\textbf{h}
+% \end{eqnarray}
+% Ao assumir que os sinais são de média zero, o termo $\textbf{h}^\top
+% \mathbf{R}_{yy}\textbf{h}$ é igual à variância do sinal de saída do filtro.
+% Portanto, temos que:
+% \begin{eqnarray}
+%     \mathbb{E}[e^2[n]] &=& r_{dd}[0] - \sigma_{\hat{d}}^2\\
+%     \sigma_{e}^2 &=& \sigma_{d}^2 - \sigma_{\hat{d}}^2.
+% \end{eqnarray}
+
+% Ao projetar um filtro de Wiener com resposta infinita ao impulso no domínio do
+% tempo contínuo, a saída $\hat{d}[n]$ é obtida pela convolução do sinal de
+% entrada com resposta ao impulso do filtro:
+% \begin{equation}
+%     \hat{d}[n] = h[n] \ast y[n]
+% \end{equation}
+% e no domínio da frequência:
+% \todo{efeito da janela + convolucao circular}
+% \begin{equation}
+%     \hat{D}(\omega) = H(\omega)Y(\omega)
+% \end{equation}
+% Dessa forma, o erro para determinada frequência $\omega_k$ é dado por:
+% \begin{eqnarray}
+%     E(\omega_k) &=& D(\omega_k) - \hat{D}(\omega_k)\\
+%     E(\omega_k) &=& D(\omega_k) - H(\omega_k)Y(\omega_k)
+% \end{eqnarray}
+% Para obter a resposta em frequência do filtro ótima, é necessário calcular qual
+% $(\omega_k)$ minimiza o erro quadrático médio:
+% \begin{eqnarray}
+%     \mathbb{E}[e^2[n]] &=& \mathbb{E}[(d[n] - \textbf{h}^\top \textbf{y})^2]\\
+% \end{eqnarray}

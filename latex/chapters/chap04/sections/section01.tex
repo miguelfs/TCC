@@ -2,25 +2,25 @@
  
 O \textit{Framework} análise-modificação-síntese (AMS) é o procedimento que
 realiza as etapas de análise com a STFT do sinal, modificação no domínio da
-frequência acústica e síntese do sinal após as modificações, a partir da STFT
-inversa \cite{paliwal2015}. Por exemplo, caso o sinal de entrada esteja
+frequência acústica e ressíntese do sinal modificado com a STFT
+inversa \cite{paliwal2015}. Caso o sinal de entrada esteja
 impregnado por ruído, é possível, de posse de uma estimativa da parcela ruidosa,
 subtraí-la do sinal impregnado no domínio da frequência.
 
 Há diferentes métodos e algoritmos para a etapa de modificação no domínio
-acústico, os quais também podem ser aplicados no domínio na modulação, em vez do
-domínio acústico. Geralmente, nesse procedimento, a modificação é realizada no
-módulo do sinal impregnado no domínio da frequência, preservando a fase.
+acústico, os quais também podem ser aplicados no domínio na modulação.
+Geralmente, nesse procedimento, a modificação é realizada no módulo do sinal
+impregnado no domínio da frequência, preservando a fase.
 
 Assumimos um sinal impregnado por ruído: 
-\begin{equation}
+\begin{equation}\label{chap_04:base}
     x[n] = s[n] + d[n]
 \end{equation}
-em que $s[n]$ e $d[n]$ são o sinal e a parcela ruidosa, respectivamente. No
+em que $s[n]$ e $d[n]$ são as parcelas de sinal e de ruído, respectivamente. No
 contexto de \textit{Speech Enhancement}, $s[n]$ é o sinal de fala. O objetivo
 final é obter a estimativa $\hat{s}[n]$ mais próxima possível de $s[n]$.
 
-Ao retomar a equação \ref{stft}, temos, no domínio acústico, o sinal impregnado
+Ao retomar a equação \ref{stft}, temos o sinal impregnado no domínio acústico
 em função da STFT das parcelas $s[n]$ e $d[n]$, representadas por $S[l, k]$ e
 $D[l, k]$:
 \begin{equation} \label{chap_3:stft_sum}
@@ -32,16 +32,17 @@ cuja representação em fasor é dada por:
 \end{equation}
 em que $|X[l, k]|$ e $e^{j\angle{X[l, k]}}$ são módulo e fase do espectro
 acústico. A subtração espectral, um dos métodos de \textit{Speech Enhancement},
-estima o espectro da parcela ruidosa $d[n]$ a partir de pausas na atividade de
-$s[n]$.
+estima o espectro da parcela ruidosa $d[n]$ a partir de pausas na fala contidas
+em $s[n]$.
 
 O \textit{framework} AMS para \textit{Speech Enhancement} no domínio acústico é
 ilustrado no diagrama \ref{se_acoustic}. A etapa de modificação no domínio
 acústico retorna $|\hat{S}[l, k]|$, que representa a estimativa do módulo do
-sinal desejado. Assume-se que sua fase seja igual a de $X[l, k]$. Dessa forma, a
+sinal desejado. Assume-se que sua fase é igual a de $X[l, k]$. Dessa forma, a
 estimativa do sinal desejado no domínio acústico é dada por $|\hat{S}[l,
 k]|e^{j\angle{X[l, k]}}$. Ao efetuar a STFT inversa desse sinal, obtém-se a
-estimativa $\hat{s}[n]$ do sinal desejado no domínio do tempo.
+estimativa $\hat{s}[n]$ do sinal desejado no domínio do tempo. O procedimento é
+ilustrado no diagrama \ref{se_acoustic}.
 
 \begin{figure}[h]
     \label{se_acoustic}
@@ -75,13 +76,11 @@ estimativa $\hat{s}[n]$ do sinal desejado no domínio do tempo.
     \caption{\textit{Framework AMS para Speech Enhancement no domínio acústico}.}
 \end{figure}
 
-
-
 Por sua vez, o \textit{framework AMS} para o domínio da modulação é ilustrado no
- diagrama \ref{se_modulation}. Aplica-se a STFT no domínio da modulação ao módulo do espectro no
- domínio acústico, obtendo $|\mathcal{X}[l, k, \mu]|$ e
- $e^{j\angle{\mathcal{X}[l, k, \mu]}}$, módulo e fase do espectro de modulação.
-
+ diagrama \ref{se_modulation}. Aplica-se a STFT no domínio da modulação ao
+ módulo do espectro no domínio acústico, obtendo $|\mathcal{X}[l, k, \mu]|$ e
+ $e^{j\angle{\mathcal{X}[l, k, \mu]}}$, que são o módulo e fase do espectro de
+ modulação.
 
 \begin{figure}[!ht]
     \label{se_modulation}
