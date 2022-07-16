@@ -151,7 +151,7 @@ O erro ao estimar o sinal desejado é descrito por:
 \end{eqnarray}
 
 
-Por sua vez, no projeto do filtro de Wiener IIR no domínio do tempo contínuo, a
+Por sua vez, no projeto do filtro de Wiener IIR no domínio do tempo discreto, a
 saída $\hat{d}[n]$ depende tanto de amostras passadas quanto futuras de $x[n]$,
 no qual $(*)$ denota a operação de convolução linear:
 \begin{eqnarray}
@@ -167,32 +167,39 @@ $X[k]$ são as DFTs de $\hat{d}[n]$, $h[n]$ e $x[n]$, respectivamente:
 
 Em aplicações de \textit{Speech Enhancement}, partirmos das equações
 \ref{chap_04:base} e \ref{chap_04:error}, que descrevem o sinal impregnado pela
-parcela de ruído e a parcela de erro. No domínio da frequência:r
+parcela de ruído e a parcela de erro. No domínio da frequência
 \begin{eqnarray}
     E[k] &=& D[k] - \hat{D}[k] \\
-    E[k] &=& D[k] - H[k]X[k]
+    E[k] &=& D[k] - H[k]X[k] \label{chap_4:eq_error}
 \end{eqnarray}
 Para minimizar o erro quadrático médio que torna o filtro ótimo, obtém-se a expressão do erro:
 \begin{eqnarray}
-    \mathbb{E}[|E^2[k]|] &=& \mathbb{E}[D[k]-H[k]Y[k]]^\ast [D[k]-H[k]Y[k]] \\
-    \mathbb{E}[|E^2[k]|] &=& \mathbb{E}[|D^2[k]|] - H[k]S_{xd}[k] - H^\ast[k]S_{dx}[k] + |H[k]|^2S_{xx}[k]
+    \mathbb{E}\left[\,|E^2[k]|\,\right] &=& \mathbb{E}\left[\,\left(D[k]-H[k]X[k]\,\right)^\ast \left(\,D[k]-H[k]X[k]\,\right)\,\right] \\
+    \mathbb{E}\left[\,|E^2[k]|\,\right] &=& \mathbb{E}\left[\,|D^2[k]|\,\right] - H[k]S_{xd}[k] - H^\ast[k]S_{dx}[k] + |H[k]|^2S_{xx}[k]
     % = \mathbb{E}[|D^2[k]|] \mathbb{E}[D^\ast[k]-H[k]Y[k]] - H^\ast[k] \mathbb{E}[Y^\ast[k]D[k] + |H[k]|^2 \mathbb{E}[|Y[k]|^2]
 \end{eqnarray}
-em que $S_{xx}[k]$ e $S_yd[k]$ são o espectro de potência de $x[n]$ e o espectro
-de potência cruzado de $y[n]$ e $d[n]$, respectivamente:
+em que $S_{xx}[k]$, $S_{dx}[k]$ $S_{xd}[k]$ são o espectro de potência de $x[n]$ e os espectros
+de potência cruzados de $x[n]$ e $d[n]$, respectivamente:
 \begin{eqnarray}
-    S_{xx}[k] &=& \mathbb{E}[|X[k]|^2] \\
-    S_yd[k] &=& \mathbb{E}[X[k   ]]
+    S_{xx}[k] &=& \mathbb{E}\left[\,|X[k]|^2  \,\right] \\
+    S_{dx}[k] &=& \mathbb{E}\left[\,X^*[k]D[k]\,\right] \\
+    S_{xd}[k] &=& \mathbb{E}\left[\,D^*[k]X[k]\,\right]
 \end{eqnarray}
 
-Uma implementação do filtro de Wiener no domínio acústico com a STFT, com 
-\textit{overlap} de 50\% e tamanho fixo $L_w$ de janela pode ser feita da seguinte forma:
+No domínio da STFT, obtém-se os ganhos do filtro ao minimizar a equação equivalente à \eqref{chap_4:eq_error} \cite{parchami2016}:
+\begin{equation}
+    \hat{W}[k, l] = \operatorname*{argmin}_W \mathbb{E}[\,|D[k,l] - H[k,l]X[k,l|^2\,]
+\end{equation}
 
- \begin{eqnarray}
-    S_{xr}[l, k] &=& X[l, k] R^{*}[l, k]\\
-    S_{xx}[l, k] &=& X[l, k] X^{*}[l, k]\\
-    Y[l,k] &=& \sum_{n = 0}^N\frac{S_{xr}[l, k]}{S_{xx}[l, k]} X[l, k]
- \end{eqnarray}
+
+% Uma implementação do filtro de Wiener no domínio acústico disponível no Matlab, com 
+% \textit{overlap} de 50\% e tamanho fixo $L_w$ de janela pode ser feita da seguinte forma:
+
+%  \begin{eqnarray}
+%     S_{xr}[l, k] &=& X[l, k] R^{*}[l, k]\\
+%     S_{xx}[l, k] &=& X[l, k] X^{*}[l, k]\\
+%     Y[l,k] &=& \sum_{n = 0}^N\frac{S_{xr}[l, k]}{S_{xx}[l, k]} X[l, k]
+%  \end{eqnarray}
 
 % O erro ao estimar o sinal desejado é descrito por:
 % \begin{eqnarray}
