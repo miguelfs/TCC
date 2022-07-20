@@ -1,6 +1,7 @@
 *.DS_store
 /tmp
 *.vscode
+*.pyc
 
 # Ignore everything
 latex/*
