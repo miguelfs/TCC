@@ -19,17 +19,23 @@ parcelas portadora $c(t)$ e moduladora $m(t)$:
 \symbl{$k_a$}{sensibilidade à amplitude}
 \symbl{$m(t)$}{moduladora no domínio contínuo}
 \symbl{$s(t)$}{sinal modulado no domínio contínuo}
-\begin{equation}
-    s(t) = [1+k_a m(t)]c(t) = A_c[1+k_a m(t)]\cos(2\pi f_c t) \label{eq:mod_1}
+\begin{figure}[H]
+    \centering
+    \resizebox{1.0\textwidth}{!}{\input{chapters/chap01/images/chap_01_example.pgf}}
+    \caption{Ilustração para equação \eqref{eq:mod_1} quando \eqref{eq:condition} é satisfeita.}
+\end{figure}
+\begin{equation}\label{eq:mod_1}
+    s(t) = [1+k_a m(t)]c(t) = A_c[1+k_a m(t)]\cos(2\pi f_c t)
 \end{equation}
 em que $k_a$ é a sensibilidade à amplitude da moduladora. Para que a envoltória
 dada pela função $1+k_a m(t)$ seja sempre positiva, evitando reversão de fase em
 decorrência de sobremodulação, basta que
-\begin{equation}
+\begin{equation}\label{eq:condition}
     |k_a m(t)| < 1, \quad \forall t.
 \end{equation}
 
-No domínio da frequência, a equação \eqref{eq:mod_1} é dada por:
+
+  No domínio da frequência, a equação \eqref{eq:mod_1} é dada por:
 \symbl{$M(f)$}{moduladora no domínio da frequência}
 \symbl{$S(f)$}{sinal modulado no domínio da frequência}
 \symbl{$\delta (t)$}{impulso unitário}
@@ -40,10 +46,16 @@ No domínio da frequência, a equação \eqref{eq:mod_1} é dada por:
 em que $\delta$ é o impulso unitário e $M(f)$ é a parcela moduladora no domínio
 da frequência.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{chapters/chap01/images/mod.eps}
+    \caption{Ilustração para equação \eqref{eq:mod_2}, adaptado de \cite{haykin2008}.}
+\end{figure}
+
 Pela equação \eqref{eq:mod_2}, observa-se que a parcela com impulsos unitários
 não contribui diretamente para a transmissão da informação contida em $M(f)$,
 além de despender grande parte da potência do sinal. Uma segunda característica
-de $S(f)$ \todo{add plot}é a existência de dois lóbulos simétricos no domínio da
+de $S(f)$ é a existência de dois lóbulos simétricos no domínio da
 frequência, o que confere redundância na transmissão do sinal e maior largura de
 banda. Para solucionar essas duas características indesejáveis em
 telecomunicações, foram criadas as modulações com banda lateral dupla e
