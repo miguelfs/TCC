@@ -12,8 +12,7 @@ O tema do trabalho é o espectro de modulação, que possibilita a
  
 ## Pré-requisitos e instalação
 - Python 3.9 ou superior.
-- Para executar os testes, Matlab engine for Python. Os testes visam comparar os resultados do Toolbox em Matlab com o
-toolbox do Python.
+- opcional: Matlab, caso deseje executar o toolbox primário.
 
 #  Descrição
 
