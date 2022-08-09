@@ -27,6 +27,7 @@ latex/*
 .idea/vcs.xml
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/inspectionProfiles/Project_Default.xml
+modulation_toolbox_py/.ipynb_checkpoints/*
 modulation_toolbox/__pycache__/__init__.cpython-39.pyc
 modulation_toolbox_py/filterbank/__pycache__/designfilterbank.cpython-39.pyc
 modulation_toolbox_py/filterbank/__pycache__/filterbanksynth.cpython-39.pyc
