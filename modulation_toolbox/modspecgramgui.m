@@ -321,7 +321,7 @@ if ~isequal(filename,0) || ~isequal(pathname,0)
     data.prefdir  = pathname;
     data.fs       = 0;
     try
-        [data.pcm data.fs] = wavread(data.wavname);
+        [data.pcm data.fs] = audioread(data.wavname);
     catch
         data.pcm = [];
         data.fs  = -1;
@@ -613,7 +613,7 @@ function varargout = Restore_pushbutton_Callback(h, eventdata, handles, varargin
 data = guidata(h);
 handles = guihandles(h);
 axes_handle = gca;
-[data.pcm data.fs] = wavread(data.wavname);
+[data.pcm data.fs] = audioread(data.wavname);
 
 %remove silence if exists
 i = 1;

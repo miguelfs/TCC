@@ -25,7 +25,7 @@ close all
 addpath( genpath( '.' ) );
 
 % Female speaking English, 16 KHz, from the \sounds folder
-[x fs] = wavread( 'speech_female.wav' );
+[x fs] = audioread( 'speech_female.wav' );
 
 
 % The Modulation Toolbox supports two main types of demodulation:
@@ -204,14 +204,14 @@ yharmcog = modreconharm( Mharmcog2, Charmcog );
 %  from part 7 should sound the same as the test signals provided in the
 %  \sounds folder in the Modulation Toolbox.
 
-ycog0  = wavread( 'speech_female_64bands_cog_2Hz.wav' );
-yhilb0 = wavread( 'speech_female_64bands_hilbert_2Hz.wav' );
-yharm0 = wavread( 'speech_female_harmonic_2Hz.wav' );
+ycog0  = audioread( 'speech_female_64bands_cog_2Hz.wav' );
+yhilb0 = audioread( 'speech_female_64bands_hilbert_2Hz.wav' );
+yharm0 = audioread( 'speech_female_harmonic_2Hz.wav' );
 
 % You might also want to compare processing results for male speech. Here
 % we repeat the demodulation, filtering and synthesis steps for the male
 % speech example in the \sounds folder.
-[x_male fs_male] = wavread( 'speech_male.wav' );
+[x_male fs_male] = audioread( 'speech_male.wav' );
 S_male = filtersubbands( x_male, fb1 );
 
 [Mc_male Cc_male] = moddecompcog( S_male, carrierWinLen/2, carrierHop/2 );
@@ -230,6 +230,6 @@ yharm_male = modreconharm( Mharm2_male, Charm_male );
 
 % Now you can compare the above results with the pre-computed ones in the
 % \sounds folder
-ycog0_male  = wavread( 'speech_male_64bands_cog_2Hz.wav' );
-yhilb0_male = wavread( 'speech_male_64bands_hilbert_2Hz.wav' );
-yharm0_male = wavread( 'speech_male_harmonic_2Hz.wav' );
+ycog0_male  = audioread( 'speech_male_64bands_cog_2Hz.wav' );
+yhilb0_male = audioread( 'speech_male_64bands_hilbert_2Hz.wav' );
+yharm0_male = audioread( 'speech_male_harmonic_2Hz.wav' );

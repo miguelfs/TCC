@@ -33,7 +33,7 @@ close all
 addpath( genpath( '.' ) );
 
 % Male speaking English, 8 KHz, from the \sounds folder
-[x fs] = wavread( 'speech_male.wav' );
+[x fs] = audioread( 'speech_male.wav' );
 
 
 %% 2. Modulation Filtering

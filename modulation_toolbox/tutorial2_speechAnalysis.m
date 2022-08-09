@@ -24,7 +24,7 @@
 % as described in the comments in filepath.m
 addpath( genpath( '.' ) );
 
-[x fs] = wavread( 'speech_female.wav' );
+[x fs] = audioread( 'speech_female.wav' );
 
 numHarmonics = 16;      % number of harmonics to demodulate
 modBandwidth = 150;     % modulator (envelope) bandwidth, Hz

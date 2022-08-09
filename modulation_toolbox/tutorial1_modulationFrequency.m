@@ -110,7 +110,7 @@ xlabel( 'Time (s)' ), ylabel( 'Frequency (Hz)' )
 % incoherent modulation-filtering of speech to two coherent versions.
 
 % Female speaking English, sampled at 16 kHz
-[x2 fs] = wavread( 'speech_female.wav' );
+[x2 fs] = audioread( 'speech_female.wav' );
 
 % Incoherent modulation filter (fixed subbands, Hilbert envelopes)
 subbandWidths = 250;     % Hz
