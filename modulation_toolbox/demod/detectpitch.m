@@ -261,7 +261,7 @@ for i = 1:numFrames
         
         % Least-squares fit
         tempF0 = lsharm( B(:,i), fs, lowerBound:F0step:upperBound, modelOrder );
-        m( data, fs, freqs, order, weight )
+        
         freqRes = F0step;
     end
     
@@ -844,4 +844,3 @@ function checkInputs( x, fs, medFiltLen, voicingSensitivity, freqCutoff, display
     end
 
 end % End checkInputs
-
