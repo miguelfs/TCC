@@ -1,5 +1,4 @@
 \section{\textit{Speech Enhancement} no Domínio Acústico}
-\todo{enhancement por melhoramento}
 \subsection{Subtração Espectral no Domínio Acústico}
 
 A subtração espectral no domínio acústico, em sua forma mais simples, estima que
@@ -73,8 +72,6 @@ quasi-estacionário. Além disso, dependendo da aplicação, o ruído pode ter
 correlação com o sinal de fala desejado. Esses dois fatores contribuem para que
 os termos cruzados permaneçam presentes em $|\hat{S}[l, k]|^2$. Apesar disso,
 por questão de simplicidade, assume-se que o valor dos termos seja igual a zero.
-\todo{adicionar efeito da fase}
-\todo{citar quem fala das solucoes}
 
 Ao retificar parte dos valores obtidos, também ocorre um segundo problema: são
 gerados picos espectrais na vizinhança dos valores truncados. Esses picos geram
@@ -98,7 +95,7 @@ parâmetro de piso espectral\cite{berouti1979enhancement} e $\gamma$ é o fator 
 A partir da escolha de $\alpha$, é possível reduzir a intensidade dos picos
 tonais característicos da subtração espectral. O parâmetro $\beta$ suaviza os
 vales na vizinhança dos picos ao aumentar a intensidade nas vizinhanças,
-evitando a permanência de picos estreitos.\todo{falar o q acontece com $\beta$ alto ou baixo, $\alpha$ alto ou baixo}
+evitando a permanência de picos estreitos.
 $\gamma = 1$ corresponde
 à subtração espectral de módulo, enquanto que $\gamma = 2$ corresponde à
 subtração espectral de potência. Note que, para $\alpha = 1$, $\beta = 0$ e
@@ -119,8 +116,7 @@ baixas e vice-versa, temos que:
 \end{equation}
 no qual $\alpha_0$ é o valor de $\alpha$ para $\operatorname{SNR} =
 0\operatorname{dB}$, $\frac{1}{s}$ é a inclinação da reta entre $\alpha_0$ em
-$0\operatorname{dB}$ e $\alpha = 1$ em $20\operatorname{dB}$. \todo{descrever
-como escolher parametros}. Para a estimativa da parcela de ruído do sinal, é
+$0\operatorname{dB}$ e $\alpha = 1$ em $20\operatorname{dB}$. Para a estimativa da parcela de ruído do sinal, é
 necessário identificar em quais instantes há ausência de fala a partir de um
 detector de atividade vocal (VAD, do inglês \textit{voice activity detector}).
 
@@ -128,68 +124,106 @@ detector de atividade vocal (VAD, do inglês \textit{voice activity detector}).
 \subsection{Filtro de Wiener no Domínio Acústico}
 
 O filtro de Wiener é o filtro ótimo e linear com erro mínimo entre o sinal
-desejado e sua estimativa. Seu projeto pode ser tanto de resposta ao impulso de
-duração finita (FIR, do inglês \textit{finite-duration impulse response}) quanto
-de resposta ao impulso de duração infinita (IIR, do inglês
-\textit{infinite-duration impulse response})\cite{loizou}.
+desejado e sua estimativa, projetado a partir das propriedades estatísticas dos
+sinais. Seu projeto pode ser tanto de resposta ao impulso de duração finita (FIR,
+do inglês \textit{finite-duration impulse response}) quanto de resposta ao
+impulso de duração infinita (IIR, do inglês \textit{infinite-duration impulse
+response}), a depender das necessidades da aplicação. \cite{loizou}
 
 Para um projeto de filtro FIR no domínio do tempo discreto, a estimativa do
-sinal desejado é obtida ao multiplicar cada coeficiente à amostra correspondente
+sinal desejado $y[n]$ é obtida ao multiplicar cada coeficiente à amostra correspondente
 na saída do sinal: 
 
 \begin{eqnarray}
-    \hat{d}[n] &=& \sum_{k=0}^{M-1}h_k x[n-k]\\
-    \hat{d}[n] &=& \textbf{h}^\top \textbf{x}
+    \hat{y}[n] &=& \sum_{k=0}^{M-1}h_k x[n-k]\\
+    \hat{y}[n] &=& \textbf{h}^\top \textbf{x}
     \end{eqnarray}
 em que $M$ é a quantidade de coeficientes, $h_k$ é o k-ésimo coeficiente do
 filtro FIR, $\textbf{h}$ é o vetor de coeficientes, $(\cdot) ^\top$ é o operador
 de matriz transposta e $\mathbf{x}$ é o vetor com últimas $M$ amostras na saída.
 O erro ao estimar o sinal desejado é descrito por:
 \begin{eqnarray}
-  \label{chap_04:error}  e[n] &=& d[n] - \hat{d}[n]\\
-    e[n] &=& d[n] - \textbf{h}^\top \textbf{y}
+  \label{chap_04:error}  e[n] &=& y[n] - \hat{y}[n]\\
+    e[n] &=& y[n] - \textbf{h}^\top \textbf{x}
 \end{eqnarray}
 
 
 Por sua vez, no projeto do filtro de Wiener IIR no domínio do tempo discreto, a
-saída $\hat{d}[n]$ depende tanto de amostras passadas quanto futuras de $x[n]$,
+saída $\hat{y}[n]$ depende tanto de amostras passadas quanto futuras de $x[n]$,
 no qual $(*)$ denota a operação de convolução linear:
 \begin{eqnarray}
-    \hat{d}[n] &=& \sum_{k=-\infty}^{\infty}h_k x[n-k], \quad -\infty < n < \infty\\
-    \label{chap_04:d_n}\hat{d}[n] &=& h[n] \ast x[n]
+    \hat{y}[n] &=& \sum_{k=-\infty}^{\infty}h_k x[n-k], \quad -\infty < n < \infty\\
+    \label{chap_04:y_n}\hat{y}[n] &=& h[n] \ast x[n]
 \end{eqnarray}
-Ao descrever a equação \ref{chap_04:d_n} no domínio da frequência discreta,
-obtemos a equação \ref{chap_04:d_k}, em que $\hat{D}[k]$, $H[k]$ e
+Ao descrever a equação \ref{chap_04:y_n} no domínio da frequência discreta,
+obtemos a equação \ref{chap_04:y_k}, em que $\hat{Y}[k]$, $H[k]$ e
 $X[k]$ são as DFTs de $\hat{d}[n]$, $h[n]$ e $x[n]$, respectivamente:
-\begin{equation} \label{chap_04:d_k}
-    \hat{D}[k] = H[k] X[k]
+\begin{equation} \label{chap_04:y_k}
+    \hat{Y}[k] = H[k] X[k]
 \end{equation}
 
-Em aplicações de \textit{Speech Enhancement}, partirmos das equações
-\ref{chap_04:base} e \ref{chap_04:error}, que descrevem o sinal impregnado pela
-parcela de ruído e a parcela de erro. No domínio da frequência
+A partir das equações \ref{chap_04:base} e \ref{chap_04:error}, que descrevem o
+sinal impregnado pela parcela de ruído e a parcela de erro, temos, no domínio da
+frequência:
 \begin{eqnarray}
-    E[k] &=& D[k] - \hat{D}[k] \\
-    E[k] &=& D[k] - H[k]X[k] \label{chap_4:eq_error}
+    E[k] &=& Y[k] - \hat{Y}[k] \\
+    E[k] &=& Y[k] - H[k]X[k] \label{chap_4:eq_error}.
 \end{eqnarray}
 Para minimizar o erro quadrático médio que torna o filtro ótimo, obtém-se a expressão do erro:
 \begin{eqnarray}
-    \mathbb{E}\left[\,|E^2[k]|\,\right] &=& \mathbb{E}\left[\,\left(D[k]-H[k]X[k]\,\right)^\ast \left(\,D[k]-H[k]X[k]\,\right)\,\right] \\
-    \mathbb{E}\left[\,|E^2[k]|\,\right] &=& \mathbb{E}\left[\,|D^2[k]|\,\right] - H[k]S_{xd}[k] - H^\ast[k]S_{dx}[k] + |H[k]|^2S_{xx}[k]
+    \mathbb{E}\left[\,|E^2[k]|\,\right] &=& \mathbb{E}\left[\,\left(Y[k]-H[k]X[k]\,\right)^\ast \left(\,Y[k]-H[k]X[k]\,\right)\,\right] \\
+    \mathbb{E}\left[\,|E^2[k]|\,\right] &=& \mathbb{E}\left[\,|Y^2[k]|\,\right] - H[k]P_{y}[k] - H^\ast[k]P_{yx}[k] + |H[k]|^2P_{xx}[k]
     % = \mathbb{E}[|D^2[k]|] \mathbb{E}[D^\ast[k]-H[k]Y[k]] - H^\ast[k] \mathbb{E}[Y^\ast[k]D[k] + |H[k]|^2 \mathbb{E}[|Y[k]|^2]
 \end{eqnarray}
-em que $S_{xx}[k]$, $S_{dx}[k]$ $S_{xd}[k]$ são o espectro de potência de $x[n]$ e os espectros
+em que $P_{xx}[k]$, $P_{yx}[k]$ $P_{xy}[k]$ são o espectro de potência de $x[n]$ e os espectros
 de potência cruzados de $x[n]$ e $d[n]$, respectivamente:
 \begin{eqnarray}
-    S_{xx}[k] &=& \mathbb{E}\left[\,|X[k]|^2  \,\right] \\
-    S_{dx}[k] &=& \mathbb{E}\left[\,X^*[k]D[k]\,\right] \\
-    S_{xd}[k] &=& \mathbb{E}\left[\,D^*[k]X[k]\,\right]
+    P_{xx}[k] &=& \mathbb{E}\left[\,|X[k]|^2  \,\right] \\ \label{chap_04:P_xx}
+    P_{yx}[k] &=& \mathbb{E}\left[\,X^*[k]Y[k]\,\right] \\ \label{chap_04:P_yx}
+    P_{xy}[k] &=& \mathbb{E}\left[\,Y^*[k]X[k]\,\right] \\
+    P_{xy}^{}[k] &=& {P}_{yx}^*[k]
 \end{eqnarray}
-
-No domínio da STFT, obtém-se os ganhos do filtro ao minimizar a equação equivalente à \eqref{chap_4:eq_error} \cite{parchami2016}:
+Para obter o filtro ótimo, minimiza-se a função de custo $J$ em
+relação a $H[k]$, cuja derivada é igual a zero:
+\begin{eqnarray}
+    J = \mathbb{E}\left[\,|E^2[k]|\,\right] \\
+    \frac{\partial J}{\partial H[k]} = 0 \\
+    H^*[k]P_{xx}[k] - P_{xy}[k] = 0 \\
+    \left(H[k]P_{xx}[k] - P_{yx}[k]\right)^* = 0 \label{chap_4:solution}
+\end{eqnarray}
+Finalmente, a partir da equação \ref{chap_4:solution}, temos que o filtro ótimo é obtido a partir da correlação cruzada
+entre o sinal desejado com o sinal original, dividida pelo espectro de potência do sinal original:
 \begin{equation}
-    \hat{W}[k, l] = \operatorname*{argmin}_W \mathbb{E}[\,|D[k,l] - H[k,l]X[k,l|^2\,]
+    H[k] = \frac{P_{yx}[k]}{P_{xx}[k]}.
 \end{equation}
+
+Em aplicações de \textit{Speech Enhancement}, uma das implementações consiste em
+representar o sinal desejado $y[n]$ como a própria parcela $s[n]$ do sinal livre
+de ruído. Ao assumir que o sinal limpo e a parcela de ruído são
+descorrelacionadas e com média zero, as equações \ref{chap_04:P_xx} e
+\ref{chap_04:P_yx} são simplificadas:
+\begin{equation}
+    P_{yx}[k] = \mathbb{E}\left[\,S[k] \left( S[k]N[k]\right)^*\,\right] = P_{ss}[k]
+\end{equation}
+\begin{equation}
+    P_{xx}[k] = \mathbb{E}\left[\,\left( S[k]N[k]\right)\left( S[k]N[k]\right)^*\,\right] = P_{ss}[k] + P_{nn}[k]
+\end{equation}
+
+% \frac{S_{yx}[k]}{S_{xx}[k]}
+% No domínio da STFT, obtém-se os ganhos do filtro ao minimizar a equação
+% equivalente à \eqref{chap_4:eq_error} \cite{parchami2016}:
+% \begin{equation}\label{chap04:w}
+%     \hat{W}[k, l] = \operatorname*{argmin}_W \mathbb{E}[\,|D[k,l] - H[k,l]X[k,l|^2\,]
+% \end{equation}
+% A solução para a equação \ref{chap04:w} é descrita por:
+% \begin{equation}
+%     \hat{W}[k,l] = \frac{S_{yx}[k,l]}{S_{xx}[k, l]}
+% \end{equation}
+% Finalmente, o espectro tratado de fala é obtido ao aplicar o filtro no sinal
+% original:
+% \begin{equation}
+%     \hat{X}[k, l] = \hat{W}[k,l]X[k,l]
+% \end{equation}
 
 
 % Uma implementação do filtro de Wiener no domínio acústico disponível no Matlab, com 

@@ -38,7 +38,7 @@ $\hat{X}(\omega)$ é o espectro do sinal em quadratura.
 
 O método consiste em decompor um sinal real em partes moduladora e portadora a
 partir de um sinal analítico, obtido pela soma do sinal em questão com sua
-transformada de Hilbert:\todo{hilbert discreto?} \symbl{$x_{+}(t)$}{sinal
+transformada de Hilbert: \symbl{$x_{+}(t)$}{sinal
 analítico no domínio do tempo}
 \begin{equation} \label{eqn:x_analitico}
       x_{+}(t) = x(t) + \mathrm{j}\mathcal{H}\{x(t)\}
@@ -74,7 +74,7 @@ sinal analítico:
 \symbl{$\phi(t)$}{fase do sinal analítico}
 em que, $a(t)$ é a envoltória, $c(t)$ é a portadora. Note que, ao estimar a
 envoltória a partir do módulo do sinal analítico, seus valores serão reais
-não-negativos.\todo{discreto e sub banda}
+não-negativos.
 
 No contexto de sub-bandas, em que as envoltórias e portadoras são estimadas para
 cada sub-banda $k$, tal como na etapa de demodulação na filtragem de modulação,
@@ -126,8 +126,8 @@ que contém descontinuidades em:
 t = \frac{\pi}{\omega_m} (\frac{1}{2}+ \mathbf{k}), \quad \mathbf{k} \in \mathbb{Z} .
 \end{equation}
 Para representar essas descontinuidades, são necessárias infinitas
-frequências.\todo{calcular limite?} O espectro do módulo de $y(t)$ é dado pela
-equação~\ref{eq_spec_mod_tone}:
+frequências. O espectro do módulo de $y(t)$ é dado pela
+equação~\ref{eq_spec_mod_tone} \cite{schimmel2007}:
 \begin{equation}
      m(t) = |y(t)|
 \end{equation}
@@ -135,17 +135,14 @@ equação~\ref{eq_spec_mod_tone}:
     M(\omega) = \mathcal{F}\{|y(t)|\}
 \end{equation}
 \begin{equation} \label{eq_spec_mod_tone}
-    M(\omega) = \sum_{\mathbf{k} = 1}^{\infty}\frac{4}{-(-1)^\mathbf{k} ((2\mathbf{k})^2) - 1)} \delta(\omega - 2 \mathbf{k} \omega_m)   
+    M(\omega) = \sum_{\mathbf{k}}^{\infty}\frac{4}{-(-1)^\mathbf{k} ((2\mathbf{k})^2) - 1)} \delta(\omega - 2 \mathbf{k} \omega_m), \quad \forall \mathbf{k} \in \mathbb{Z}   
+    \symbl{$\mathbb{Z}$}{Conjunto dos números inteiros}
 \end{equation}
-\symbl{$\mathbb{Z}$}{Conjunto dos números inteiros}
-% \symbl{$\mathbf{k}$}{índice do somatório}
-\todo{eq acima apêndice}
 em que $\mathcal{F\{\cdot\}}$ é o operador para a transformada de Fourier.
 \citet{cohen1999ambiguity} demonstra que a representação de módulo e fase não é
 única, de forma que um sinal complexo possui múltiplos pares módulo-fase que o
 representam. Tal como na demodulação incoerente, haverão descontinuidades nessas
-representações caso sua amplitude não seja positiva definida.\todo{adicionar
-grafico exemplificando}
+representações caso sua amplitude não seja positiva definida.
 
 Como alternativa, há a detecção coerente de
 portadora~\cite{atlas2005,clark2009time,clark2009sum}, que visa à detecção de
@@ -165,8 +162,7 @@ pela composição das envoltórias e fases da portadora e moduladora:
 \begin{equation}
     \phi_x(t) = \phi_m(t) + \phi_c(t)    
 \end{equation}
-Como discutido por \citet{cohen1999ambiguity}, há múltiplas soluções\todo{falar
-da fase} para a equação \ref{eq:polar}. A detecção incoerente assume que:
+Como discutido por \citet{cohen1999ambiguity}, há múltiplas soluções para a equação \ref{eq:polar}. A detecção incoerente assume que:
 \begin{equation}
     \phi_m(t) = 0
 \end{equation}
@@ -247,9 +243,9 @@ portadora a partir da detecção de frequência fundamental $F_0$ do sinal
 original, de forma análoga à equação \ref{eqn:carrier_integral}, no domínio do
 tempo discreto:
 \begin{equation}
-    \phi_0[n] = \sum_{p=0}^n F_0[n]
+    \phi_0[n] = \sum_{p=0}^n F_0[p],
 \end{equation}
-Em que $F_0$ é o \textit{pitch} estimado para $x[n]$. Esse método, chamado
+em que $F_0[n]$ é o \textit{pitch} estimado para $x[n]$. Esse método, chamado
 demodulação coerente harmônica, considera que cada sub-banda está relacionada a
 um harmônico múltiplo da frequência fundamental, tal que a portadora seja obtida
 por:

@@ -1,0 +1,290 @@
+\begin{thebibliography}{41}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+\newcommand{\enquote}[1]{``#1''}
+
+\bibitem[\MakeUppercase{Garofolo}\emph{ et~al.}(1993)Garofolo, Lamel, Fisher,
+  Fiscus, e Pallett]{timit}
+\MakeUppercase{Garofolo, J.~S., Lamel, L.~F., Fisher, W.~M.,
+  \MakeLowercase{et~al.}}
+\newblock \enquote{DARPA TIMIT acoustic-phonetic continous speech corpus
+  CD-ROM. NIST speech disc 1-1.1}, \emph{NASA STI/Recon technical report n},
+  v.~93, \penalty0 pp.~27403, 1993.
+
+\bibitem[\MakeUppercase{Haykin} e \MakeUppercase{Moher}(2008)Haykin e
+  Moher]{haykin2008}
+\MakeUppercase{Haykin, S., Moher, M.}
+\newblock \emph{Communication Systems}.
+\newblock 5 ed. Nova Iorque, Estados Unidos, John Wiley \& Sons, 2008.
+
+\bibitem[\MakeUppercase{Li} e \MakeUppercase{Atlas}(2005)Li e
+  Atlas]{li2005properties}
+\MakeUppercase{Li, Q., Atlas, L.}
+\newblock \enquote{Properties for modulation spectral filtering}. In:
+  \emph{IEEE International Conference on Acoustics, Speech, and Signal
+  Processing (ICASSP'05)}, v.~4, pp. iv--521. IEEE, 2005.
+
+\bibitem[\MakeUppercase{Parchami}\emph{ et~al.}(2016)Parchami, Zhu, Champagne,
+  e Plourde]{parchami2016}
+\MakeUppercase{Parchami, M., Zhu, W.-P., Champagne, B., \MakeLowercase{et~al.}}
+\newblock \enquote{Recent developments in speech enhancement in the short-time
+  Fourier transform domain}, \emph{IEEE Circuits and Systems Magazine}, v.~16,
+  n.~3, \penalty0 pp.~45--77, 2016.
+
+\bibitem[\MakeUppercase{Poeppel} e \MakeUppercase{Assaneo}(2020)Poeppel e
+  Assaneo]{poeppel2020}
+\MakeUppercase{Poeppel, D., Assaneo, M.~F.}
+\newblock \enquote{Speech rhythms and their neural foundations}, \emph{Nature
+  Reviews Neuroscience}, v.~21, n.~6, \penalty0 pp.~322--334, 2020.
+
+\bibitem[\MakeUppercase{Varnet}\emph{ et~al.}(2017)Varnet, Ortiz-Barajas, Erra,
+  Gervain, e Lorenzi]{varnet2017}
+\MakeUppercase{Varnet, L., Ortiz-Barajas, M.~C., Erra, R.~G.,
+  \MakeLowercase{et~al.}}
+\newblock \enquote{A cross-linguistic study of speech modulation spectra},
+  \emph{The Journal of the Acoustical Society of America}, v.~142, n.~4,
+  \penalty0 pp.~1976--1989, 2017.
+
+\bibitem[\MakeUppercase{Schwerin} e \MakeUppercase{So}(2018)Schwerin e
+  So]{schwerin2018}
+\MakeUppercase{Schwerin, B., So, S.}
+\newblock \enquote{A comparative study on acoustic and modulation domain speech
+  enhancement algorithms for improving noise robustness in speech recognition}.
+  In: \emph{17th Australasian International Conference on Speech Science and
+  Technology (ASSTA)}, pp. 113--116, Sydney, Australia, 2018.
+
+\bibitem[\MakeUppercase{Schimmel} e \MakeUppercase{Atlas}(2005)Schimmel e
+  Atlas]{atlas2005}
+\MakeUppercase{Schimmel, S., Atlas, L.}
+\newblock \enquote{Coherent envelope detection for modulation filtering of
+  speech}. In: \emph{IEEE International Conference on Acoustics, Speech, and
+  Signal Processing (ICASSP’05)}, v.~1, pp. I--221. IEEE, 2005.
+
+\bibitem[\MakeUppercase{Drullman}\emph{ et~al.}(1994)Drullman, Festen, e
+  Plomp]{drullman1994}
+\MakeUppercase{Drullman, R., Festen, J.~M., Plomp, R.}
+\newblock \enquote{Effect of temporal envelope smearing on speech reception},
+  \emph{The Journal of the Acoustical Society of America}, v.~95, n.~2,
+  \penalty0 pp.~1053--1064, 1994.
+
+\bibitem[\MakeUppercase{Paliwal} e \MakeUppercase{Schwerin}(2015)Paliwal e
+  Schwerin]{paliwal2015}
+\MakeUppercase{Paliwal, K., Schwerin, B.}
+\newblock \enquote{Modulation Processing for Speech Enhancement}. In:
+  \emph{Speech and Audio Processing for Coding, Enhancement and Recognition},
+  Springer, pp. 319--345, Nova Iorque, Estados Unidos, 2015.
+
+\bibitem[\MakeUppercase{Houtgast} e \MakeUppercase{Steeneken}(1973)Houtgast e
+  Steeneken]{houtgast1973}
+\MakeUppercase{Houtgast, T., Steeneken, H.~J.}
+\newblock \enquote{The modulation transfer function in room acoustics as a
+  predictor of speech intelligibility}, \emph{Acta Acustica united with
+  Acustica}, v.~28, n.~1, \penalty0 pp.~66--73, 1973.
+
+\bibitem[\MakeUppercase{Steeneken} e \MakeUppercase{Houtgast}(1980)Steeneken e
+  Houtgast]{houtgast1980}
+\MakeUppercase{Steeneken, H.~J., Houtgast, T.}
+\newblock \enquote{A physical method for measuring speech-transmission
+  quality}, \emph{The Journal of the Acoustical Society of America}, v.~67,
+  n.~1, \penalty0 pp.~318--326, 1980.
+
+\bibitem[\MakeUppercase{Schimmel}(2007)Schimmel]{schimmel2007}
+\MakeUppercase{Schimmel, S.~M.}
+\newblock \emph{Theory of Modulation Frequency Analysis and Modulation
+  Filtering, with Applications to Hearing Devices}.
+\newblock Tese de Doutorado, University of Washington, Seattle, Estados Unidos,
+  2007.
+
+\bibitem[\MakeUppercase{Atlas} e \MakeUppercase{Shamma}(2003)Atlas e
+  Shamma]{atlas2003}
+\MakeUppercase{Atlas, L., Shamma, S.~A.}
+\newblock \enquote{Joint acoustic and modulation frequency}, \emph{Journal on
+  Advances in Signal Processing, European Association for Signal and Image
+  Processing (EURASIP)}, v.~2003, n.~7, \penalty0 pp.~1--8, 2003.
+
+\bibitem[\MakeUppercase{Clark}(2012)Clark]{clark2012}
+\MakeUppercase{Clark, C.~P.}
+\newblock \emph{Coherent Demodulation of Nonstationary Random Processes}.
+\newblock Tese de Doutorado, University of Washington, Seattle, Estados Unidos,
+  2012.
+
+\bibitem[\MakeUppercase{Markaki} e \MakeUppercase{Stylianou}(2009)Markaki e
+  Stylianou]{markaki2009}
+\MakeUppercase{Markaki, M., Stylianou, Y.}
+\newblock \enquote{Using modulation spectra for voice pathology detection and
+  classification}. In: \emph{2009 Annual International Conference of the IEEE
+  Engineering in Medicine and Biology Society}, pp. 2514--2517, Minneapolis,
+  Estados Unidos, 2009.
+
+\bibitem[\MakeUppercase{Hermansky} e \MakeUppercase{Morgan}(1994)Hermansky e
+  Morgan]{hermansky1994rasta}
+\MakeUppercase{Hermansky, H., Morgan, N.}
+\newblock \enquote{RASTA processing of speech}, \emph{IEEE transactions on
+  speech and audio processing}, v.~2, n.~4, \penalty0 pp.~578--589, 1994.
+
+\bibitem[\MakeUppercase{Kanedera}\emph{ et~al.}(1999)Kanedera, Arai, Hermansky,
+  e Pavel]{kanedera1999relative}
+\MakeUppercase{Kanedera, N., Arai, T., Hermansky, H., \MakeLowercase{et~al.}}
+\newblock \enquote{On the relative importance of various components of the
+  modulation spectrum for automatic speech recognition}, \emph{Speech
+  Communication}, v.~28, n.~1, \penalty0 pp.~43--55, 1999.
+
+\bibitem[\MakeUppercase{Kingsbury}\emph{ et~al.}(1998)Kingsbury, Morgan, e
+  Greenberg]{kingsbury1998}
+\MakeUppercase{Kingsbury, B.~E., Morgan, N., Greenberg, S.}
+\newblock \enquote{Robust speech recognition using the modulation spectrogram},
+  \emph{Speech communication}, v.~25, n. 1-3, \penalty0 pp.~117--132, 1998.
+
+\bibitem[\MakeUppercase{Lu}\emph{ et~al.}(2010)Lu, Matsuda, Unoki, e
+  Nakamura]{lu2010temporal}
+\MakeUppercase{Lu, X., Matsuda, S., Unoki, M., \MakeLowercase{et~al.}}
+\newblock \enquote{Temporal contrast normalization and edge-preserved smoothing
+  of temporal modulation structures of speech for robust speech recognition},
+  \emph{Speech Communication}, v.~52, n.~1, \penalty0 pp.~1--11, 2010.
+
+\bibitem[\MakeUppercase{Nadeu}\emph{ et~al.}(1997)Nadeu, Pach{\`e}s-Leal, e
+  Juang]{nadeu1997filtering}
+\MakeUppercase{Nadeu, C., Pach{\`e}s-Leal, P., Juang, B.-H.}
+\newblock \enquote{Filtering the time sequences of spectral parameters for
+  speech recognition}, \emph{Speech communication}, v.~22, n.~4, \penalty0
+  pp.~315--332, 1997.
+
+\bibitem[\MakeUppercase{Tyagi}\emph{ et~al.}(2003)Tyagi, McCowan, Misra, e
+  Bourlard]{tyagi2003mel}
+\MakeUppercase{Tyagi, V., McCowan, I., Misra, H., \MakeLowercase{et~al.}}
+\newblock \enquote{Mel-cepstrum modulation spectrum (MCMS) features for robust
+  ASR}. In: \emph{2003 IEEE Workshop on Automatic Speech Recognition and
+  Understanding (IEEE Cat. No. 03EX721)}, pp. 399--404. IEEE, 2003.
+
+\bibitem[\MakeUppercase{Xiao}\emph{ et~al.}(2008)Xiao, Chng, e
+  Li]{xiao2008normalization}
+\MakeUppercase{Xiao, X., Chng, E.~S., Li, H.}
+\newblock \enquote{Normalization of the speech modulation spectra for robust
+  speech recognition}, \emph{IEEE transactions on audio, speech, and language
+  processing}, v.~16, n.~8, \penalty0 pp.~1662--1674, 2008.
+
+\bibitem[\MakeUppercase{Atlas}\emph{ et~al.}(2004)Atlas, Li, e
+  Thompson]{atlas2004}
+\MakeUppercase{Atlas, L., Li, Q., Thompson, J.}
+\newblock \enquote{Homomorphic modulation spectra}. In: \emph{International
+  Conference on Acoustics, Speech, and Signal Processing}, v.~2, pp. ii--761.
+  IEEE, 2004.
+
+\bibitem[\MakeUppercase{Greenberg} e \MakeUppercase{Kingsbury}(1997)Greenberg e
+  Kingsbury]{greenberg1997}
+\MakeUppercase{Greenberg, S., Kingsbury, B.~E.}
+\newblock \enquote{The modulation spectrogram: In pursuit of an invariant
+  representation of speech}. In: \emph{1997 IEEE International Conference on
+  Acoustics, Speech, and Signal Processing}, v.~3, pp. 1647--1650. IEEE, 1997.
+
+\bibitem[\MakeUppercase{Houtgast} e \MakeUppercase{Steeneken}(1985)Houtgast e
+  Steeneken]{houtgast1985}
+\MakeUppercase{Houtgast, T., Steeneken, H.~J.}
+\newblock \enquote{A review of the MTF concept in room acoustics and its use
+  for estimating speech intelligibility in auditoria}, \emph{The Journal of the
+  Acoustical Society of America}, v.~77, n.~3, \penalty0 pp.~1069--1077, 1985.
+
+\bibitem[\MakeUppercase{Paliwal}\emph{ et~al.}(2010)Paliwal, W{\'o}jcicki, e
+  Schwerin]{paliwal2010}
+\MakeUppercase{Paliwal, K., W{\'o}jcicki, K., Schwerin, B.}
+\newblock \enquote{Single-channel speech enhancement using spectral subtraction
+  in the short-time modulation domain}, \emph{Speech communication}, v.~52,
+  n.~5, \penalty0 pp.~450--475, 2010.
+
+\bibitem[\MakeUppercase{So} e \MakeUppercase{Paliwal}(2011)So e
+  Paliwal]{so2011modulation}
+\MakeUppercase{So, S., Paliwal, K.~K.}
+\newblock \enquote{Modulation-domain Kalman filtering for single-channel speech
+  enhancement}, \emph{Speech Communication}, v.~53, n.~6, \penalty0
+  pp.~818--829, 2011.
+
+\bibitem[\MakeUppercase{Paliwal}\emph{ et~al.}(2012)Paliwal, Schwerin, e
+  W{\'o}jcicki]{paliwal2012mmse}
+\MakeUppercase{Paliwal, K., Schwerin, B., W{\'o}jcicki, K.}
+\newblock \enquote{Speech enhancement using a minimum mean-square error
+  short-time spectral modulation magnitude estimator}, \emph{Speech
+  Communication}, v.~54, n.~2, \penalty0 pp.~282--305, 2012.
+
+\bibitem[\MakeUppercase{M{\"u}ller}(2015)M{\"u}ller]{muller2015}
+\MakeUppercase{M{\"u}ller, M.}
+\newblock \emph{Fundamentals of music processing: Audio, analysis, algorithms,
+  applications}.
+\newblock 1 ed. Nova Iorque, Estados Unidos, Springer, 2015.
+
+\bibitem[\MakeUppercase{Les~Atlas} e \MakeUppercase{Schimmel}(2010)Les~Atlas e
+  Schimmel]{toolbox2010}
+\MakeUppercase{Les~Atlas, P.~C., Schimmel, S.}
+\newblock \emph{Modulation Toolbox Version 2.1 for MATLAB}.
+\newblock Pacote de software, University of Washington, sep 2010.
+\newblock Dispon{\' i}vel em:
+  \textless\url{https://sites.google.com/a/uw.edu/isdl/projects/modulation-toolbox}\textgreater
+  .
+
+\bibitem[\MakeUppercase{da~Costa}(2015)da~Costa]{mauricio}
+\MakeUppercase{da~Costa, M. d. V.~M.}
+\newblock \emph{Sistema de Consulta Cantarolada com Gera{\c{c}}{\~a}o
+  Autom{\'a}tica de um Banco de M{\'u}sicas Adaptativo}.
+\newblock Tese de Mestrado, Universidade Federal do Rio de Janeiro, Rio de
+  Janeiro, Brasil, 2015.
+
+\bibitem[\MakeUppercase{Clark} e \MakeUppercase{Atlas}(2009{\natexlab{a}})Clark
+  e Atlas]{clark2009sum}
+\MakeUppercase{Clark, P., Atlas, L.}
+\newblock \enquote{A sum-of-products model for effective coherent modulation
+  filtering}. In: \emph{IEEE International Conference on Acoustics, Speech, and
+  Signal Processing (ICASSP’09)}, pp. 4485--4488. IEEE, 2009{\natexlab{a}}.
+
+\bibitem[\MakeUppercase{Lathi} e \MakeUppercase{Green}(2018)Lathi e
+  Green]{lathi2017}
+\MakeUppercase{Lathi, B.~P., Green, R.~A.}
+\newblock \emph{Linear systems and signals}.
+\newblock 3 ed. Nova Iorque, Estados Unidos, Oxford University Press, 2018.
+
+\bibitem[\MakeUppercase{Clark} e \MakeUppercase{Atlas}(2009{\natexlab{b}})Clark
+  e Atlas]{clark2009time}
+\MakeUppercase{Clark, P., Atlas, L.}
+\newblock \enquote{Time-frequency coherent modulation filtering of
+  nonstationary signals}, \emph{IEEE Transactions on Signal Processing}, v.~57,
+  n.~11, \penalty0 pp.~4323--4332, 2009{\natexlab{b}}.
+
+\bibitem[\MakeUppercase{Haykin}(2014)Haykin]{haykin2014digital}
+\MakeUppercase{Haykin, S.}
+\newblock \emph{Digital communication systems}.
+\newblock 1 ed. Nova Jersey, EUA, Nova Jersey: John Wiley \& Sons, 2014.
+
+\bibitem[\MakeUppercase{Goulart}(2017)Goulart]{goulart2017efeitos}
+\MakeUppercase{Goulart, A. J.~H.}
+\newblock \emph{Efeitos de {\'a}udio baseados em decomposi{\c{c}}{\~a}o AM/FM}.
+\newblock Tese de Doutorado, Universidade de S{\~a}o Paulo, São Paulo, Brasil,
+  2017.
+
+\bibitem[\MakeUppercase{Cohen}\emph{ et~al.}(1999)Cohen, Loughlin, e
+  Vakman]{cohen1999ambiguity}
+\MakeUppercase{Cohen, L., Loughlin, P., Vakman, D.}
+\newblock \enquote{On an ambiguity in the definition of the amplitude and phase
+  of a signal}, \emph{Signal Processing}, v.~79, n.~3, \penalty0 pp.~301--307,
+  1999.
+
+\bibitem[\MakeUppercase{Loizou}(2013)Loizou]{loizou}
+\MakeUppercase{Loizou, P.~C.}
+\newblock \emph{Speech enhancement: theory and practice}.
+\newblock 2 ed. Flórida, Estados Unidos, CRC press, 2013.
+
+\bibitem[\MakeUppercase{Zhang} e \MakeUppercase{Zhao}(2013)Zhang e
+  Zhao]{zhang2013}
+\MakeUppercase{Zhang, Y., Zhao, Y.}
+\newblock \enquote{Real and imaginary modulation spectral subtraction for
+  speech enhancement}, \emph{Speech Communication}, v.~55, n.~4, \penalty0
+  pp.~509--522, 2013.
+
+\bibitem[\MakeUppercase{Berouti}\emph{ et~al.}(1979)Berouti, Schwartz, e
+  Makhoul]{berouti1979enhancement}
+\MakeUppercase{Berouti, M., Schwartz, R., Makhoul, J.}
+\newblock \enquote{Enhancement of speech corrupted by acoustic noise}. In:
+  \emph{ICASSP'79. IEEE International Conference on Acoustics, Speech, and
+  Signal Processing}, v.~4, pp. 208--211. IEEE, 1979.
+
+\end{thebibliography}

@@ -1,0 +1,33 @@
+\indexentry{[$c(t)$] portadora no domínio contínuo|hyperpage}{4}
+\indexentry{[$f_c$] frequência da portadora|hyperpage}{4}
+\indexentry{[$A_c$] amplitude da portadora|hyperpage}{4}
+\indexentry{[$k_a$] sensibilidade à amplitude|hyperpage}{4}
+\indexentry{[$m(t)$] moduladora no domínio contínuo|hyperpage}{4}
+\indexentry{[$s(t)$] sinal modulado no domínio contínuo|hyperpage}{4}
+\indexentry{[$M(f)$] moduladora no domínio da frequência|hyperpage}{5}
+\indexentry{[$S(f)$] sinal modulado no domínio da frequência|hyperpage}{5}
+\indexentry{[$\delta (t)$] impulso unitário|hyperpage}{5}
+\indexentry{[$m \lbrack n \rbrack$] moduladora no domínio discreto|hyperpage}{6}
+\indexentry{[$c \lbrack n \rbrack$] portadora no domínio discreto|hyperpage}{6}
+\indexentry{[$s \lbrack n \rbrack$] sinal modulado no domínio discreto|hyperpage}{6}
+\indexentry{[$X(t,f)$] sinal no domínio acústico|hyperpage}{7}
+\indexentry{[$\mathbb{R}$] conjunto dos números reais|hyperpage}{7}
+\indexentry{[$\mathbb{C}$] conjunto dos números complexos|hyperpage}{7}
+\indexentry{[$X(t, f)$] sinal no domínio acústico|hyperpage}{7}
+\indexentry{[$\mathcal{X}(\eta, f, t)$] sinal no domínio da modulação|hyperpage}{7}
+\indexentry{[$x \lbrack n \rbrack$] sinal de valores reais, no domínio do tempo discreto|hyperpage}{8}
+\indexentry{[$x_k \lbrack n \rbrack$] k-ésima sub-banda do sinal, no domínio do tempo discreto|hyperpage}{8}
+\indexentry{[$m_k \lbrack n \rbrack$] moduladora da k-ésima sub-banda, no domínio do tempo discreto|hyperpage}{8}
+\indexentry{[$c_k \lbrack n \rbrack$] portadora da k-ésima sub-banda, no domínio do tempo discreto|hyperpage}{8}
+\indexentry{[$\mathcal{H}\{\cdot\}$] operador para transformada de Hilbert|hyperpage}{10}
+\indexentry{[$\ast$] operador para convolução|hyperpage}{10}
+\indexentry{[$\hat{x}(t)$] sinal em quadratura|hyperpage}{10}
+\indexentry{[$x_{+}(t)$] sinal analítico no domínio do tempo|hyperpage}{10}
+\indexentry{[$a(t)$] envoltória no domínio do tempo contínuo|hyperpage}{11}
+\indexentry{[$\phi(t)$] fase do sinal analítico|hyperpage}{11}
+\indexentry{[$m_k(t)$] moduladora da k-ésima sub-banda, no domínio do tempo contínuo|hyperpage}{11}
+\indexentry{[$c_k(t)$] portadora da k-ésima sub-banda, no domínio do tempo contínuo|hyperpage}{11}
+\indexentry{[$a_k(t)$] envoltória da k-ésima sub-banda, no domínio do tempo contínuo|hyperpage}{11}
+\indexentry{[$\omega_m$] frequência angular de modulação|hyperpage}{11}
+\indexentry{[$\omega_c$] frequência angular da portadora|hyperpage}{11}
+\indexentry{[$\mathbb{Z}$] Conjunto dos números inteiros|hyperpage}{12}

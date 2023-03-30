@@ -21,7 +21,7 @@ caso, é a estimação e decomposição das partes moduladora e portadora de for
 coerente, em vez da decomposição por módulo e fase.
 
 Em uma abordagem distinta da tradicional,
-\citet{paliwal2010}\cite{so2011modulation}\cite{paliwal2012mmse} utiliza a STFT 
+\citet{paliwal2010}\cite{so2011modulation}\cite{paliwal2012mmse} utiliza a STFT
 em vez do banco de filtros, de forma que as trajetórias dos módulos do espectro
 acústico no tempo são adequadas para o cálculo do espectro de modulação de tempo
 curto.
@@ -30,14 +30,14 @@ Para compreender a representação do espectrograma de modulação, definem-se d
 domínios, na bibliografia~\cite{paliwal2015}. O domínio acústico é uma
 representação bidimensional de um sinal na qual, para as frequências $f$ e os
 instantes de tempo $t$, mapeiam-se os respectivos coeficientes complexos de
-Fourier~\cite{muller2015}:\todo{chamo de STFT?}
+Fourier~\cite{muller2015}:
 \symbl{$X(t,f)$}{sinal no domínio acústico}
 \symbl{$\mathbb{R}$}{conjunto dos números reais}
 \symbl{$\mathbb{C}$}{conjunto dos números complexos}
 \begin{equation}
 X(t, f): \mathbb{R}  \times  \mathbb{R} \rightarrow \mathbb{C}.
 \end{equation}
-O chamado espectrograma de \todo{modulo?} amplitude é a representação do módulo
+O chamado espectrograma de amplitude é a representação do módulo
 desse domínio:
 \begin{equation}
 \mathrm{Spec}(t, f) = \left\lvert X(t, f)\right\rvert.
@@ -101,7 +101,7 @@ no qual $\ell$ é o índice do \textit{frame} no domínio da modulação, $k$ é
 \mathrm{ModSpec}[\ell, k, \mu] = \left\lvert \mathcal{X}[\ell, k, \mu]\right\rvert. 
 \end{equation}
 
-\todo{inversa?}
-\todo{imagens?}
-\todo{specs de implementação}
-
+Nas ilustrações a seguir, é possível visualizar a forma de onda no domínio do
+tempo, a STFT, o espectro de modulação obtido a partir do banco de filtros e o
+espectro de modulação obtido pela STFT sobre o domínio acústico. O trecho de
+fala masculina foi retirado de https://ufpafalabrasil.gitlab.io/.
