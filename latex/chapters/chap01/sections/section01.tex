@@ -1,66 +1,7 @@
-\section{Contexto e Motivação}
-
-Aplicações que dependam de captação de voz, como chamadas de voz sobre IP (VoIP,
- do inglês \textit{voice over IP}) e reconhecimento de fala, podem ter sua
- experiência de uso e assertividade melhoradas quando a fala captada é mais
- inteligível, o que pode ser potencializado com técnicas de \textit{speech
- enhancement} aplicadas sobre o áudio analisado.
- \abbrev{VoIP}{voz sobre IP}
-
-No conjunto das técnicas de \textit{speech enhancement}, as que utilizam a
-transformada discreta de Fourier (DFT, do inglês \textit{discrete Fourier
-transform}) na forma de uma transformada rápida de Fourier (FFT, do inglês
-\textit{fast Fourier transform}) apresentam baixa complexidade computacional,
-além de permitirem a modificação dos coeficientes do sinal no domínio da
-frequência e sua ressíntese no domínio do tempo. Entretanto, o uso da DFT é mais
-adequado para sinais estacionários. Sinais quase estacionários, isto é, sinais
-cuja estatística é aproximadamente constante em curtos períodos, tais como a
-fala —-- em janelas da ordem de milissegundos —--, podem ser bem representados
-pela transformada de Fourier de curta duração (STFT, do inglês
-\textit{short-time Fourier transform}). Sobre esta, é possível utilizar
-algoritmos de redução de ruído, como a subtração espectral e o filtro de
-Wiener~\cite{parchami2016}. Uma das técnicas evoluídas a partir da STFT é o
-espectrograma de modulação —-- objeto da presente pesquisa —--, que representa
-oscilações de segunda ordem no sinal de áudio analisado, no chamado domínio da
-modulação.
-\abbrev{DFT}{transformada discreta de Fourier}
-\abbrev{FFT}{transformada rápida de Fourier}
-\abbrev{STFT}{transformada de Fourier de curta duração}
-
-O sinal de fala pode ser representado como a sobreposição de portadoras geradas
-pelas cordas vocais, cujas amplitudes e frequências variam lentamente em
-consequência das mudanças provocadas pelo trato vocal e de seus articuladores,
-durante a fonação. A bibliografia demonstra que a componente AM contribui para a
-inteligibilidade do sinal de fala, uma vez que a envoltória quantiza a estrutura
-temporal de fonemas, sílabas e frases, atribuindo ritmicidade a essas
-unidades~\cite{poeppel2020,varnet2017}. Quanto à percepção auditiva, atribui-se
-à cóclea a capacidade de filtrar o som (de banda larga), em diversas sub-bandas
-de banda estreita, de forma que modulações em amplitude sobre cada sub-banda
-sejam passadas adiante no sistema auditivo. Portanto, o espectrograma de
-modulação demonstra-se adequado para aplicações de \textit{speech enhancement},
-pois permite a representação da modulação em um domínio que considere diferentes
-frequências de portadora --— de forma análoga ao ``banco de filtros'' da cóclea
---— e representa, tal como a STFT, a quase estacionariedade em curtos períodos
-de tempo característica em sinais de fala. Avaliações do desempenho de técnicas
-de \textit{speech enhancement} que atuam no domínio do espectrograma de
-modulação reforçam essa justificativa, indicando bom desempenho em índices de
-inteligibilidade~\cite{schwerin2018}.
-
-Uma segunda técnica disponível é a filtragem de modulação~\cite{atlas2005}. Essa
-técnica se baseia nas evidências de que, ao aumentar gradualmente a frequência
-de corte para um filtro passa-baixas aplicado sobre oscilações da envoltória de
-um sinal, as componentes acima de 16Hz apresentam apenas um incremento marginal
-na inteligibilidade~\cite{drullman1994}. Dessa forma, as componentes de
-modulação abaixo do limiar de 16Hz são suficientes para uma boa compreensão da
-fala. A partir dessa característica da percepção, o filtro de modulação é capaz
-de limitar ruídos sobre a envoltória que incorrem fora da região filtrada, dessa
-forma aumentando a inteligibilidade.
-
-
-Por fim, a bibliografia que aborda essas técnicas, apesar de circular há cerca
-de 20 anos em pesquisa, possui poucos documentos que agregam, condensam e
-abordam sua evolução e suas formas mais sofisticadas, que carecem de uma
-apresentação da teoria em que se baseiam ao alcance de um leitor
-interessado~\cite{parchami2016,paliwal2015}.
-
+\section{Motivação}
+\begin{itemize}
+    \item Utilidade de Sistemas de Recomendação;
+    \item Contexto do Indaband;
+    \item Sistemas baseados em sessão;
+\end{itemize}
 \vspace{0.4cm}

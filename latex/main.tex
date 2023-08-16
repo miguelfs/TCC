@@ -1,16 +1,9 @@
-
 \documentclass[tcc,numbers]{coppe}
-% package below turns darkmode on, feel free to use it.
-% \usepackage{xcolor} \pagecolor[rgb]{0,0,0} \color[rgb]{1,1,1}
 \usepackage{amsmath,amssymb}
 \usepackage{silence}
 \usepackage{hyperref}
 \usepackage{tikz}
 \usetikzlibrary{arrows, shapes}
-
-%TODO: % package below turns TODO on, feel free to use it.
-% \setlength{\marginparwidth}{2cm}
-% \usepackage{todonotes}
 
 \usepackage{float}
 
@@ -18,15 +11,12 @@
 \makeloabbreviations
 
 \begin{document}
-\listoftodos
 
-  \title{Espectro de Modulação Aplicado ao Processamento de Fala}
-  % \title{Aplicação do Espectro de Modulação no Processamento de Fala}
-  \foreigntitle{Modulation Spectrum Applied over Speech Processing}
+  \title{Sistemas de Recomendação Baseados em Sessão do aplicativo Indaband}
+  \foreigntitle{Session-Based Recommender Systems from Indaband Application}
   \author{Miguel}{Fernandes de Sousa}
-  \advisor{Prof.}{Nome do Primeiro Orientador}{Sobrenome}{D.Sc.}
-  \advisor{Prof.}{Nome do Segundo Orientador}{Sobrenome}{Ph.D.}
-  \advisor{Prof.}{Nome do Terceiro Orientador}{Sobrenome}{D.Sc.}
+  \advisor{Prof.}{Natanael}{Moura Júnior}{Ph.D.}
+  \advisor{Prof.}{Leandro}{Balby Marinho}{Ph.D.}
 
   \examiner{Prof.}{Nome do Primeiro Examinador Sobrenome}{D.Sc.}
   \examiner{Prof.}{Nome do Segundo Examinador Sobrenome}{Ph.D.}
@@ -34,17 +24,15 @@
   \examiner{Prof.}{Nome do Quarto Examinador Sobrenome}{Ph.D.}
   \examiner{Prof.}{Nome do Quinto Examinador Sobrenome}{Ph.D.}
   \department{ELE}
-  \date{07}{2022}
+  \date{08}{2023}
 
-  \keyword{Espectrograma de Modulação}
-  \keyword{Filtragem de Modulação}
+  \keyword{Sistemas de Recomendação}
+  \keyword{Session-Based}
   \keyword{\textit{Speech Enhancement}}
 
-  %TODO: remover \hbadness
   \hbadness=\maxdimen
   \maketitle
 
-  % \hbadness=\maxdimen
   \frontmatter
 
   \makecatalog
@@ -56,17 +44,31 @@
 
   \chapter*{Agradecimentos}
 
-  Gostaria de agradecer a todos.
+  Orientadores: Natanael, Balby
+
+  Indaband: Medina, Helielson
+
+  Departamento: LW, Teodósio, UFRJ
+
+  Família: Carol, Mãe, Pai
 
   \begin{abstract}
 
-  Apresenta-se, nesta tese,\cite{timit} \ldots
-
+  Apresenta-se, neste trabalho de conclusão de curso, o comparativo entre
+ Sistemas de Recomendação Baseados em Sessão (SBRS)  para recomendar convites de
+ participação de usuários no aplicativo Indaband, com as sessões de gravação como objeto de
+ estudo, abordando o funcionamento de modelos como regras de associação, kNNs e
+ arquiteturas de redes neurais, além da apresentação dos resultados da avaliação
+ objetiva baseada no histórico de dados disponível.
   \end{abstract}
 
   \begin{foreignabstract}
 
-  In this work, we present \ldots
+  In this work, we present a comparison between Session-Based Recommendation
+  Systems (SBRS) for recommending user invitations for musical sessions within
+  Indaband mobile application. It addresses the functioning of models such as
+  association rules, kNNs, and neural network architectures, along with
+  evaluating objective metrics over the available data history.
 
   \end{foreignabstract}
 
