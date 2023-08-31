@@ -1,9 +1,29 @@
 \section{Trabalhos Relacionados}
-% list some items:
-\begin{itemize}
-    \item \textit{Benchmark} do Jusbrasil.
-    \item Benchmark do próprio sessionrec.
-    \item Procurar bibliografia sobre recomendação de usuários.
-    \item Colocar aqui a bibliografia dos modelos que vou usar.
-\end{itemize}
-    \vspace{0.4cm}
+\citet{rec_sys_handbook_2022} apresentam a caracterização geral do problema
+baseado em sessão, o método utilizado em alguns modelos de aprendizado de
+máquina voltados a esse problema, bancos de dados apropriados para o tema e
+sugestões de direções futuras.
+
+\citet{survey_wang_2021} discutem a diferença entre \textit{Session-Based Recommender Systems}
+e \textit{Sequential Recommender Systems}, apresentam a formalização matemática
+do problema, características e desafios associados aos tamanhos das sessões, sua
+ordenação e ao tipo das ações realizadas nas interações. Apresentam a
+categorização das diferentes arquiteturas de SBRS e seus princípios básicos.
+
+\citet{ludewig2021empirical} apresentam os resultados do comparativo entre
+medidas de desempenho ao tema SBRS, com foco em redes neurais e com bancos de
+dados de comércio eletrônico, músicas, etc. Conclui, a partir de pesquisa subjetiva
+com usuários, que eles de fato ficaram satisfeitos com as recomendações.
+
+Uma sequência de trabalhos
+\cite{LATIFI_2021,ludewig2021empirical,ludewig_2018,ludewig_2019,sessionrec} foi
+realizada a partir da biblioteca session-rec: Um \textit{framework} em linguagem
+Python que agrega modelos, ferramentas de pré-processamento de dados,
+treinamento e avaliação de modelos de aprendizado de máquina específicos para o
+problema SBRS.
+
+ \citet{jusbrasil2022} apresentam os resultados do comparativo de modelos SBRS em
+sessões de interações de usuários com documentos jurídicos da plataforma
+Jusbrasil, incluindo a recomendação vigente da plataforma. O trabalho
+conclui que o SBRS supera as medidas de desempenho obtidas pela recomendação
+vigente.

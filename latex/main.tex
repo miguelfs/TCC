@@ -3,7 +3,12 @@
 \usepackage{silence}
 \usepackage{hyperref}
 \usepackage{tikz}
-\usetikzlibrary{arrows, shapes}
+\usepackage{subfigure}
+\usepackage{paralist}
+\usepackage{pgf-pie}
+\usepackage{pgfplots}
+\usepackage{csvsimple}
+\usetikzlibrary{arrows, shapes, matrix, automata, positioning}
 
 \usepackage{float}
 
@@ -39,7 +44,7 @@
 
   \dedication{"Potiusque sero quam nunquam."
   
-  Lívio (59 a.C. - 17 d.C.)}
+  Tito Lívio, trecho de \emph{Ab Urbe Condita} (História de Roma), por volta de 27 a.C.}
   \hbadness=226
 
   \chapter*{Agradecimentos}
@@ -56,7 +61,7 @@
 
   Apresenta-se, neste trabalho de conclusão de curso, o comparativo entre
  Sistemas de Recomendação Baseados em Sessão (SBRS)  para recomendar convites de
- participação de usuários no aplicativo Indaband, com as sessões de gravação como objeto de
+ participação de usuários do aplicativo Indaband, com as sessões de gravação como objeto de
  estudo, abordando o funcionamento de modelos como regras de associação, kNNs e
  arquiteturas de redes neurais, além da apresentação dos resultados da avaliação
  objetiva baseada no histórico de dados disponível.
