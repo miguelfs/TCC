@@ -1,7 +1,157 @@
 \section{Redes Neurais \textit{Session-Based}}
+
+\subsubsection{RNN}
+Redes neurais recorrentes (RNNs, do inglês \textit{recurrent neural networks})
+ são apropriadas para dados que tenham uma relação de sequência entre si
+ \cite{gru4rec_1}. Sua principal diferença em relação aos demais modelos de
+ aprendizado profundo é a existência de um estado oculto $\mathbf{h_t}$ em
+ cada unidade da rede, cujo valor é obtido a partir da seguinte função de
+ atualização:
+\begin{equation}
+    \mathbf{h_t} = g(W\mathbf{x_t} + U\mathbf{h_{t-1}})
+\end{equation}
+onde $g$ é uma função suave e limitada entre 0 e 1, como uma função logística
+sigmoide ou tangente hiperbólica, $\mathbf{x_t}$ é a entrada da unidade no
+instante atual, $W$ e $U$ são os pesos associados à entrada e ao estado
+anterior, $\mathbf{h_{t-1}}$ é o estado no instante anterior. Uma RNN gera uma
+distribuição de probabilidade sobre o próximo elemento da sequência a partir do
+estado atual:
+
+\begin{equation}
+    p(\mathbf{x_t}|\mathbf{x_1},\ldots , \mathbf{x_{t-1}}) = g(\mathbf{h_t})
+\end{equation}
+
+Um problema típico da arquitetura básica de RNNs é o desaparecimento ou explosão
+do gradiente ao minimizar a função de custo, uma vez que o incremento ou
+decremento do gradiente equivale ao produtório dos pesos de todas as unidades, o
+que converge para um valor minúsculo ou diverge para um valor enorme. Unidades
+sob a forma de LSTMs ou GRUs foram propostas para resolver esse problema.
+
+
+\subsubsection{LSTM}
+A memória de curto e longo prazo (LSTM, do inglês \textit{long short-term
+memory}) \cite{chung2014empirical} substitui a unidade típica de uma RNN. Sua
+principal melhoria, tanto na LSTM é a capacidade de manter o estado atual
+de suas células, em vez de sobrescrevê-lo a cada iteração. Dessa forma, a
+unidade pode detectar e manter informações relevantes de forma dinâmica,
+inclusive em sequências longas.
+
+Sua arquitetura resolve os problemas de dissipação ou explosão do
+gradiente, uma vez que a etapa de \textit{backpropagation} não envolve a
+multiplicação de todos os pesos.
+
+A LSTM é composta por uma célula de memória $\mathbf{c_t}$. A saída, ou ativação
+$\mathbf{h_t}$, é dada por:
+\begin{equation}
+    \mathbf{h_t} = \mathbf{o_t}\tanh(\mathbf{c_t})
+\end{equation}
+em que $\mathbf{o_t}$ é a porta de saída, a qual controla a quantidade de
+exposição, cujo valor é dado por:
+
+\begin{equation}
+    \mathbf{o_t} = \sigma(W_o\mathbf{x_t} + U_o\mathbf{h_{t-1}} + V_o\mathbf{c_t})
+\end{equation}
+em que $\sigma$ é a função logística sigmoide, $W_o$, $U_o$ e $V_o$ são as
+matrizes de pesos.
+
+A memória da célula $\mathbf{c_t}$ é atualizada a partir da memória anterior
+$\mathbf{c_{t-1}}$ e do estado candidato $\mathbf{\tilde{c}_t}$, ambos ponderados
+respectivamente pelas portas de esquecimento $\mathbf{f_t}$ e de entrada $\mathbf{i_t}$:
+\begin{align}
+    \mathbf{c_t} &= \mathbf{f_t} \odot \mathbf{c_{t-1}} + \mathbf{i_t} \odot \mathbf{\tilde{c}_t} \\
+    \mathbf{f_t} &= \sigma(W_f\mathbf{x_t} + U_f\mathbf{h_{t-1}} + V_f\mathbf{c_{t-1}}) \\
+    \mathbf{i_t} &= \sigma(W_i\mathbf{x_t} + U_i\mathbf{h_{t-1}} + V_i\mathbf{c_{t-1}})
+\end{align}
+sendo o operador $\odot$ o produto
+de Hadamard. O novo estado da célula é dado por:
+\begin{equation}
+    \mathbf{\tilde{c}_t} = \tanh(W_c\mathbf{x_t} + U_c\mathbf{h_{t-1}})
+\end{equation}
+
+
+\subsubsection{GRU}
+Assim como a LSTM, a unidade recorrente fechada (GRU, do inglês \textit{gated
+recurrent unit}), também possui estados auxiliares, denominados portas, que
+controlam a atualização de seu estado principal, e ambas realizam a soma linear
+entre o estado anterior com o estado candidato. A principal diferença entre
+essas duas unidades é a capacidade da LSTM controlar o quanto do estado anterior
+é assimilado, o que não há na GRU.
+
+Na GRU, porta de atualização $\mathbf{z_t}$ pondera o quanto do
+estado candidato $\mathbf{\hat{h_t}}$ e do estado anterior $\mathbf{h_{t-1}}$
+são mantidos ou descartados:
+\begin{equation}
+    \mathbf{h_t} = (1 - \mathbf{z_t})\mathbf{h_{t-1}} + \mathbf{z_t}\mathbf{\hat{h}_t}
+\end{equation}
+onde a porta de atualização $\mathbf{z_t}$, o estado candidato $\mathbf{\hat{h_t}}$
+e a porta de reinício $\mathbf{r_t}$ são dadas pelas equações:
+\begin{align}
+    \mathbf{z_t} &= \sigma(W_z\mathbf{x_t} + U_z\mathbf{h_{t-1}}) \\
+    \mathbf{\hat{h}_t} &= \tanh(W_x\mathbf{x_t} + U_r(\mathbf{r_t} \odot \mathbf{h_{t-1}})) \\
+    \mathbf{r_t} &= \sigma(W_r\mathbf{x_t} + U_r\mathbf{h_{t-1}})
+\end{align}
+em que $\sigma$ é a função logística sigmoide.
+
+\subsubsection{Mecanismo de atenção}
+
+Limitações de RNNs: encoding bottleneck em vez de fluxo contínuo; lento, não há
+paralelização, em vez de paralelizar; a memória é de curto prazo, quero memória
+de longo prazo.
+
+Ele processa os dados instante de tempo por instante de tempo.
+% \subsubsection{\textit{mini-batch training}}
+
+
 \subsection{CSRM}
+
+O \textit{Collaborative Session-based Recommendation Machine} (CSRM) é um modelo
+híbrido que avalia o comportamento de sessões vizinhas para melhorar a
+recomendação da sessão atual \cite{collaborative2018}. O modelo é composto um
+codificador de memória interna, responsável por codificar informação da sessão
+vigente, um codificador de memória externa, que registra as sessões mais
+recentes como sessões vizinhas em potential, e um decodificador de recomendação,
+que calcula a probabilidade da próxima interação com base nas saídas dos dois
+codificadores.
+
+O codificador interno é composto por uma unidade recorrente fechada (GRU, do
+inglês \textit{gated recurrent unit}), responsável por modelar
+o comportamento sequencial da sessão atual, enquanto que uma segunda GRU com
+mecanismo de atenção é responsável por codificar cada item de forma individual.
+A saída dessas duas unidades compõem um vetor de saída para o codificador interno.
+
+O codificador externo é uma matriz que registra as sessões mais recentes em
+ordem cronológica. Em seguida, é calculada a similaridade de cada uma em relação
+à sessão vigente. As maiores similaridades são selecionadas e utilizadas para
+calcular os pesos que compõem o vetor de saída do codificador.
+
+O decodificador de recomendação recebe os vetores de saída dos dois
+codificadores para calcular a probabilidade de um item candidato ser o próximo
+item em determinada sessão. Para maximizar a probabilidade de predição de um
+item que de fato foi selecionado, a função de custo por entropia cruzada é
+empregada.
+
 \subsection{Gru4Rec}
+Gru4Rec é uma RNN cuja função de ativação depende de uma
+função controladora para ativar os estados, permitindo que unidades
+da rede neural capturem diferentes escalas de tempo de forma
+adaptativa, o que evita a dissipação do vetor gradiente durante o
+treinamento \cite{gru4rec_1} \cite{gru4rec_2}.
+
+
 \subsection{NextItNet}
+Modela a probabilidade condicional de uma
+        sequência de itens a partir de uma rede neural convolucional cuja
+        arquitetura é modificada para receber sequências de itens, otimizando
+        o modelo\cite{nextitnet}.
 \subsection{NARM}
+Utiliza mecanismo de atenção em meio a
+        uma RNN de GRUs em uma etapa codificadora e outra decodificadora\cite{narm}.
+
 \subsection{SR-GNN}
+Modelo que contém uma rede neural em grafos
+cujo cada nó representa um item de uma sessão\cite{gnn}.
+
 \subsection{STAMP}
+Identifica padrões de curto prazo nas interações
+        dos usuários, combinando mecanismos de atenção de forma a priorizar
+        informações recentes\cite{stamp}.

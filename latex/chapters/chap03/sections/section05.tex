@@ -1,6 +1,25 @@
 \section{Redes Neurais \textit{Session-Aware}}
+
 \subsection{HGru4Rec}
+Utiliza um RNN hierárquica com duas GRUs
+  responsáveis por modelar a atividade do usuário dentro de sessões e
+  a atividade do usuário ao longo de diferentes sessões\cite{quadrana2017}.
+
 \subsection{IIRNN}
+Combina duas RNNs, tal que a primeira gera
+  recomendações com base nas interações na sessão atual, enquanto que a
+  segunda processa sessões recentes do mesmo usuário\cite{ruocco}.
+
 \subsection{NCSF}
+Contém um modelo intra-sessão e outro
+  inter-sessão, ambos são RNNs com GRUs e mecanismos de atenção.
+  
 \subsection{NSAR}
+Utiliza RNN com GRUs, representando os usuários
+e items como vetores (\textit{embeddings})\cite{interintra}.
+
+
 \subsection{SHAN}
+Utiliza uma rede de atenção hierárquica,
+capturando preferências de longo prazo com mecanismo de atenção e 
+combina com os interesses de curto prazo\cite{shan}.

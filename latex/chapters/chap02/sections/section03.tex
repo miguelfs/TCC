@@ -1,5 +1,70 @@
 \section{Sistemas de Recomendação \textit{Session-Based} e \textit{Session-Aware}}
-\subsection{\textit{Session-Based}}
-\subsection{\textit{Session-Aware}}
+
+Os sistemas de recomendação baseados em sessão (SBRS, do inglês
+ \textit{session-based recommendation systems}) são aplicáveis quando os dados
+ de entrada do modelo consistem em uma sequência de interações do usuário
+ durante uma mesma sessão de itens, tal que\cite{survey_wang_2021}:
+
+ \begin{equation*}
+  \begin{aligned}
+  U & = \{u_1, u_2, \ldots, u_{|U|}\}, \\
+  V & = \{v_1, v_2, \ldots, v_{|V|}\}, \\
+  u_n & = v_n, \\
+  U & = V.
+\end{aligned}
+\end{equation*}
+
+$U$ é o conjunto de todos os usuários existentes. O usuário $u$ equivale ao
+usuário que executa uma ação, como a criação de uma sessão. $V$ é o conjunto de
+todos os $v$ itens existentes. No caso do presente trabalho, em que deseja-se
+recomendar usuários a serem convidados, os conjuntos $U$ e $V$ são iguais nessa
+aplicação específica.
+
+\begin{equation*}
+  \begin{aligned}
+  A & = \{a_1, a_2, \ldots, a_{|A|}\}, \\
+  o & = <v, a>, \\
+  O & = \{o_1, o_2, \ldots, o_{|O|}\}
+  \end{aligned}
+  \end{equation*}
+$A$ é o conjunto das ações, tais como: criação de sessão, convite endereçado a
+  determinado usuário, gravação, etc. Cada $o$ interação é a tupla entre item e
+  ação, enquanto que $O$ é o conjunto de todas as interações.
+
+  A principal distinção entre SBRS e sistemas de recomendação \textit{session-aware}
+  é a ausência de identificação do usuário que realiza as ações sobre os itens.
+  Ou seja, no caso \textit{session-aware}:
+
+  \begin{equation}
+    o = <u, v, a>
+    \end{equation}
+  em que a interação é uma tupla entre usuário, item e ação.
+
+  \begin{equation*}
+  \begin{aligned}
+  s & = [o_1, o_2, \ldots, o_{|s|}], \\
+  S & = \{s_1, s_2, \ldots, s_{|S|}\}, \\
+  \hat{l} & = [\hat{o}_1, \hat{o}_2, \ldots, \hat{o}_{|\hat{l}|}].
+  \end{aligned}
+  \end{equation*}
+  
+    Por sua vez, a sessão $s$ é uma lista de
+  $|s|$ interações, tal que o conjunto de todas as sessões é dado por $S$.
+  A lista de $\hat{o}$ interações recomendadas é dada por $\hat{l}$,
+
+  O objetivo de um SBRS é selecionar uma lista recomendada de interações
+  que maximize a função de desempenho $f(s, c)$ condicionada ao contexto $c$ da
+  sessão $s$:
+  \[\hat{l} = \arg \max f(s, c), \quad c \in C, \quad s \in S.\]   
+
+ O contexto $c$ é definido como um conjunto de informações adicionais associadas
+  à sessão e que podem ser utilizadas para melhorar a assertividade das
+  recomendações.  Hora do dia, clima e localização do usuário são parâmetros os
+  quais podem ser incluídos por contexto. Dois exemplos de aplicações de SBRS
+  são a recomendação de músicas em uma sessão de execução \cite{music_2013} e
+  produtos a serem adicionados em um carrinho de compras virtual
+  \cite{shopping_cart_2023}.
+
 \subsection{Bases de comparação não-personalizadas}
+
 \subsection{Bases de comparação por extração de padrões}

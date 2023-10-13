@@ -13,6 +13,39 @@ item inédito a ele.
 \abbrev{$R_{m \times n}$}{matriz de avaliações com $m$ usuários e $n$ itens}
 \abbrev{$R_{uj}$}{avaliação do usuário $u$ ao item $j$}
 
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        \matrix (mat) [matrix of nodes,
+                       nodes in empty cells,
+                       nodes={minimum width=1.5cm,
+                              minimum height=1.5cm,
+                              outer sep=0pt,
+                              anchor=center,
+                              text centered,
+                              draw,
+                              fill=gray!20},
+                       row sep=-\pgflinewidth,
+                       column sep=-\pgflinewidth]
+        {
+        1 & 5 & & 3 & 4 \\    
+        1 & 5 & & 3 & 4 \\
+        2 & & 4 & & 2 \\
+        3 & 3 & & 5 & \\
+        };
+        % Row labels
+        \foreach \i in {1, 2,3,4} {
+            \node[left=0.5cm of mat-\i-1.west] {Usuário \i};
+        }
+        % Column labels
+        \foreach \i in {1,2,3,4,5} {
+            \node[above=0.5cm of mat-1-\i.north] {Item \i};
+        }
+    \end{tikzpicture}
+    \caption{Matriz de avaliações para filtragem colaborativa, $m=4$ e $n=5$.}
+    \label{fig:ratings_matrix}
+\end{figure}
+
 Para viabilizar a filtragem colaborativa, utiliza-se a matriz de avaliações
 $R_{m \times n}$, em que $m$ é a quantidade de usuários, $n$ é a quantidade de
 itens e $R_{uj}$ é a avaliação dada pelo usuário $u$ ao item $j$, quando
@@ -23,6 +56,10 @@ Em vez de preencher todos os valores faltantes de $R_{m \times n}$,
 determinam-se os $k$ itens mais relevantes para um usuário. Por questão de
 facilidade de preenchimento, as avaliações em $R_{m \times n}$ costumam ser
 valores discretos dentro de uma escala limitada ou valores binários.
+
+A prática mais comum é optar por alguma medida de similaridade entre vetores em
+um espaço de usuários ou itens, como o produto escalar normalizado, o cosseno
+entre dois vetores ou o coeficiente de correlação de Pearson.
 
 \subsubsection{Similaridade de Usuário}
 No domínio discreto, o coeficiente de correlação $r$ de Pearson entre dois vetores $x$ e $y$ de
@@ -155,7 +192,7 @@ baseada em itens e baseada em usuários, como descrito anteriormente.
 % \subsubsection{Abordagem enquanto problema de Regressão}
 % \subsubsection{Esparsidade e Viés}
 
-\subsection{Filtragem Colaborativa \textit{Model-based}}
+\subsection{Sistemas de Recomendação \textit{Model-based}}
 A filtragem colaborativa baseada em modelos é um método de aprendizado em que um
 modelo representativo dos dados é necessariamente criado primeiro, com etapas de
 treinamento e predição estritamente separadas. Essa característica  não é uma
@@ -176,16 +213,39 @@ independentes do conjunto de dados de treinamento, gerando a estimativa de um
 processo de causalidade a nós com hierarquia que se dividem e segue o processo
 decisório até o valor da variável dependente.
 
-obs adicionar imagem aqui.
-
-\begin{equation}
-    R_1 =\{x:x_1 \leqslant  t_1,x_2 \leqslant t_2\}
-\end{equation}
+\begin{figure}[h!]
+    \begin{center}
+\begin{tikzpicture}        
+    \tikzset{edge from parent/.style={draw,edge from parent path={(\tikzparentnode.south)-- +(0,-8pt)-| (\tikzchildnode)}}}
+    \Tree [.$x$
+    [.$x_{1}\leq t_{1}$
+    [.$x_{2}\leq t_{2}$
+    $R_1$ ]
+    [.$x_{2}\textgreater t_{2}$
+    $R_2$ ] ]
+    [.$x_{1}\textgreater t_{1}$
+    [.$x_{2}\leq t_{2}$  $R_3$ ]
+    [.$x_{2}\textgreater t_{2}$  $R_4$ ] ] ] ] ]
+\end{tikzpicture}    
+\end{center}
+\caption{Exemplo de árvore binária de decisão com folhas $R_1$, $R_2$, $R_3$ e $R_4$.}
+\label{fig:decision_tree}
+\end{figure}
 
 A árvore de decisão é definida como uma função do vetor de entrada $x$ e dos
 parâmetros $\theta$ do modelo, que são as folhas $R_j$ e os valores de saída
-$w_j$ das folhas \cite{pml1Book}. Caso os valores de entrada satisfaçam a
-condição de determinada folha, a saída correspondente é retornada:
+$w_j$ das folhas \cite{pml1Book}. Por exemplo, para a figura
+\ref{fig:decision_tree}, temos as folhas que são dadas formalmente por:
+
+\begin{align*}
+    R_1 &=\{x:x_1 \leqslant  t_1,x_2 \leqslant t_2\}\\
+    R_2 &=\{x:x_1 \leqslant  t_1,x_2 \textgreater t_2\}\\
+    R_3 &=\{x:x_1 \textgreater  t_1,x_2 \leqslant t_2\}\\
+    R_4 &=\{x:x_1 \textgreater  t_1,x_2 \textgreater t_2\}
+\end{align*}
+
+Caso os valores de entrada satisfaçam a condição de determinada folha, a saída
+correspondente é retornada:
 
 \begin{align}
     \theta &= \{(R_j, w_j) : j = 1 : J \} \\
@@ -337,13 +397,55 @@ simplificação:
     \hat{R}_{uj} = \mathrm{arg\,max}_{v_s} P(R_{uj} = v_s) \prod_{k \in I_{u}}^{N}P(R_{uk}|R_{uj} = v_s)
 \end{equation}
     
-\subsection{Baseados em Conteúdo}
-\subsubsection{Componentes básicos}
-\subsubsection{Propriedades básicas}
+\subsection{Sistemas de Recomendação Baseados em Conteúdo}
+
+Sistemas de recomendação baseados em conteúdo são utilizados em aplicações cujos
+itens são descritos por um conjunto de atributos. Por exemplo, um sistema de
+recomendação de filmes pode utilizar atributos como gênero, diretor, país de
+origem e ano de lançamento. Nesse caso, as avaliações do usuário sobre os demais
+itens e a similaridade entre os atributos são suficientes para gerar as
+recomendações.
+
+Uma segunda aplicação típica de sistemas baseados em conteúdo é a recomendação
+de itens com descrição textual e sem atributos explícitos. Documentos,
+mídias em texto, páginas \textit{web} também fazem parte desse tipo de
+aplicação. Nesses casos, é necessário extrair e selecionar termos e símbolos
+mais representativos do conteúdo.
+
+
+Ao contrário da filtragem colaborativa, os sistemas baseados em conteúdo não
+dependem de avaliações de outros usuários para gerar recomendações, o que é uma
+vantagem em cenários de \textit{cold-start} ou com poucos usuários na
+plataforma.
+
+% adicionar imagem comparando content based vs filtro colaborativo
+
+% Falar sobre feature selection e feature extraction
+\subsubsection{\textit{Feature selection}} Em um sistema baseado em conteúdo,
+utilizar todos os atributos disponíveis não é necessariamente a melhor
+abordagem, uma vez que isso acarreta em maior dimensionalidade do espaço de
+atributos, maior custo computacional e maior risco de \textit{overfitting} do
+modelo.
+
+
+A seleção de atributos, ou \textit{feature selection}, consiste em definir qual
+o conjunto ótimo de atributos dado o conjunto completo de
+atributos e uma função objetiva que deve ser minimizada ou maximizada. A função
+objetiva pode ser o índice de Gini, a entropia, a informação mútua, etc.
+
 \subsubsection{kNN}
+O algoritmo kNN (do inglês \textit{k-nearest neighbors}) é um método de
+aprendizado supervisionado utilizado geralmente para tarefas de classificação. O
+algoritmo considera a similaridade e a proximidade entre vetores de atributos
+para classificá-los.
 \subsubsection{rule-based Classifiers}
 
 \subsection{Knowledge-based}
+Sistemas \textit{knowledge-based} são similares aos baseados em conteúdo, mas
+com a diferença de que o usuário pode especificar explicitamente suas
+preferências, enquanto
+que nos sistemas baseados em conteúdo as preferências são inferidas a partir do
+histórico de avaliações do usuário.
 \subsubsection{Constraint-based}
 \subsubsection{Case-based}
 
@@ -357,9 +459,3 @@ simplificação:
 \subsection{Avaliação de Sistemas de Recomendação}
 - online/offline evaluation
 - métricas
-
-
-
-
-% \subsection{Similaridade de Usuário}
-% \subsection{Similaridade de Item}

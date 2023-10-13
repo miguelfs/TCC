@@ -19,6 +19,51 @@
   publisher={Springer}
 }
 
+@book{mitchell1997,
+  title={Machine Learning},
+  author={Mitchell, Tom},
+  year={1997},
+  publisher={McGraw-Hill},
+  address={Boston, MA, Estados Unidos}
+}
+
+  @inproceedings{shopping_cart_2023,
+author = {Ariannezhad, Mozhdeh and Li, Ming and Schelter, Sebastian and de Rijke, Maarten},
+title = {A Personalized Neighborhood-Based Model for Within-Basket Recommendation in Grocery Shopping},
+year = {2023},
+isbn = {9781450394079},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3539597.3570417},
+doi = {10.1145/3539597.3570417},
+abstract = {Users of online shopping platforms typically purchase multiple items at a time in the form of a shopping basket. Personalized within-basket recommendation is the task of recommending items to complete an incomplete basket during a shopping session. In contrast to the related task of session-based recommendation, where the goal is to complete an ongoing anonymous session, we have access to the shopping history of the user in within-basket recommendation. Previous studies have shown the superiority of neighborhood-based models for session-based recommendation and the importance of personal history in the grocery shopping domain. But their applicability in within-basket recommendation remains unexplored.We propose PerNIR, a neighborhood-based model that explicitly models the personal history of users for within-basket recommendation in grocery shopping. The main novelty of PerNIR is in modeling the short-term interests of users, which are represented by the current basket, as well as their long-term interest, which is reflected in their purchasing history. In addition to the personal history, user neighbors are used to capture the collaborative purchase behavior. We evaluate PerNIR on two public and proprietary datasets. The experimental results show that it outperforms 10 state-of-the-art competitors with a significant margin, i.e., with gains of more than 12% in terms of hit rate over the second best performing approach. Additionally, we showcase an optimized implementation of our method, which computes recommendations fast enough for real-world production scenarios.},
+booktitle = {Proceedings of the Sixteenth ACM International Conference on Web Search and Data Mining},
+pages = {87–95},
+numpages = {9},
+keywords = {grocery shopping, nearest neighbors, within-basket recommendation},
+location = {Singapore, Singapore},
+series = {WSDM '23}
+}
+
+@book{aggarwal2016recommender,
+  title={Recommender Systems: The Textbook},
+  author={Aggarwal, Charu C},
+  volume={1},
+  year={2016},
+  publisher={Springer},
+  address={Nova Iorque, Estados Unidos},
+}
+
+@INPROCEEDINGS{music_2013,
+  author={Dias, Ricardo and Fonseca, Manuel J.},
+  booktitle={2013 IEEE 25th International Conference on Tools with Artificial Intelligence}, 
+  title={Improving Music Recommendation in Session-Based Collaborative Filtering by Using Temporal Context}, 
+  year={2013},
+  volume={},
+  number={},
+  pages={783-788},
+  doi={10.1109/ICTAI.2013.120}}
+
 @article{survey_wang_2021,
 author = {Wang, Shoujin and Cao, Longbing and Wang, Yan and Sheng, Quan Z. and Orgun, Mehmet A. and Lian, Defu},
 title = {A Survey on Session-Based Recommender Systems},
@@ -137,6 +182,15 @@ numpages = {60},
   address={Cambridge, Reino Unido}
 }
 
+@article{kumar2014feature,
+  title={Feature selection: a literature review},
+  author={Kumar, Vipin and Minz, Sonajharia},
+  journal={Smart Computing Review},
+  volume={4},
+  number={3},
+  pages={211--229},
+  year={2014}
+}
 
 @article{ordonez2011evaluating,
   title={Evaluating association rules and decision trees to predict multiple target attributes},
@@ -214,6 +268,202 @@ numpages = {60},
   institution = {Nvidia},
   url         = {https://resources.nvidia.com/en-us-recsys-white-paper/merlin-technical-ove},
 }
+
+@inproceedings{collaborative2018,
+author = {Wang, Meirui and Ren, Pengjie and Mei, Lei and Chen, Zhumin and Ma, Jun and de Rijke, Maarten},
+title = {A Collaborative Session-Based Recommendation Approach with Parallel Memory Modules},
+year = {2019},
+isbn = {9781450361729},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3331184.3331210},
+doi = {10.1145/3331184.3331210},
+abstract = {Session-based recommendation is the task of predicting the next item to recommend when the only available information consists of anonymous behavior sequences. Previous methods for session-based recommendation focus mostly on the current session, ignoring collaborative information in so-called neighborhood sessions, sessions that have been generated previously by other users and reflect similar user intents as the current session. We hypothesize that the collaborative information contained in such neighborhood sessions may help to improve recommendation performance for the current session.We propose a Collaborative Session-based Recommendation Machine (CSRM), a novel hybrid framework to apply collaborative neighborhood information to session-based recommendations. CSRM consists of two parallel modules: an Inner Memory Encoder (IME) and an Outer Memory Encoder (OME). The IME models a user's own information in the current session with the help of Recurrent Neural Networks (RNNs) and an attention mechanism. The OME exploits collaborative information to better predict the intent of current sessions by investigating neighborhood sessions. Then, a fusion gating mechanism is used to selectively combine information from the IME and OME so as to obtain the final representation of the current session. Finally, CSRM obtains a recommendation score for each candidate item by computing a bilinear match with the final representation.Experimental results on three public datasets demonstrate the effectiveness of CSRM compared to state-of-the-art session-based recommender systems. Our analysis of CSRM's recommendation process shows when and how collaborative neighborhood information and the fusion gating mechanism positively impact the performance of session-based recommendations.},
+booktitle = {Proceedings of the 42nd International ACM SIGIR Conference on Research and Development in Information Retrieval},
+pages = {345–354},
+numpages = {10},
+keywords = {collaborative modeling, memory network, session-based recommendation},
+location = {Paris, France},
+series = {SIGIR'19}
+}
+
+@article{chung2014empirical,
+  title={Empirical evaluation of gated recurrent neural networks on sequence modeling},
+  author={Chung, Junyoung and Gulcehre, Caglar and Cho, KyungHyun and Bengio, Yoshua},
+  journal={arXiv preprint arXiv:1412.3555},
+  year={2014}
+}
+
+
+@article{gnn, title={Session-Based Recommendation with Graph Neural Networks}, volume={33}, url={https://ojs.aaai.org/index.php/AAAI/article/view/3804}, DOI={10.1609/aaai.v33i01.3301346}, abstractNote={&lt;p&gt;The problem of session-based recommendation aims to predict user actions based on anonymous sessions. Previous methods model a session as a sequence and estimate user representations besides item representations to make recommendations. Though achieved promising results, they are insufficient to obtain accurate user vectors in sessions and neglect complex transitions of items. To obtain accurate item embedding and take complex transitions of items into account, we propose a novel method, i.e. &lt;em&gt;Session-based Recommendation with Graph Neural Networks&lt;/em&gt;, SR-GNN for brevity. In the proposed method, session sequences are modeled as graphstructured data. Based on the session graph, GNN can capture complex transitions of items, which are difficult to be revealed by previous conventional sequential methods. Each session is then represented as the composition of the global preference and the current interest of that session using an attention network. Extensive experiments conducted on two real datasets show that SR-GNN evidently outperforms the state-of-the-art session-based recommendation methods consistently.&lt;/p&gt;}, number={01}, journal={Proceedings of the AAAI Conference on Artificial Intelligence}, author={Wu, Shu and Tang, Yuyuan and Zhu, Yanqiao and Wang, Liang and Xie, Xing and Tan, Tieniu}, year={2019}, month={Jul.}, pages={346-353} }
+
+
+
+
+@inproceedings{nextitnet,
+author = {Yuan, Fajie and Karatzoglou, Alexandros and Arapakis, Ioannis and Jose, Joemon and He, Xiangnan},
+year = {2019},
+month = {01},
+pages = {582-590},
+title = {A Simple Convolutional Generative Network for Next Item Recommendation},
+isbn = {978-1-4503-5940-5},
+booktitle = {WSDM '19: Proceedings of the Twelfth ACM International Conference on Web Search and Data Mining},
+doi = {10.1145/3289600.3290975}
+}
+
+@article{gru4rec_1,
+  title={Session-based recommendations with recurrent neural networks},
+  author={Hidasi, Bal{\'a}zs and Karatzoglou, Alexandros and Baltrunas, Linas and Tikk, Domonkos},
+  journal={arXiv preprint arXiv:1511.06939},
+  year={2015}
+}
+
+@inproceedings{gru4rec_2,
+author = {Hidasi, Bal\'{a}zs and Karatzoglou, Alexandros},
+title = {Recurrent Neural Networks with Top-k Gains for Session-Based Recommendations},
+year = {2018},
+isbn = {9781450360142},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3269206.3271761},
+doi = {10.1145/3269206.3271761},
+abstract = {RNNs have been shown to be excellent models for sequential data and in particular for data that is generated by users in an session-based manner. The use of RNNs provides impressive performance benefits over classical methods in session-based recommendations. In this work we introduce novel ranking loss functions tailored to RNNs in the recommendation setting. The improved performance of these losses over alternatives, along with further tricks and refinements described in this work, allow for an overall improvement of up to 35% in terms of MRR and Recall@20 over previous session-based RNN solutions and up to 53% over classical collaborative filtering approaches. Unlike data augmentation-based improvements, our method does not increase training times significantly. We further demonstrate the performance gain of the RNN over baselines in an online A/B test.},
+booktitle = {Proceedings of the 27th ACM International Conference on Information and Knowledge Management},
+pages = {843–852},
+numpages = {10},
+keywords = {recommender systems, recurrent neural networks, ranking, loss function, session-based recommendation},
+location = {Torino, Italy},
+series = {CIKM '18}
+}
+
+
+@inproceedings{stamp,
+author = {Liu, Qiao and Zeng, Yifu and Mokhosi, Refuoe and Zhang, Haibin},
+year = {2018},
+month = {07},
+pages = {1831-1839},
+title = {STAMP: Short-Term Attention/Memory Priority Model for Session-based Recommendation},
+doi = {10.1145/3219819.3219950}
+}
+
+
+@inproceedings{fuse,
+author = {He, Ruining and McAuley, Julian},
+year = {2016},
+month = {12},
+pages = {191-200},
+title = {Fusing Similarity Models with Markov Chains for Sparse Sequential Recommendation},
+doi = {10.1109/ICDM.2016.0030}
+}
+
+
+@article{interintra,
+author = {Hu, Liang and Chen, Qingkui and Zhao, Haiyan and Jian, Songlei and Cao, Longbing and Cao, Jian},
+title = {Neural Cross-Session Filtering: Next-Item Prediction Under Intra- and Inter-Session Context},
+year = {2018},
+issue_date = {November 2018},
+publisher = {IEEE Educational Activities Department},
+address = {USA},
+volume = {33},
+number = {6},
+issn = {1541-1672},
+url = {https://doi.org/10.1109/MIS.2018.2881516},
+doi = {10.1109/MIS.2018.2881516},
+abstract = {Classic recommender systems (RSs) often repeatedly recommend similar items to user historical profiles or recent purchases. For this, session-based RSs (SBRSs) are extensively studied in recent years. Current SBRSs often assume a rigid-order sequence, which does not fit in many real-world cases. In fact, the next-item recommendation depends on not only current session context but also historical sessions which are often neglected by current SBRSs. Accordingly, an SBRS over relaxed-order sequences with both intra- and inter-context is more pragmatic. Inspired by the successful experience in modern language modeling, we design an efficient neural architecture to model both intra- and inter-context for next item prediction.},
+journal = {IEEE Intelligent Systems},
+month = {nov},
+pages = {57–67},
+numpages = {11}
+}
+
+
+@inproceedings{mkv,
+author = {Rendle, Steffen and Freudenthaler, Christoph and Schmidt-Thieme, Lars},
+title = {Factorizing Personalized Markov Chains for Next-Basket Recommendation},
+year = {2010},
+isbn = {9781605587998},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1772690.1772773},
+doi = {10.1145/1772690.1772773},
+abstract = {Recommender systems are an important component of many websites. Two of the most popular approaches are based on matrix factorization (MF) and Markov chains (MC). MF methods learn the general taste of a user by factorizing the matrix over observed user-item preferences. On the other hand, MC methods model sequential behavior by learning a transition graph over items that is used to predict the next action based on the recent actions of a user. In this paper, we present a method bringing both approaches together. Our method is based on personalized transition graphs over underlying Markov chains. That means for each user an own transition matrix is learned - thus in total the method uses a transition cube. As the observations for estimating the transitions are usually very limited, our method factorizes the transition cube with a pairwise interaction model which is a special case of the Tucker Decomposition. We show that our factorized personalized MC (FPMC) model subsumes both a common Markov chain and the normal matrix factorization model. For learning the model parameters, we introduce an adaption of the Bayesian Personalized Ranking (BPR) framework for sequential basket data. Empirically, we show that our FPMC model outperforms both the common matrix factorization and the unpersonalized MC model both learned with and without factorization.},
+booktitle = {Proceedings of the 19th International Conference on World Wide Web},
+pages = {811–820},
+numpages = {10},
+keywords = {matrix factorization, markov chain, basket recommendation},
+location = {Raleigh, North Carolina, USA},
+series = {WWW '10}
+}
+
+
+@inproceedings{shan,
+author = {Ying, Haochao and Zhuang, Fuzhen and Zhang, Fuzheng and Liu, Yanchi and Xu, Guandong and Xie, Xing and Xiong, Hui and Wu, Jian},
+title = {Sequential Recommender System Based on Hierarchical Attention Network},
+year = {2018},
+isbn = {9780999241127},
+publisher = {AAAI Press},
+abstract = {With a large amount of user activity data accumulated, it is crucial to exploit user sequential behavior for sequential recommendations. Conventionally, user general taste and recent demand are combined to promote recommendation performances. However, existing methods often neglect that user long-term preference keep evolving over time, and building a static representation for user general taste may not adequately reflect the dynamic characters. Moreover, they integrate user-item or itemitem interactions through a linear way which limits the capability of model. To this end, in this paper, we propose a novel two-layer hierarchical attention network, which takes the above properties into account, to recommend the next item user might be interested. Specifically, the first attention layer learns user long-term preferences based on the historical purchased item representation, while the second one outputs final user representation through coupling user long-term and short-term preferences. The experimental study demonstrates the superiority of our method compared with other state-of-the-art ones.},
+booktitle = {Proceedings of the 27th International Joint Conference on Artificial Intelligence},
+pages = {3926–3932},
+numpages = {7},
+location = {Stockholm, Sweden},
+series = {IJCAI'18}
+}
+@inproceedings{ruocco,
+author = {Ruocco, Massimiliano and Skrede, Ole Steinar Lillest\o{}l and Langseth, Helge},
+title = {Inter-Session Modeling for Session-Based Recommendation},
+year = {2017},
+isbn = {9781450353533},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3125486.3125491},
+doi = {10.1145/3125486.3125491},
+abstract = {In recent years, research has been done on applying Recurrent Neural Networks (RNNs) as recommender systems. Results have been promising, especially in the session-based setting where RNNs have been shown to outperform state-of-the-art models. In many of these experiments, the RNN could potentially improve the recommendations by utilizing information about the user's past sessions, in addition to its own interactions in the current session. A problem for session-based recommendation, is how to produce accurate recommendations at the start of a session, before the system has learned much about the user's current interests. We propose a novel approach that extends an RNN recommender to be able to process the user's recent sessions, in order to improve recommendations. This is done by using a second RNN to learn from recent sessions, and predict the user's interest in the current session. By feeding this information to the original RNN, it is able to improve its recommendations. Our experiments on two different datasets show that the proposed approach can significantly improve recommendations throughout the sessions, compared to a single RNN working only on the current session. The proposed model especially improves recommendations at the start of sessions, and is therefore able to deal with the cold start problem within sessions.},
+booktitle = {Proceedings of the 2nd Workshop on Deep Learning for Recommender Systems},
+pages = {24–31},
+numpages = {8},
+keywords = {Session-Based Recommendation, Recurrent Neural Network, Recommender Systems},
+location = {Como, Italy},
+series = {DLRS 2017}
+}
+@inproceedings{narm,
+author = {Li, Jing and Ren, Pengjie and Chen, Zhumin and Ren, Zhaochun and Lian, Tao and Ma, Jun},
+title = {Neural Attentive Session-Based Recommendation},
+year = {2017},
+isbn = {9781450349185},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3132847.3132926},
+doi = {10.1145/3132847.3132926},
+abstract = {Given e-commerce scenarios that user profiles are invisible, session-based recommendation is proposed to generate recommendation results from short sessions. Previous work only considers the user's sequential behavior in the current session, whereas the user's main purpose in the current session is not emphasized. In this paper, we propose a novel neural networks framework, i.e., Neural Attentive Recommendation Machine (NARM), to tackle this problem. Specifically, we explore a hybrid encoder with an attention mechanism to model the user's sequential behavior and capture the user's main purpose in the current session, which are combined as a unified session representation later. We then compute the recommendation scores for each candidate item with a bi-linear matching scheme based on this unified session representation. We train NARM by jointly learning the item and session representations as well as their matchings. We carried out extensive experiments on two benchmark datasets. Our experimental results show that NARM outperforms state-of-the-art baselines on both datasets. Furthermore, we also find that NARM achieves a significant improvement on long sessions, which demonstrates its advantages in modeling the user's sequential behavior and main purpose simultaneously.},
+booktitle = {Proceedings of the 2017 ACM on Conference on Information and Knowledge Management},
+pages = {1419–1428},
+numpages = {10},
+keywords = {attention mechanism, recurrent neural networks, sequential behavior, session-based recommendation},
+location = {Singapore, Singapore},
+series = {CIKM '17}
+}
+
+
+@article{quadrana2017,
+  author       = {Massimo Quadrana and
+                  Alexandros Karatzoglou and
+                  Bal{\'{a}}zs Hidasi and
+                  Paolo Cremonesi},
+  title        = {Personalizing Session-based Recommendations with Hierarchical Recurrent
+                  Neural Networks},
+  journal      = {CoRR},
+  volume       = {abs/1706.04148},
+  year         = {2017},
+  url          = {http://arxiv.org/abs/1706.04148},
+  eprinttype    = {arXiv},
+  eprint       = {1706.04148},
+  timestamp    = {Mon, 13 Aug 2018 16:46:29 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/QuadranaKHC17.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % mudar para tech report
