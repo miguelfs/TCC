@@ -12,6 +12,9 @@
 \usepackage{forest}
 \usepackage{tikz-qtree}
 \usepackage{csvsimple}
+\usepackage{rotating}
+\usepackage{multirow}
+\usepackage{booktabs}
 \usetikzlibrary{arrows, shapes, matrix, automata, positioning}
 \usepgflibrary{shapes.callouts}
 \usepackage{float}
@@ -121,11 +124,15 @@
   \input{chapters/chap05/chap05.tex}
   %%________________________
 
+
+
   \backmatter
   
   \bibliographystyle{coppe-unsrt}
   \bibliography{main}
 
   \appendix
-  % \chapter{Algumas Demonstra{\c c}\~oes}
+  \chapter{Algumas Demonstra{\c c}\~oes}
+  \input{chapters/appendix/appendix.tex}
+
 \end{document}

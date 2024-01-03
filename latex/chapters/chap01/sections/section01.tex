@@ -1,5 +1,144 @@
 \section{Motivação}
 
+A música, enquanto atividade e produto, permite o estabelecimento de laços sociais
+entre musicistas e ouvintes.
+
+A atividade musical permite que um conjunto de musicistas interaja e
+comunique-se, facilitada quando os membros compartilham de uma mesma bagagem
+cultural. Além disso, permite que a audiência estabeleça um vínculo com
+o músico executor ou o conjunto de musicistas \cite{cook2021music}.
+
+Por sua vez, a música enquanto produto permite o estabelecimento de laços sociais
+entre os ouvintes, seja em uma sala de concerto no século XIX, em uma sala de estar
+com um rádio ou um gramofone no século XX, ou em uma apresentação ao vivo na
+plataforma Twitch no século XXI.
+
+Durante a pandemia de COVID-19, estudantes de música precisaram adaptar seus
+hábitos de prática musical para aulas remotas e práticas individuais. A prática
+coletiva foi fortemente afetada, uma vez que as aulas e os ensaios presenciais
+foram suspensos em uma série de instituições de ensino, dado o risco de
+contaminação e a necessidade de distanciamento social \cite{nusseck2021musical}.
+
+A prática remota síncrona, hoje, enfrenta uma série de desafios técnicos. A
+latência entre os praticantes é o principal problema. O limiar da percepção
+auditiva para atrasos é de cerca de 20 milissegundos, enquanto que sistemas VoIP
+com latência de 150 milissegundos e \textit{jitter} de 30 milissegundos são
+considerados de boa qualidade. A codificação associada à compressão do sinal e a
+largura de banda também influenciam no atraso. Enquanto a latência em uma
+comunicação instantânea não for inferior ao limiar da percepção, essa forma de
+prática musical não será viável.
+
+A principal alternativa é a prática musical colaborativa assíncrona. Nesse
+cenário, cada praticante grava sua faixa de forma individual enquanto ouve as
+demais faixas gravadas. Aplicações como \textit{BandLab}, \textit{Ableton Live}
+e \textit{Soundtrap by Spotify} funcionam sob essa abordagem.
+
+Uma segunda característica da prática musical coletiva, seja no contexto
+presencial ou remoto, é depender que uma pessoa tenha os meios de encontrar
+outros interessados com gostos musicais similares, instrumentos que se
+complementem, etc. Uma pessoa que deseja tocar um estilo musical específico,
+incomum na região em que vive, sofreria dessa dificuldade. Um meio de resolver
+esse problema é a partir de comunidades virtuais ou redes sociais. Ao encontrar
+outros interessados, caso a distância impeça a prática presencial, a atividade
+pode ser realizada a partir da prática musical colaborativa assíncrona.
+Plataformas como \textit{Cifra Club} e \textit{Ultimate Guitar} permitem que
+usuários contribuam com tablaturas de músicas e comentários, formando uma
+comunidade virtual.
+
+
+Tanto a prática musical colaborativa assíncrona quanto a formação de comunidades
+virtuais de música são problemas os quais o mercado não oferecia uma solução
+integrada. \textit{Bandlab} e \textit{Ableton Live} não contam com uma camada de
+interação, descoberta e recomendação de usuários. \textit{Cifra Club} e
+\textit{Ultimate Guitar} não permitem a gravação colaborativa de forma
+assíncrona. A aplicação \textit{Collab}, da Meta, preenchia parcialmente esses
+critérios antes de ser descontinuado, apesar de seus usuários estabelecerem a comunicação via
+\textit{Discord}. O aplicativo móvel Indaband foi criado para ocupar esse
+espaço não preenchido no mercado.
+
+\subsection{Indaband}
+
+\begin{figure}[h]
+    \centering
+    \subfigure[]{\includegraphics[width=0.24\textwidth]{chapters/chap01/images/inda/inda3.PNG}}
+    \subfigure[]{\includegraphics[width=0.24\textwidth]{chapters/chap01/images/inda/inda.PNG}}
+    \subfigure[]{\includegraphics[width=0.24\textwidth]{chapters/chap01/images/inda/inda2.PNG}}
+    \subfigure[]{\includegraphics[width=0.24\textwidth]{chapters/chap01/images/inda/inda4.PNG}}
+    \caption{Recursos do \textit{app Indaband}: (a) \textit{Home} (b) \textit{Feed} (c)
+    \textit{Feed} (d) \textit{Studio}.}
+    \label{fig:cap_tela}
+\end{figure}
+
+Indaband é uma aplicação móvel para distribuição e gravação de música
+colaborativa e remota \cite{indaband}. A versão inicial foi disponibilizada
+publicamente em Agosto de 2022. O quadro de funcionários é majoritariamente
+brasileiro, enquanto que o produto possui distribuição global.
+
+
+
+Na aplicação, usuários podem criar sessões, que são ambientes colaborativos de
+gravação entre os participantes. As sessões contam com ferramentas para gravação
+e mixagem. O ambiente de pré-visualização, edição e produção da sessão chama-se
+\textit{Studio}.
+
+Uma vez que o usuário conclua as etapas de produção da sessão no \textit{Studio}
+e esteja satisfeito com o resultado final, ele tem a opção de publicar a sessão
+no \textit{Feed} público da aplicação. No \textit{Feed}, todos os usuários da
+plataforma podem visualizar e interagir com a sessão publicada
+adicionando comentários, compartilhando com outros usuários dentro e fora da
+aplicação, etc.
+
+Após três anos de desenvolvimento, a aplicação conta com dezenas de milhares de
+usuários visitantes, os quais centenas de usuários que gravam mensalmente. Dado
+o catálogo grande de usuários, o processo de encontrar pessoas com interesses
+similares demanda tempo e esforço. O mesmo ocorre ao procurar uma sessão que
+seja de interesse em meio ao excesso de conteúdo publicado. Essa dificuldade
+percebida pelo usuário é consequência da sobrecarga de informação.
+
+\subsection{Sobrecarga de informação}
+\vspace{0.2cm}
+\begin{figure}[h]
+    \begin{tikzpicture}
+    % Eixo X
+    \draw[->] (0,0) -- (6,0) node[right] {Carga de Informação};
+    % Eixo Y
+    \draw[->] (0,0) -- (0,5) node[above] {Desempenho da Tomada de Decisão};
+  
+    % Curva U invertida
+    \draw[blue, domain=0:5, samples=100] plot (\x, {3*\x - 0.5*\x*\x});
+  
+    % Pontos de interesse
+    \fill (0,4.5) circle (2pt) node[left] {Desempenho Ótimo};
+    \fill (3,0) circle (2pt) node[below] {Limiar de Sobrecarga};
+
+    % Linhas tracejadas
+    \draw[dashed] (0,4.5) -- (3,4.5);
+    \draw[dashed] (3,0) -- (3,4.5);
+  \end{tikzpicture}
+   % Descrição
+    \caption{Correspondência entre a carga de informação e o desempenho da tomada
+    de decisão.}
+    \label{fig:u_invertida}
+\end{figure}
+\vspace{0.2cm}
+A sobrecarga de informação, segundo \citet{roetzel2019information}, é um estado em que um tomador de decisões observa um
+conjunto ou uma carga de informações de complexidades distintas, a qual inibe a
+capacidade do tomador de decisões de determinar de forma ótima a melhor decisão
+possível. O uso subótimo de informações é causado
+pela limitação de recursos individuais escassos. Um recurso escasso pode ser uma
+característica individual (como capacidade de processamento em série, memória de
+curto prazo) ou equipamento relacionado à tarefa (por exemplo, orçamento ou
+tempo para tomar uma decisão). A probabilidade de alcançar a melhor decisão
+possível é definida como o desempenho de tomada de decisão. A correspondência
+entre a carga de informação e o desempenho da tomada de decisão é ilustrada na
+Figura \ref{fig:u_invertida} \cite{roetzel2019information}.
+
+Experimentos realizados por \citet{liang2006personalized} mostraram que, ao
+avaliar a satisfação de voluntários com um sistema de recomendação de notícias,
+a precisão do conteúdo recomendado sob personalização e o número de itens
+recomendados influenciam diretamente na satisfação do usuário, reduzindo a
+sobrecarga de informação e a insatisfação gerada pela sobrecarga.
+
 \subsection{Sistemas de Recomendação}
 
 \abbrev{RS}{sistemas de recomendação}
@@ -41,109 +180,20 @@ notícias é um exemplo de recomendação não-personalizada
     \label{fig:twitter}
 \end{figure}
 
-\subsection{Sobrecarga de informação}
-A sobrecarga de informação, segundo \citet{roetzel2019information}, é um estado em que um tomador de decisões observa um
-conjunto ou uma carga de informações de complexidades distintas, a qual inibe a
-capacidade do tomador de decisões de determinar de forma ótima a melhor decisão
-possível. O uso subótimo de informações é causado
-pela limitação de recursos individuais escassos. Um recurso escasso pode ser uma
-característica individual (como capacidade de processamento em série, memória de
-curto prazo) ou equipamento relacionado à tarefa (por exemplo, orçamento ou
-tempo para tomar uma decisão). A probabilidade de alcançar a melhor decisão
-possível é definida como o desempenho de tomada de decisão. A correspondência
-entre a carga de informação e o desempenho da tomada de decisão é ilustrada na
-Figura \ref{fig:u_invertida} \cite{roetzel2019information}.
-
-
-\vspace{0.2cm}
-\begin{figure}[h]
-    \begin{tikzpicture}
-    % Eixo X
-    \draw[->] (0,0) -- (6,0) node[right] {Carga de Informação};
-    % Eixo Y
-    \draw[->] (0,0) -- (0,5) node[above] {Desempenho da Tomada de Decisão};
-  
-    % Curva U invertida
-    \draw[blue, domain=0:5, samples=100] plot (\x, {3*\x - 0.5*\x*\x});
-  
-    % Pontos de interesse
-    \fill (0,4.5) circle (2pt) node[left] {Desempenho Ótimo};
-    \fill (3,0) circle (2pt) node[below] {Limiar de Sobrecarga};
-
-    % Linhas tracejadas
-    \draw[dashed] (0,4.5) -- (3,4.5);
-    \draw[dashed] (3,0) -- (3,4.5);
-  \end{tikzpicture}
-   % Descrição
-    \caption{Correspondência entre a carga de informação e o desempenho da tomada
-    de decisão.}
-    \label{fig:u_invertida}
-\end{figure}
-\vspace{0.2cm}
-
-Experimentos realizados por \citet{liang2006personalized} mostraram que, ao
-avaliar a satisfação de voluntários com um sistema de recomendação de notícias,
-a precisão do conteúdo recomendado sob personalização e o número de itens
-recomendados influenciam diretamente na satisfação do usuário, reduzindo a
-sobrecarga de informação e a insatisfação gerada pela sobrecarga.
-
-\subsection{Indaband}
-
-Indaband é uma aplicação móvel para distribuição e gravação de música
-colaborativa e remota \cite{indaband}. A versão inicial foi disponibilizada
-publicamente em Agosto de 2022. O quadro de funcionários é majoritariamente
-brasileiro, enquanto que o produto possui distribuição global.
-
-Na aplicação, usuários podem criar sessões, que são ambientes colaborativos de
-gravação entre os participantes. As sessões contam com ferramentas para gravação
-e mixagem. O ambiente de pré-visualização, edição e produção da sessão chama-se
-\textit{Studio}.
-\vspace{0.2cm}
-
-\begin{figure}[h]
-    \centering
-    \subfigure[]{\includegraphics[width=0.24\textwidth]{chapters/chap01/images/inda/inda3.PNG}}
-    \subfigure[]{\includegraphics[width=0.24\textwidth]{chapters/chap01/images/inda/inda.PNG}}
-    \subfigure[]{\includegraphics[width=0.24\textwidth]{chapters/chap01/images/inda/inda2.PNG}}
-    \subfigure[]{\includegraphics[width=0.24\textwidth]{chapters/chap01/images/inda/inda4.PNG}}
-    \caption{Exemplos de telas: (a) \textit{Home} (b) \textit{Feed} (c)
-    \textit{Feed} (d) \textit{Studio}.}
-    \label{fig:cap_tela}
-\end{figure}
-
-Uma vez que o usuário conclua as etapas de produção da sessão no \textit{Studio}
-e esteja satisfeito com o resultado final, ele tem a opção de publicar a sessão
-no \textit{Feed} público da aplicação. No \textit{Feed}, todos os usuários da
-plataforma podem visualizar e interagir com a sessão publicada
-adicionando comentários, compartilhando com outros usuários dentro e fora da
-aplicação, etc.
-\vspace{0.6cm}
-
 \subsection{Sistemas de Recomendação Baseados em Sessão}
 
 % Sistemas de Recomendação Baseados em Sessão (SBRS, do inglês
 % \textit{session-based recommender systems}) são sistemas de recomendação que 
 Abordagens mais tradicionais em sistemas de recomendação modelam as interações
-usuário-item na forma de uma matriz esparsa de avaliações, em que cada linha
-representa um usuário e cada coluna representa um item. A tarefa em questão se
+usuário-item na forma de uma matriz esparsa de avaliações. Cada linha da matriz
+representa um usuário e cada coluna representa um item.
+
+A tarefa em questão se
 resume ao preenchimento dos valores faltantes da matriz, a depender da
-abordagem escolhida \cite{}. Valores preenchidos com avaliações altas são recomendados
-ao usuário, uma vez que ele ainda não os consumiu.
+abordagem escolhida. Valores preenchidos com avaliações altas são recomendados
+ao usuário, uma vez que ele ainda não os consumiu, tal como ilustrado
+na figura \ref{fig:matriz_15}.
 
-Por mais que a matriz de avaliações seja uma forma intuitiva de representação,
-viabilizando uma boa variedade de modelos, trata-se de uma forma que
-desconsidera o contexto temporal das interações ou a sequência específica de
-itens que determinado usuário interagiu. Sistemas de Recomendação Baseados em
-Sessão (SBRS, do inglês \textit{session-based recommender systems}) atuam
-justamente nesse cenário.
-
-Os SBRS se caracterizam por terem seus dados representados em sequências
-temporalmente ordenadas de interações. Essas sequências são chamadas sessões. O
-objetivo de um SBRS é prever a próxima interação do usuário durante uma sessão
-em andamento.
-
-
-    
 
 \begin{figure}[h]
     \centering
@@ -171,8 +221,30 @@ em andamento.
           ] at (m-1-\col.north) {\label};
         }
       \end{tikzpicture}
-    \caption{Matriz de avaliações para produtos de um comércio eletrônico. A predição atua sobre as avaliações faltantes.}
+      \caption{Matriz de avaliações para produtos de um comércio eletrônico. A predição atua sobre as avaliações não preenchidas.}
+      \label{fig:matriz_15}
 \end{figure}
+
+Por mais que a matriz de avaliações seja uma forma intuitiva de representação,
+viabilizando uma boa variedade de modelos, trata-se de uma forma que
+desconsidera o contexto temporal das interações ou a sequência específica de
+itens que determinado usuário interagiu. Sistemas de Recomendação Baseados em
+Sessão (SBRS, do inglês \textit{session-based recommender systems}) atuam
+justamente nesse cenário.
+
+Os SBRS se caracterizam por terem seus dados representados em um conjunto
+delimitado de interações, denominado sessão. Uma sessão pode conter uma
+sequência temporalmente ordenada de ações executadas por um usuário, ou um
+conjunto de ações executadas por um usuário anônimo sem uma ordem específica.
+Os objetivos de um SBRS
+incluem prever a próxima interação do usuário durante uma sessão em andamento,
+recomendar o próximo item ou um conjunto de itens para uma sessão, ou ainda
+recomendar uma sessão inteira \cite{domingues_large_2023, survey_wang_2021}.
+
+
+    
+
+
 
 \begin{figure}[h]
     \centering

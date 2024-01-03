@@ -1,25 +1,146 @@
 \section{Redes Neurais \textit{Session-Aware}}
 
 \subsection{HGru4Rec}
-Utiliza um RNN hierárquica com duas GRUs
-  responsáveis por modelar a atividade do usuário dentro de sessões e
-  a atividade do usuário ao longo de diferentes sessões\cite{quadrana2017}.
+
+O modelo HGru4Rec propõe o uso de uma RNN hierárquica, ou HRNN, para
+recomendação \textit{session-based}. Na HRNN, o estado oculto de uma RNN de
+baixo-nível é repassado à entrada de uma RNN de alto-nível. A RNN de alto-nível
+é responsável por prever um vetor de inicialização para o próximo estado da RNN
+de baixo-nível. Os estados ocultos dessas redes são compostas por GRUs.
+
+No caso do HGru4Rec, cada unidade é composta por duas GRUs. A primeira GRU, à
+nível de sessão, é responsável por modelar a atividade do usuário dentro de
+sessões e gerar recomendações. A segunda GRU, à nível de usuário, é responsável
+por modelar a evolução das preferências dos usuários entre as sessões, além de
+inicializar a GRU da próxima sessão. A modelagem de usuário faz com que essa abordagem
+seja \textit{session-aware}.
+
+% explicar que usa mini-batch training
+O modelo é treinado em \textit{mini-batches}. A função de custo utilizada foi a
+  TOP1 \cite{HidasiKBT15}, que consiste na posição relativa do item relevante,
+  calculada como:
+  \begin{equation}
+    L_s = \frac{1}{N_s} \sum_{j=1}^{N_s}I\{ \hat{r}_{s,j} > \hat{r}_{s,i}\}
+  \end{equation}
+  em que $N_s$ é o tamanho da amostra, $I$ é a função indicadora aproximada por
+  uma sigmoide, $i$ é o item em questão da predição e $j$ é um item da amostra.
 
 \subsection{IIRNN}
-Combina duas RNNs, tal que a primeira gera
-  recomendações com base nas interações na sessão atual, enquanto que a
-  segunda processa sessões recentes do mesmo usuário\cite{ruocco}.
+  O principal objetivo do modelo IIRNN (Inter-Intra RNN) é aumentar a acurácia
+ao prever os itens iniciais de uma sessão. Em geral, as preferências da sessão
+vigente no início de uma sessão em uma situação de \textit{cold-start} não são
+suficientes para recomendar de forma acurada, seja pela falta de contexto
+daquela própria sessão ou pela falta de um histórico recente do usuário. O
+modelo IIRNN trata desse problema com o uso de uma RNN intra-sessões e uma RNN
+inter-sessões.
+
+A RNN intra-sessões é responsável por modelar o comportamento do usuário dentro
+da sessão vigente, de forma similar a outros modelos com RNNs
+\cite{HidasiKBT15}. O \textit{embedding} dos itens e o estado oculto na saída da
+RNN inter-sessões são utilizados como entradas para uma ou mais camadas de GRUs,
+que por sua vez geram estados ocultos. Essa RNN utiliza o mecanismo de
+\textit{dropout}, que consiste em desativar aleatoriamente algumas unidades da
+rede durante o treinamento. Dessa forma, a rede generaliza melhor os dados de
+entrada e evita o \textit{overfitting}. Os estados ocultos são emitidos a uma camada
+\textit{feed-forward}, responsável por gerar a predição.
+
+Existem duas formar de treinar a RNN inter-sessões: a partir do
+\textit{embedding} imediatamente anterior ao item atual na sessão, ou a partir
+da média dos vetores de \textit{embedding} de todos os itens da sessão. Esse
+segundo método chama-se \textit{average pooling}. A depender da aplicação ou do
+conjunto de dados, uma das duas formas apresenta melhores resultados.
+
+Durante o treinamento em \textit{mini-batches}, os itens mais recentes das
+sessões são reservados ao conjunto de teste. Além disso, sessões de um mesmo
+usuário são ordenadas temporalmente em uma mesma batelada, tal que as
+sessões mais recentes são processadas por último. Por fim, cada batelada
+deve conter uma variedade de usuários, sem representar desproporcionalmente
+determinado usuário. Essas medidas são tomadas propositalmente para enviesar o
+modelo às preferências mais recentes dos usuários, mantendo capacidade de
+generalização. 
 
 \subsection{NCSF}
-Contém um modelo intra-sessão e outro
-  inter-sessão, ambos são RNNs com GRUs e mecanismos de atenção.
+Os autores do modelo \textit{Neural Cross-Session Filtering} (NCSF) discorrem
+sobre três problemas que afetam o desempenho em sistemas de recomendação
+\textit{session-based}: a falta do contexto da sessão, em que um item adquirido
+recentemente pode significar a falta de desejo nele; a modelagem da ordem dos
+itens de forma rígida, em situações em que a ordem não é determinante; e a
+distinção entre os contextos intra e inter-sessão, tal como o modelo IIRNN aborda.
+Dessa forma, o modelo NCSF propõe o uso de um codificador associado ao histórico de sessões
+e outro associado à sessão vigente. Um terceiro codificador recebe os estados ocultos das saídas
+dos dois primeiros codificadores e gera a predição.
+
+O codificador de histórico de sessões consiste em RNN de camadas GRU. O
+codificador recebe como entrada \textit{embeddings} de sessões. Esses
+\textit{embeddings} são gerados a partir dos \textit{embeddings} de itens
+ponderados cada um por um peso, representando o quão relevante determinado item
+é dentro do contexto da sessão vigente, independente da ordem ou da proximidade
+na sequência de itens. Esse peso é calculado por um mecanismo de atenção com uma
+rede neural de duas camadas. O estado oculto da sessão anterior à sessão vigente
+é emitido na saída.
+
+O codificador da sessão vigente também recebe o \textit{embedding} de sessão
+gerado por mecanismo de atenção. Nesse caso, o estado oculto na saída é função
+tangente hiperbólica aplicada sobre o \textit{embedding} mencionado. Em seguida,
+as saídas dos dois codificadores são repassadas a um codificador intra e
+inter-sessão. Uma função de ativação é utilizada como porta, filtrando a
+informação dos dois codificadores anteriores. Essa função concatena os dois
+vetores de saída, aplicando um peso e uma função sigmoide em seguida, gerando o
+vetor de porta. A partir desse vetor, o veto de \textit{embedding} do contexto
+é calculado como a combinação linear dos dois \textit{embeddings} de sessão,
+ponderados pelo vetor de porta.
+
+Finalmente, a pontuação associada ao item-alvo e sua probabilidade condicional
+dado o vetor de contexto são calculados a partir de uma função softmax.
   
 \subsection{NSAR}
-Utiliza RNN com GRUs, representando os usuários
-e items como vetores (\textit{embeddings})\cite{interintra}.
+O modelo \textit{Neural Session-Aware Recommender} (NSAR) é uma RNN de camadas GRU,
+com a representação do usuário inserida no modelo, de forma análoga à
+representação dos itens e sessões. Dessa forma, o \textit{embedding} de usuário
+é combinado ao estado oculto na saída de cada GRU.
 
+A combinação entre os \textit{embeddings} de usuário e de sessão ocorre de forma
+adaptativa, alternando a importância entre a sequência de itens ou o usuário
+representado. Para isso, é modelado um mecanismo de portas. Para calcular um
+peso que será associado a cada um dos \textit{embeddings}, os
+\textit{embeddings} de usuário e de sessão sofrem uma sequência de operações em
+funções de ativação. É calculada a similaridade dos \textit{embeddings} por um
+vetor de contexto de usuário e outro de sessão. Dessa forma, é possível
+identificar e abstrair quais usuários possuem preferências consistentes entre
+sessões e quais itens influenciam fortemente os eventos subsequentes. Os pesos
+obtidos ao final desse processo ponderam a combinação linear entre os dois
+\textit{embeddings}, tal que esse resultado é aplicado a uma função softmax,
+gerando a probabilidade do item subsequente.
 
 \subsection{SHAN}
-Utiliza uma rede de atenção hierárquica,
-capturando preferências de longo prazo com mecanismo de atenção e 
-combina com os interesses de curto prazo\cite{shan}.
+A arquitetura Sequential Hierarchical Attention Network (SHAN) utiliza uma rede
+de atenção hierárquica, capturando preferências de longo prazo a partir de um
+mecanismo de atenção, as quais são combinadas com os interesses de curto
+prazo\cite{shan}.
+
+Primeiramente, as sessões anteriores à sessão vigente compõem o conjunto de
+sessões de longo prazo. Uma primeira rede neural atua como mecanismo de atenção
+sobre esse conjunto de sessões. Para isso, os \textit{embeddings} dos itens
+dessas sessões e o \textit{embedding} usuário associado a essas sessões são
+utilizados como entrada. As funções de ativação calculam a pontuação de atenção
+para cada item. É realizado o \textit{pooling} de atenção, ponderando e somando
+os \textit{embeddings} dos itens de acordo com suas pontuações, o que gera um
+vetor representativo das preferências de longo prazo.
+
+De forma similar à primeira etapa, uma segunda rede neural atua como mecanismo
+de atenção sobre a sessão vigente. Nesse caso, o \textit{embedding} do usuário associado
+às sessões, os \textit{embeddings} dos itens da sessão vigente e o vetor de
+preferências de longo prazo são utilizados como entrada. Ao final do \textit{pooling}
+de atenção para essa segunda etapa, é gerado um vetor híbrido, que combina
+preferências de longo e curto prazo.
+
+Uma matriz representativa da preferência do usuário para um item candidato é
+dado pelo produto do \textit{embedding} desse item com o vetor híbrido, de forma
+análoga a um modelo de fator latente. Por fim, essa matriz e os demais
+parâmetros do modelo são utilizados para treinar um modelo de máxima
+probabilidade a posteriori.
+
+
+
+
+

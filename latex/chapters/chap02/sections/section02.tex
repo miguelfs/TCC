@@ -1,4 +1,28 @@
 \section{Modelos Básicos de Sistemas de Recomendação}
+\subsection{Recomendações Não-Personalizadas}
+Recomendações não-personalizadas oferecem de forma homogênea conteúdo relevante
+a todos os usuários, a partir da preferência conjunta. Sua vantagem é a
+abordagem intuitiva e de fácil implementação. No entanto, as preferências
+individuais têm menos peso que as preferências conjuntas, resultando em
+recomendações menos relevantes para uma parcela dos usuários.
+
+Uma recomendação não-personalizada típica é a de itens mais populares, podendo
+ser modelada de formas distintas. Por exemplo, os modelos \textit{MostPop},
+\textit{RecentPop} e \textit{DecayPop} representam, respectivamente, os itens
+com maior popularidade global, mais populares do último mês e mais populares dos
+últimos seis meses com decaimento exponencial.
+
+Uma característica da recomendação por popularidade é a distribuição em
+cauda-longa da frequência de recomendações: uma pequena parcela dos itens
+concentra a maior parte das avaliações. Como consequência, essa forma de
+recomendação possui diversidade mínima.
+
+Uma abordagem de recomendação não-personalizada com diversidade máxima é a
+recomendação aleatória. Possui pouco uso prático ao usuário final, exceto em
+situações em que deseja-se receber recomendações inéditas independentes da
+popularidade. Apesar disso, é uma forma de recomendação útil em base de
+comparações de desempenho de outros modelos, em razão de sua diversidade.
+
 \subsection{Filtragem Colaborativa \textit{Neighborhood-based}} A filtragem
 colaborativa baseada em vizinhança é um método de aprendizado não-supervisionado
 que divide-se em duas categorias:
@@ -154,9 +178,48 @@ valores singulares (SVD, do inglês \textit{singular value decomposition}) ou
 análise dos componentes principais (PCA, do inglês \textit{principal component
 analysis}).
 
-No caso da SVD, a matriz de avaliações $R_{m \times n}$ é preenchida nos valores faltantes
-segundo a média de cada linha, que representam as avaliações de cada usuário, e
-em cada coluna, que representam as avaliações de cada item. O resultado é a
+\subsubsection{SVD}
+% SVD
+% EXPLICAR A SVD NA FORMA GENÉRICA ANTES.
+
+A SVD consiste em decompor uma matriz $A$ de dimensão $m \times n$ em três
+matrizes $U$, $\Sigma$ e $V$ da seguinte forma \cite{strang2006linear}:
+
+\begin{equation}
+    A = U \Sigma V^{\mathbf{T}}
+\end{equation}
+A matriz $U$ é ortogonal de dimensões $m \times m$, contendo em suas colunas
+os autovetores de $AA^{\mathbf{T}}$. A matriz $V$ é ortogonal de dimensões $n
+\times n$, contendo em suas colunas os autovetores de $A^{\mathbf{T}}A$. A
+matriz $\Sigma$ é diagonal de dimensões $m \times n$, contendo os  autovalores
+de $A^{\mathbf{T}}A$. Os autovalores, ordenados de forma decrescente, indicam
+quais autovetores são mais relevantes para representar a matriz $A$.
+
+Uma aproximação em representação compacta para a matriz $A$ consiste em truncar
+os autovetores cujos autovalores são mais representativos da matriz $A$. Isto é,
+para os $r$ maiores valores singulares. Os demais valores singulares são
+substituídos por zero na diagonal de $\tilde{A}$. Dessa forma, o posto da matriz
+$\tilde{A}$ é igual a $r$ \cite{brunton2022data}:
+
+\begin{equation}
+    A \approx \tilde{A} = \sum_{k=1}^{r}\sigma_k \mathbf{u}_k \mathbf{v}_k^{\mathbf{T}}
+\end{equation}
+
+Uma importante propriedade da aproximação pela SVD truncada é a minimização do
+erro quadrático entre a matriz original e a matriz aproximada de forma ótima,
+para uma matriz de posto $r$:
+
+\begin{equation} \label{echart_young}
+    \min_{\tilde{A} \mid \text{posto}(\tilde{A}) = r } \|A - \tilde{A}\|_F = \sqrt{\sum_{i=r+1}^{n}\sigma_i^2}
+\end{equation}
+em que $\| \cdot \|_F$ é a norma de Frobenius. A equação \ref{echart_young}
+consiste no teorema de Eckart-Young.
+
+
+É possível formular um sistema de recomendação aplicando a SVD sobre a matriz de
+avaliações $R_{m \times n}$. Primeiramente, $R_{m \times n}$ é preenchida nos
+valores faltantes segundo a média de cada linha e cada coluna, representando as
+avaliações de cada usuário e para cada item, respectivamente. O resultado é a
 matriz $R_f$.
 
 A matriz de similaridade $S$ é obtida a partir de $S = R_f^{\mathbf{T} }R_f$.
@@ -169,7 +232,8 @@ não-negativos:
 \end{equation}
 
  Para obter uma base de autovetores que representam a matriz $S$ de forma
- compacta, utiliza-se a SVD para obter tanto os autovetores quanto os autovalores:
+ compacta, utiliza-se a SVD para obter tanto os autovetores quanto os autovalores,
+ para o caso particular em que $S$ é positiva semi-definida:
 
 \begin{equation}
     S = P \Lambda P^{\mathbf{T}}
@@ -187,10 +251,42 @@ de avaliações original.
 A partir da matriz $R_{f}P_{d}$, é possível realizar a filtragem colaborativa
 baseada em itens e baseada em usuários, como descrito anteriormente.
 
-% \subsubsection{Redução de dimensionalidade}
-% \subsubsection{Máxima verossimilhança}
-% \subsubsection{Abordagem enquanto problema de Regressão}
-% \subsubsection{Esparsidade e Viés}
+\subsubsection{Modelo de Fatores Latentes}
+O modelo de fatores latentes é um caso particular da SVD. Esse método ganhou 
+visibilidade com a competição \textit{Netflix Prize}, em que o objetivo era
+superar o desempenho do algoritmo de recomendação da Netflix vigente.
+
+No caso do modelo de fatores latentes, a matriz de avaliações $R$ é decomposta
+da seguinte forma \cite{aggarwal2016recommender}:
+\begin{equation}
+    R = QP^{\mathbf{T}}
+\end{equation}
+sendo um caso particular da SVD: $R = A$, $Q = U$ e $P = \Sigma V^{\mathbf{T}}$.
+Na bibliografia, o componente $Q$ é denominado vetor latente, enquanto que
+$P^{\mathbf{T}}$ é denominado fator latente.
+% Caso as linhas da matriz $R$
+% representem os itens, enquanto que suas colunas representam os usuários, as
+% linhas da matriz P representa os usuários e a matriz $Q^{\mathbf{T}}$ representa os itens.
+
+Os valores das matrizes Q e P são obtidos ao minimizar o erro quadrático de uma
+função de custo, a partir de um método de otimização como o gradiente
+descendente estocástico. Como a matriz de avaliações $R$ é esparsa,
+podendo conter poucas avaliações por usuário, é necessário aplicar regularização
+para evitar \textit{overfitting}. A regularização em questão consiste em
+penalizar valores altos de $P$ e $Q$ quando há poucas avaliações disponíveis:
+
+\begin{equation}
+    f(Q,P) = \min_{Q,P} \sum_{u,i} (R_{ui} - Q_i P_u^{\mathbf{T}})^2 + \lambda (\sum_u \|Q_u\|^2 + \sum_i \|P_i\|^2)
+\end{equation}
+
+em que $\lambda$ é o parâmetro de regularização. Uma vez obtidas as matrizes $P$
+e $Q$, a predição de avaliação $\hat{r}_{ui}$ do usuário $u$ ao item $i$ é
+calculada a partir do produto interno entre o vetor latente e o fator latente representativo
+desse par:
+
+\begin{equation} \label{fator_latente}
+    \hat{r}_{ui} = \mathbf{q}_i \mathbf{p}_u^{\mathbf{T}}
+\end{equation}
 
 \subsection{Sistemas de Recomendação \textit{Model-based}}
 A filtragem colaborativa baseada em modelos é um método de aprendizado em que um
@@ -438,24 +534,24 @@ O algoritmo kNN (do inglês \textit{k-nearest neighbors}) é um método de
 aprendizado supervisionado utilizado geralmente para tarefas de classificação. O
 algoritmo considera a similaridade e a proximidade entre vetores de atributos
 para classificá-los.
-\subsubsection{rule-based Classifiers}
+% \subsubsection{rule-based Classifiers}
 
-\subsection{Knowledge-based}
-Sistemas \textit{knowledge-based} são similares aos baseados em conteúdo, mas
-com a diferença de que o usuário pode especificar explicitamente suas
-preferências, enquanto
-que nos sistemas baseados em conteúdo as preferências são inferidas a partir do
-histórico de avaliações do usuário.
-\subsubsection{Constraint-based}
-\subsubsection{Case-based}
+% \subsection{Knowledge-based}
+% Sistemas \textit{knowledge-based} são similares aos baseados em conteúdo, mas
+% com a diferença de que o usuário pode especificar explicitamente suas
+% preferências, enquanto
+% que nos sistemas baseados em conteúdo as preferências são inferidas a partir do
+% histórico de avaliações do usuário.
+% \subsubsection{Constraint-based}
+% \subsubsection{Case-based}
 
 
-\subsection{Outros modelos}
-\subsubsection{Utility-based}
-\subsubsection{Context-based}
-\subsubsection{Time-sensitive}
-\subsubsection{Location-based}
+% \subsection{Outros modelos}
+% \subsubsection{Utility-based}
+% \subsubsection{Context-based}
+% \subsubsection{Time-sensitive}
+% \subsubsection{Location-based}
 
-\subsection{Avaliação de Sistemas de Recomendação}
-- online/offline evaluation
-- métricas
+% \subsection{Avaliação de Sistemas de Recomendação}
+% - online/offline evaluation
+% - métricas

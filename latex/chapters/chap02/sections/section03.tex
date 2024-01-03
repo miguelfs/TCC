@@ -1,9 +1,11 @@
 \section{Sistemas de Recomendação \textit{Session-Based} e \textit{Session-Aware}}
 
+\subsection{Definição}
+
 Os sistemas de recomendação baseados em sessão (SBRS, do inglês
  \textit{session-based recommendation systems}) são aplicáveis quando os dados
- de entrada do modelo consistem em uma sequência de interações do usuário
- durante uma mesma sessão de itens, tal que\cite{survey_wang_2021}:
+ de entrada do modelo consistem em um conjunto ou uma sequência de interações do usuário
+ durante uma mesma sessão de itens, tal que \cite{survey_wang_2021}:
 
  \begin{equation*}
   \begin{aligned}
@@ -48,9 +50,9 @@ $A$ é o conjunto das ações, tais como: criação de sessão, convite endereç
   \end{aligned}
   \end{equation*}
   
-    Por sua vez, a sessão $s$ é uma lista de
-  $|s|$ interações, tal que o conjunto de todas as sessões é dado por $S$.
-  A lista de $\hat{o}$ interações recomendadas é dada por $\hat{l}$,
+    Por sua vez, a sessão $s$ é uma lista de $|s|$ interações, tal que o
+  conjunto de todas as sessões é dado por $S$. A lista de $\hat{o}$ interações
+  recomendadas é dada por $\hat{l}$.
 
   O objetivo de um SBRS é selecionar uma lista recomendada de interações
   que maximize a função de desempenho $f(s, c)$ condicionada ao contexto $c$ da
@@ -60,11 +62,23 @@ $A$ é o conjunto das ações, tais como: criação de sessão, convite endereç
  O contexto $c$ é definido como um conjunto de informações adicionais associadas
   à sessão e que podem ser utilizadas para melhorar a assertividade das
   recomendações.  Hora do dia, clima e localização do usuário são parâmetros os
-  quais podem ser incluídos por contexto. Dois exemplos de aplicações de SBRS
+  quais podem ser incluídos por contexto.
+
+  É importante destacar que $s$ e $S$ podem
+  ser definidos com um conjunto de interações desprovido de ordenação temporal
+  ou como listas ordenadas de interações e de sessões. Essas duas abordagens
+  dependem das propriedades \textit{sequence-aware}, \textit{context-aware}
+  e \textit{time-aware}.
+
+  \subsection{Sistemas de recomendação \textit{sequence-aware}}
+
+  \subsection{Exemplos}
+
+  Dois exemplos de aplicações de SBRS
   são a recomendação de músicas em uma sessão de execução \cite{music_2013} e
   produtos a serem adicionados em um carrinho de compras virtual
   \cite{shopping_cart_2023}.
 
-\subsection{Bases de comparação não-personalizadas}
+% \subsection{Bases de comparação não-personalizadas}
 
-\subsection{Bases de comparação por extração de padrões}
+% \subsection{Bases de comparação por extração de padrões}
