@@ -1,5 +1,4 @@
 \section{Motivação}
-
 A música, enquanto atividade e produto, permite o estabelecimento de laços sociais
 entre musicistas e ouvintes.
 
@@ -96,6 +95,12 @@ seja de interesse em meio ao excesso de conteúdo publicado. Essa dificuldade
 percebida pelo usuário é consequência da sobrecarga de informação.
 
 \subsection{Sobrecarga de informação}
+
+A sobrecarga de informação, segundo \citet{roetzel2019information}, é um estado em que um tomador de decisões observa um
+conjunto ou uma carga de informações de complexidades distintas, a qual inibe a
+capacidade do tomador de decisões de determinar de forma ótima a melhor decisão
+possível.
+
 \vspace{0.2cm}
 \begin{figure}[h]
     \begin{tikzpicture}
@@ -121,10 +126,8 @@ percebida pelo usuário é consequência da sobrecarga de informação.
     \label{fig:u_invertida}
 \end{figure}
 \vspace{0.2cm}
-A sobrecarga de informação, segundo \citet{roetzel2019information}, é um estado em que um tomador de decisões observa um
-conjunto ou uma carga de informações de complexidades distintas, a qual inibe a
-capacidade do tomador de decisões de determinar de forma ótima a melhor decisão
-possível. O uso subótimo de informações é causado
+
+O uso subótimo de informações é causado
 pela limitação de recursos individuais escassos. Um recurso escasso pode ser uma
 característica individual (como capacidade de processamento em série, memória de
 curto prazo) ou equipamento relacionado à tarefa (por exemplo, orçamento ou
@@ -225,6 +228,7 @@ na figura \ref{fig:matriz_15}.
       \label{fig:matriz_15}
 \end{figure}
 
+\abbrev{SBRS}{Sistemas de recomendação baseados em sessão}
 Por mais que a matriz de avaliações seja uma forma intuitiva de representação,
 viabilizando uma boa variedade de modelos, trata-se de uma forma que
 desconsidera o contexto temporal das interações ou a sequência específica de
@@ -232,12 +236,14 @@ itens que determinado usuário interagiu. Sistemas de Recomendação Baseados em
 Sessão (SBRS, do inglês \textit{session-based recommender systems}) atuam
 justamente nesse cenário.
 
-Os SBRS se caracterizam por terem seus dados representados em um conjunto
-delimitado de interações, denominado sessão. Uma sessão pode conter uma
-sequência temporalmente ordenada de ações executadas por um usuário, ou um
-conjunto de ações executadas por um usuário anônimo sem uma ordem específica.
-Os objetivos de um SBRS
-incluem prever a próxima interação do usuário durante uma sessão em andamento,
+Os SBRS se caracterizam pelos seus dados representarem um conjunto delimitado
+de interações obtidas por \textit{feedback} implícito. Esse conjunto é
+denominado sessão. Uma sessão pode conter uma sequência temporalmente ordenada
+de ações executadas por um usuário, ou um conjunto de ações executadas por um
+usuário anônimo sem uma ordem específica.
+
+Os objetivos de um SBRS incluem
+prever a próxima interação do usuário durante uma sessão em andamento,
 recomendar o próximo item ou um conjunto de itens para uma sessão, ou ainda
 recomendar uma sessão inteira \cite{domingues_large_2023, survey_wang_2021}.
 
@@ -276,8 +282,8 @@ recomendar uma sessão inteira \cite{domingues_large_2023, survey_wang_2021}.
 Cada interação das sessões está associada a tuplas que contém um ou mais dos
 seguintes dados: a ação executada, o item alvo da ação, o instante em que a ação
 foi executada e o usuário responsável pela ação. Por exemplo, uma sessão pode
-representar uma lista ordenada de itens selecionada por um usuário anônimo, ou
-uma lista de ações desempenhadas por usuários de uma mesma sessão, sem que essas
+representar uma lista ordenada de itens selecionados por um usuário anônimo, ou
+uma lista de ações executadas por usuários de uma mesma sessão, sem que essas
 ações estejam necessariamente atreladas cada uma a um item. Isso é um aspecto
 útil dos SBRS, por prover recomendações em aplicações em que não há
 distinção entre usuários, ou quando as preferências de longo prazo de um

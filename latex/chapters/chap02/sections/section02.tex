@@ -9,13 +9,13 @@ recomendações menos relevantes para uma parcela dos usuários.
 Uma recomendação não-personalizada típica é a de itens mais populares, podendo
 ser modelada de formas distintas. Por exemplo, os modelos \textit{MostPop},
 \textit{RecentPop} e \textit{DecayPop} representam, respectivamente, os itens
-com maior popularidade global, mais populares do último mês e mais populares dos
-últimos seis meses com decaimento exponencial.
+com maior popularidade global, maior popularidade da última semana e mais populares das
+últimas seis semanas com decaimento exponencial.
 
 Uma característica da recomendação por popularidade é a distribuição em
 cauda-longa da frequência de recomendações: uma pequena parcela dos itens
 concentra a maior parte das avaliações. Como consequência, essa forma de
-recomendação possui diversidade mínima.
+recomendação possui diversidade mínima \cite{aggarwal2016recommender}.
 
 Uma abordagem de recomendação não-personalizada com diversidade máxima é a
 recomendação aleatória. Possui pouco uso prático ao usuário final, exceto em
@@ -34,8 +34,6 @@ itens entre si;
 por um mesmo usuário com os demais disponíveis é utilizada para recomendar um
 item inédito a ele.
 \end{enumerate}
-\abbrev{$R_{m \times n}$}{matriz de avaliações com $m$ usuários e $n$ itens}
-\abbrev{$R_{uj}$}{avaliação do usuário $u$ ao item $j$}
 
 \begin{figure}[h!]
     \centering
@@ -70,8 +68,10 @@ item inédito a ele.
     \label{fig:ratings_matrix}
 \end{figure}
 
+\symbl{$R_{m \times n}$}{Matriz de avaliações com $m$ usuários e $n$ itens}
+\symbl{$R_{uj}$}{Avaliação do usuário $u$ ao item $j$}
 Para viabilizar a filtragem colaborativa, utiliza-se a matriz de avaliações
-$R_{m \times n}$, em que $m$ é a quantidade de usuários, $n$ é a quantidade de
+$R_{m \times n}$, a exemplo da Figura \ref{fig:ratings_matrix}: $m$ é a quantidade de usuários, $n$ é a quantidade de
 itens e $R_{uj}$ é a avaliação dada pelo usuário $u$ ao item $j$, quando
 preenchida. Assume-se que a matriz $R_{m \times n}$ é esparsa, com poucos
 valores preenchidos.
@@ -86,16 +86,25 @@ um espaço de usuários ou itens, como o produto escalar normalizado, o cosseno
 entre dois vetores ou o coeficiente de correlação de Pearson.
 
 \subsubsection{Similaridade de Usuário}
-No domínio discreto, o coeficiente de correlação $r$ de Pearson entre dois vetores $x$ e $y$ de
-tamanho $N$, cujas médias são $\bar{x}$ e $\bar{y}$, é dado por:
+O coeficiente de correlação de Pearson é a razão da covariância com o produto
+do desvio padrão de duas variáveis aleatórias.
+
+\symbl{$r$}{coeficiente de correlação de Pearson}
+\symbl{$\bar{x}$}{média de um vetor $x$}
+Para um conjunto de amostras ou de observações, o coeficiente de
+correlação $r$ de Pearson entre dois vetores $x$ e $y$ de tamanho $N$, cujas
+médias são $\bar{x}$ e $\bar{y}$, é dado por:
+
 \begin{equation}    
     r(x,y) = \frac{\sum_{i=1}^{N}(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{N}(x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{N}(y_i - \bar{y})^2}}, \quad r \in \mathbb{R}, -1 \leq r \leq 1.
 \end{equation}
+\symbl{$\mathbb{R}$}{conjunto dos números reais}
 
 Para obter o coeficiente de correlação entre dois vetores de usuários $u$ e $v$,
 o coeficiente é calculado a partir dos itens avaliados em comum por ambos os
-usuários, portanto:
-
+usuários. Sendo $I_u$ e $I_v$ os conjuntos de itens avaliados pelos usuários $u$ e $v$:
+\symbl{$I_u$}{conjunto de itens avaliados pelo usuário $u$}
+\symbl{$\cap$}{operador de interseção}
 \begin{equation}
     N = |I_u \cap I_v|.
 \end{equation}
@@ -103,6 +112,7 @@ usuários, portanto:
 Seja $P_u (j)$ o subconjunto dos usuários de maior similaridade com o usuário
 $u$ que necessariamente avaliaram o item $j$.
 
+\symbl{$\hat{R}_{uj}$}{Avaliação predita do usuário $u$ ao item $j$}
 A predição de avaliação
 $\hat{R}_{uj}$ do usuário $u$ a um único item $j$ é calculada a partir de uma
 normalização das avaliações dos demais usuários sobre esse mesmo item,
@@ -126,8 +136,11 @@ determinando limiares para as variáveis contínuas.
 
 \subsubsection{Similaridade de Item}
 
-O cosseno entre dois vetores $x$ e $y$ é obtido a partir de seu produto interno:
+O cosseno do ângulo entre dois vetores $x$ e $y$ é obtido a partir de seu
+produto interno:
 
+\symbl{cos(x,y)}{cosseno do ângulo entre os vetores $x$ e $y$}
+\symbl{$\|x\|$}{norma do vetor $x$}
 \begin{equation}
     \cos(x,y) = \frac{x \cdot y}{\|x\| \|y\|}, -1 \leq \cos \leq 1.
 \end{equation}
@@ -165,6 +178,7 @@ algoritmo é de $O(m^2)$, podendo ser custoso ou inviável a depender do quão
 grande e esparsa for a base de dados. Principalmente, há modelos atuais que são
 mais precisos, inclusive os baseados em modelos.
 
+\subsection{Técnicas de redução de dimensionalidade}
 \subsubsection{Fatoração de Matrizes}
 A fatoração de matrizes pode ser empregada em métodos baseados em vizinhança,
 reduzindo a dimensionalidade do conjunto de dados. Nesse método, obtém-se
@@ -172,6 +186,8 @@ vetores de variáveis latentes que representam os usuários e itens de forma
 compacta, reduzindo os transtornos associados à esparsidade do conjunto de
 dados.
 
+\abbrev{SVD}{\textit{singular value decomposition}}
+\abbrev{PCA}{\textit{principal component analysis}}
 Métodos tradicionais de álgebra linear podem ser empregados para reduzir a
 dimensionalidade de uma matriz de avaliações. Por exemplo, a decomposição em
 valores singulares (SVD, do inglês \textit{singular value decomposition}) ou
@@ -179,14 +195,13 @@ análise dos componentes principais (PCA, do inglês \textit{principal component
 analysis}).
 
 \subsubsection{SVD}
-% SVD
-% EXPLICAR A SVD NA FORMA GENÉRICA ANTES.
-
-A SVD consiste em decompor uma matriz $A$ de dimensão $m \times n$ em três
+A SVD consiste em decompor uma matriz $A$ de dimensões $m \times n$ em três
 matrizes $U$, $\Sigma$ e $V$ da seguinte forma \cite{strang2006linear}:
 
+\symbl{$\mathbf{T}$}{Operador de transposição de matriz}
 \begin{equation}
     A = U \Sigma V^{\mathbf{T}}
+    \label{eq:SVD}
 \end{equation}
 A matriz $U$ é ortogonal de dimensões $m \times m$, contendo em suas colunas
 os autovetores de $AA^{\mathbf{T}}$. A matriz $V$ é ortogonal de dimensões $n
@@ -214,6 +229,7 @@ para uma matriz de posto $r$:
 \end{equation}
 em que $\| \cdot \|_F$ é a norma de Frobenius. A equação \ref{echart_young}
 consiste no teorema de Eckart-Young.
+\symbl{$\| \cdot \|_F$}{Norma de Frobenius}
 
 
 É possível formular um sistema de recomendação aplicando a SVD sobre a matriz de
@@ -225,7 +241,7 @@ matriz $R_f$.
 A matriz de similaridade $S$ é obtida a partir de $S = R_f^{\mathbf{T} }R_f$.
 Note que S é de dimensão $n \times n$, em que $n$ é a quantidade de itens. $S$ é
 uma matriz positiva semi-definida, isto é, todos seus autovalores são
-não-negativos:
+não-negativos, seguindo a propriedade:
 
 \begin{equation}
     \mathbf{x}^{\mathbf{T}} S \mathbf{x} \geq 0, \forall \mathbf{x} \neq 0
@@ -242,8 +258,8 @@ não-negativos:
 P é a matriz $n \times n$ de autovetores de $S$ e $\Lambda$ é a matriz diagonal
 de autovalores não-negativos de $S$.
 
-A representação compacta consiste em uma seleção de $P_d$ autovetores com os $d$
-maiores autovalores, que melhor representam de forma compacta o espaço original.
+Finalmente, a representação compacta almejada consiste na seleção de $P_d$ autovetores com os $d$
+maiores autovalores, mais representativos do espaço original, em uma forma compacta.
 A matriz compacta de avaliações é dada por $R_{f}P_{d}$, de dimensão $m \times
 d$ com $d$ usuários, em vez de $m \times n$ com $n$ usuários, tal como na matriz
 de avaliações original.
@@ -252,16 +268,17 @@ A partir da matriz $R_{f}P_{d}$, é possível realizar a filtragem colaborativa
 baseada em itens e baseada em usuários, como descrito anteriormente.
 
 \subsubsection{Modelo de Fatores Latentes}
-O modelo de fatores latentes é um caso particular da SVD. Esse método ganhou 
-visibilidade com a competição \textit{Netflix Prize}, em que o objetivo era
-superar o desempenho do algoritmo de recomendação da Netflix vigente.
+Um caso particular da SVD, denominado modelo de fatores latentes, ganhou
+visibilidade com a competição \textit{Netflix Prize}, cujo objetivo era superar
+o desempenho do algoritmo de recomendação vigente da empresa na época.
+\cite{lessons_netflix_prize}.
 
 No caso do modelo de fatores latentes, a matriz de avaliações $R$ é decomposta
 da seguinte forma \cite{aggarwal2016recommender}:
 \begin{equation}
     R = QP^{\mathbf{T}}
 \end{equation}
-sendo um caso particular da SVD: $R = A$, $Q = U$ e $P = \Sigma V^{\mathbf{T}}$.
+sendo um caso particular da SVD na equação \ref{eq:SVD} : $R = A$, $Q = U$ e $P = \Sigma V^{\mathbf{T}}$.
 Na bibliografia, o componente $Q$ é denominado vetor latente, enquanto que
 $P^{\mathbf{T}}$ é denominado fator latente.
 % Caso as linhas da matriz $R$
@@ -275,17 +292,19 @@ podendo conter poucas avaliações por usuário, é necessário aplicar regulari
 para evitar \textit{overfitting}. A regularização em questão consiste em
 penalizar valores altos de $P$ e $Q$ quando há poucas avaliações disponíveis:
 
-\begin{equation}
-    f(Q,P) = \min_{Q,P} \sum_{u,i} (R_{ui} - Q_i P_u^{\mathbf{T}})^2 + \lambda (\sum_u \|Q_u\|^2 + \sum_i \|P_i\|^2)
-\end{equation}
+\begin{align}
+    \arg\min_{Q,P} f(Q,P) &= L(Q,P) + \lambda F(Q,P) \\
+    \arg\min_{Q,P} f(Q,P) &= \sum_{u,j} (R_{uj} - Q_j P_u^{\mathbf{T}})^2 + \lambda (\sum_u \|Q_u\|^2 + \sum_j \|P_j\|^2)
+\end{align}
 
-em que $\lambda$ é o parâmetro de regularização. Uma vez obtidas as matrizes $P$
-e $Q$, a predição de avaliação $\hat{r}_{ui}$ do usuário $u$ ao item $i$ é
-calculada a partir do produto interno entre o vetor latente e o fator latente representativo
+em que $L(Q,P)$ é a parcela de custo, $F(Q,P)$ é a parcela de penalidade e
+$\lambda$ é o parâmetro de regularização. Uma vez obtidas as matrizes $P$ e $Q$,
+a predição de avaliação $\hat{R}_{uj}$ do usuário $u$ ao item $j$ é calculada a
+partir do produto interno entre o vetor latente e o fator latente representativo
 desse par:
 
 \begin{equation} \label{fator_latente}
-    \hat{r}_{ui} = \mathbf{q}_i \mathbf{p}_u^{\mathbf{T}}
+    \hat{R}_{uj} = \mathbf{q}_j \mathbf{p}_u^{\mathbf{T}}
 \end{equation}
 
 \subsection{Sistemas de Recomendação \textit{Model-based}}
@@ -348,6 +367,7 @@ correspondente é retornada:
     f(x;\theta) &= \sum_{j=1}^{J} w_j \mathbb{I} (x \in R_j)
 \end{align}
 
+\symbl{$\mathbb{I}(e)$}{função indicadora}
 em que $\mathbb{I}(e)$ é a função indicadora:
 
 \begin{equation}
@@ -455,6 +475,7 @@ confiança e \textit{lift}, ela é incluída no modelo.
 modelo de aprendizado supervisionado. É um classificador que baseia-se nas distribuições de
 probabilidade dos eventos e no teorema de Bayes, dado por:
 
+\symbl{$P(Y|X)$}{Probabilidade condicional de Y dado X}
 \begin{equation}
     P(Y|X) = \frac{P(X|Y)P(Y)}{P(X)}
     \end{equation}
@@ -514,10 +535,7 @@ dependem de avaliações de outros usuários para gerar recomendações, o que �
 vantagem em cenários de \textit{cold-start} ou com poucos usuários na
 plataforma.
 
-% adicionar imagem comparando content based vs filtro colaborativo
-
-% Falar sobre feature selection e feature extraction
-\subsubsection{\textit{Feature selection}} Em um sistema baseado em conteúdo,
+Em um sistema baseado em conteúdo,
 utilizar todos os atributos disponíveis não é necessariamente a melhor
 abordagem, uma vez que isso acarreta em maior dimensionalidade do espaço de
 atributos, maior custo computacional e maior risco de \textit{overfitting} do
@@ -532,8 +550,32 @@ objetiva pode ser o índice de Gini, a entropia, a informação mútua, etc.
 \subsubsection{kNN}
 O algoritmo kNN (do inglês \textit{k-nearest neighbors}) é um método de
 aprendizado supervisionado utilizado geralmente para tarefas de classificação. O
-algoritmo considera a similaridade e a proximidade entre vetores de atributos
+algoritmo considera a similaridade ou a proximidade entre vetores de atributos
 para classificá-los.
+
+Para classificar uma entrada $x$, os $K$ vetores mais próximos a $x$ no conjunto
+de treinamento são $N_k(x,\mathcal{D})$, em que $\mathcal{D} = \{ (x_n, y_n) : n=1: N \}$
+representa o conjunto de dados.
+
+A probabilidade de uma saída $y$ obter determinada classificação é dada por:
+\begin{equation}
+    p(y=c|x, \mathcal{D}) = \frac{1}{K} \sum_{n \in N_k (x, \mathcal{D})} \mathbb{I}(y_n = c)
+\end{equation}
+
+
+
+% The idea is as follows: to classify a new input x, we find the K closest
+% examples to x in the training set, denoted NK(x,D), and then look at their
+% labels, to derive a distribution over the outputs for the local region around x.
+% More precisely, we compute
+
+
+% Now suppose that we have collected a data set comprising N observations drawn
+% from p(x). Because each data point has a probability P of falling within R, the
+% total number K of points that lie inside R will be distributed according to the
+% binomial distribution
+
+
 % \subsubsection{rule-based Classifiers}
 
 % \subsection{Knowledge-based}

@@ -26,6 +26,7 @@ O modelo é treinado em \textit{mini-batches}. A função de custo utilizada foi
   uma sigmoide, $i$ é o item em questão da predição e $j$ é um item da amostra.
 
 \subsection{IIRNN}
+\abbrev{IIRNN}{\textit{Inter-Intra Recurrent Neural Network}}
   O principal objetivo do modelo IIRNN (Inter-Intra RNN) é aumentar a acurácia
 ao prever os itens iniciais de uma sessão. Em geral, as preferências da sessão
 vigente no início de uma sessão em uma situação de \textit{cold-start} não são
@@ -60,6 +61,7 @@ modelo às preferências mais recentes dos usuários, mantendo capacidade de
 generalização. 
 
 \subsection{NCSF}
+\abbrev{NCSF}{\textit{Neural Cross-Session Filtering}}
 Os autores do modelo \textit{Neural Cross-Session Filtering} (NCSF) discorrem
 sobre três problemas que afetam o desempenho em sistemas de recomendação
 \textit{session-based}: a falta do contexto da sessão, em que um item adquirido
@@ -94,6 +96,7 @@ Finalmente, a pontuação associada ao item-alvo e sua probabilidade condicional
 dado o vetor de contexto são calculados a partir de uma função softmax.
   
 \subsection{NSAR}
+\abbrev{NSAR}{\textit{Neural Session-Aware Recommender}}
 O modelo \textit{Neural Session-Aware Recommender} (NSAR) é uma RNN de camadas GRU,
 com a representação do usuário inserida no modelo, de forma análoga à
 representação dos itens e sessões. Dessa forma, o \textit{embedding} de usuário
@@ -113,7 +116,8 @@ obtidos ao final desse processo ponderam a combinação linear entre os dois
 gerando a probabilidade do item subsequente.
 
 \subsection{SHAN}
-A arquitetura Sequential Hierarchical Attention Network (SHAN) utiliza uma rede
+\abbrev{SHAN}{\textit{Sequential Hierarchical Attention Network}}
+A arquitetura \textit{Sequential Hierarchical Attention Network} (SHAN) utiliza uma rede
 de atenção hierárquica, capturando preferências de longo prazo a partir de um
 mecanismo de atenção, as quais são combinadas com os interesses de curto
 prazo\cite{shan}.

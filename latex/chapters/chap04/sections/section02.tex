@@ -1,1 +1,26 @@
-\section{Modelagem base a partir de sessões, \textit{tracks} e usuários}
+\subsection{Comparativo com outras bases de dados}
+A tabela \ref{tab:sr} compara os resultados obtidos entre as diferentes bases de
+dados, incluindo a base do presente trabalho.
+
+\begin{table}[htbp]
+\centering
+\vspace{1mm}
+\begin{tabular}{ccccccc}
+\hline
+Base de dados & HR@5 & HR@10 & MRR@5 & MRR@10 & COV@10 & POP@10 \\
+\hline
+RSC15 & $\mathbf{0,457}$ & $\mathbf{0,569}$ & 0,283 & 0,298 & 0,592 & 0,073 \\
+ZALANDO & 0,429 & 0,462 & $\mathbf{0,298}$ & $\mathbf{0,302}$ & 0,433 & 0,066 \\
+INDABAND & 0,378 & 0,506 & 0,225 & 0,242 & 0,443 & $\mathbf{0,281}$ \\
+CLEF & 0,337 & 0,513 & 0,189 & 0,212 & $\mathbf{0,608}$ & 0,123 \\
+RETAILROCKET &  0,337 & 0,386 & 0,236 & 0,243 & 0,458 & 0,050 \\
+30MUSIC & 0,2845 & 0,2326 & 0,3120  & 0,2363 & 0,2913 & 0,0273 \\
+TMALL &  0,173 & 0,209 & 0,124 & 0,129 & 0,507 & 0,020 \\
+NOW PLAYING & 0,1395 & 0,1712 & 0,0988 & 0,1031 & 0,3605 & 0,0284 \\
+AOTM & 0,0107 & 0,0149 & 0,0068 & 0,0073 & 0,4481 & 0,0599 \\
+8TRACKS & 0,0090 & 0,0125 & 0,0056 & 0,0061 & 0,1076 & 0,0916 \\
+\hline
+\end{tabular}
+\caption{Regras de sequência, \textit{windowed}, \textit{session-based}. Ordenados por HR@5.}
+\label{tab:sr}
+\end{table}

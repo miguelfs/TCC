@@ -1,5 +1,6 @@
 \section{Redes Neurais}
 
+\abbrev{RNN}{redes neurais recorrentes}
 \subsubsection{RNN}
 Redes neurais recorrentes (RNNs, do inglês \textit{recurrent neural networks})
  são apropriadas para dados que tenham uma relação de sequência entre si
@@ -7,6 +8,7 @@ Redes neurais recorrentes (RNNs, do inglês \textit{recurrent neural networks})
  aprendizado profundo é a existência de um estado oculto $\mathbf{h_t}$ em
  cada unidade da rede, cujo valor é obtido a partir da seguinte função de
  atualização:
+ \symbl{$\mathbf{h_t}$}{estado oculto da unidade no instante $t$}
 \begin{equation}
     \mathbf{h_t} = g(W\mathbf{x_t} + U\mathbf{h_{t-1}})
 \end{equation}
@@ -29,6 +31,7 @@ sob a forma de LSTMs ou GRUs foram propostas para resolver esse problema.
 
 
 \subsubsection{LSTM}
+\abbrev{LSTM}{memória de curto e longo prazo}
 A memória de curto e longo prazo (LSTM, do inglês \textit{long short-term
 memory}) \cite{chung2014empirical} substitui a unidade típica de uma RNN. Sua
 principal melhoria, tanto na LSTM é a capacidade de manter o estado atual
@@ -53,6 +56,7 @@ exposição, cujo valor é dado por:
 \end{equation}
 em que $\sigma$ é a função logística sigmoide, $W_o$, $U_o$ e $V_o$ são as
 matrizes de pesos.
+\symbl{$\sigma(\cdot)$}{função logística sigmoide}
 
 A memória da célula $\mathbf{c_t}$ é atualizada a partir da memória anterior
 $\mathbf{c_{t-1}}$ e do estado candidato $\mathbf{\tilde{c}_t}$, ambos ponderados
@@ -64,12 +68,15 @@ respectivamente pelas portas de esquecimento $\mathbf{f_t}$ e de entrada $\mathb
 \end{align}
 sendo o operador $\odot$ o produto
 de Hadamard. O novo estado da célula é dado por:
+\symbl{$\odot$}{operador produto de Hadamard}
+
 \begin{equation}
     \mathbf{\tilde{c}_t} = \tanh(W_c\mathbf{x_t} + U_c\mathbf{h_{t-1}})
 \end{equation}
 
 
 \subsubsection{GRU}
+\abbrev{GRU}{unidade recorrente fechada}
 Assim como a LSTM, a unidade recorrente fechada (GRU, do inglês \textit{gated
 recurrent unit}), também possui estados auxiliares, denominados portas, que
 controlam a atualização de seu estado principal, e ambas realizam a soma linear
@@ -100,38 +107,8 @@ entrada, retornando a sequência mais provável na saída
 o decodificador são treinados conjuntamente para maximizar a probabilidade de
 uma tradução correta, dada uma frase inserida na entrada do modelo.
 
-\begin{figure}
-    \centering
-    \begin{tikzpicture}
-        % Define styles for different components
-        \tikzstyle{encoder} = [rectangle, draw, fill=blue!20, 
-        text width=5em, text centered, rounded corners, minimum height=3em]
-        
-        \tikzstyle{blockC} = [rectangle, draw, fill=green!20, 
-        text width=3em, text centered, rounded corners, minimum height=2em]
-    
-        \tikzstyle{decoder} = [rectangle, draw, fill=red!20, 
-        text width=5em, text centered, rounded corners, minimum height=3em]
-    
-        % Draw the Encoder block
-        \node [encoder] (encoder) at (0,0) {Encoder};
-        
-        % Draw the C block to the right of Encoder
-        \node [blockC] (c) at (3,0) {c};
-        
-        % Draw arrow from Encoder to C
-        \draw [->] (encoder) -- (c);
-        
-        % Draw the Decoder block to the right of C
-        \node [decoder] (decoder) at (6,0) {Decoder};
-        
-        % Draw arrow from C to Decoder
-        \draw [->] (c) -- (decoder);
-    \end{tikzpicture}
-    \caption{Encoder-Decoder Framework}
-\end{figure}
-
-\begin{figure}
+\vspace{1cm}
+\begin{figure}[htbp]
     \centering
     \begin{tikzpicture}
         % Draw rectangles
@@ -141,7 +118,7 @@ uma tradução correta, dada uma frase inserida na entrada do modelo.
         \draw (3,0) rectangle (4,1); % Fourth square
       
         % Add text "encoder" above the rectangle
-        \node at (2,1.2) {encoder};
+        \node at (2,1.2) {codificador};
         
         % Draw error line
         \draw[->, red] (4,0.5) -- (5,0.5); % Error line
@@ -159,9 +136,10 @@ uma tradução correta, dada uma frase inserida na entrada do modelo.
         \draw (9,0) rectangle (10,1); % Third square
         \draw (10,0) rectangle (11,1); % Fourth square
         % Add text "decoder" above the rectangle
-        \node at (9,1.2) {decoder};
+        \node at (9,1.2) {decodificador};
       \end{tikzpicture}
-      
+      \caption{Encoder-Decoder Framework}
+
 \end{figure}
 
 Nessa arquitetura, o codificador lê um vetor de entrada $\mathbf{x}$ e retorna
@@ -264,6 +242,7 @@ em que $\sqrt{d_k}$ é o fator de escala, que normaliza o produto escalar entre
 as matrizes de consultas e chaves.
 
 \subsubsection{CNN}
+\abbrev{CNN}{redes neurais convolucionais}
 Redes neurais convolucionais (CNNs, do inglês \textit{convolutional neural
 networks}), criadas para tarefas de síntese e análise de imagens, incluindo
 classificação, detecção, segmentação, restauração de imagens, entre outras.
@@ -279,6 +258,7 @@ núcleo. A combinação linear do núcleo com a intensidade dos píxeis da image
 aplicada a uma função não-linear, detectando a presença ou ausência da
 característica que aquele núcleo em particular é responsável por detectar:
 
+\symbl{$\text{ReLU}(\cdot)$}{unidade linear retificada}
 \begin{equation}
     z = \text{ReLU}(\mathbf{w}^\text{T} \mathbf{x} + w_0)
 \end{equation}
@@ -318,17 +298,23 @@ totalmente conectadas com uma função de ativação na saída, analisando de fo
 mais completa a relação entre as características detectadas pelas camadas.
 
 \subsubsection{GNN}
+\abbrev{GNN}{redes neurais de grafos}
 A representação em grafos torna possível identificar padrões
 não-triviais entre os dados. Também são facilmente interpretáveis, o que
 permite a aplicação de uma variedade de métodos de aprendizado de máquina. Um
 desses métodos é o aprendizado profundo em redes neurais de grafos (GNNs, do
 inglês \textit{graph neural networks}).
 
+
 Na notação formal, o grafo $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ consiste no conjunto de
 vértices ou nós $\mathcal{V}$ e arestas $\mathcal{E}$. A aresta que conecta
 o nó $n$ ao nó $m$ é denotada pela tupla $(n, m)$. Dois nós são adjacentes ou vizinhos
 se estiverem conectados por uma aresta, tal que o conjunto dos nós adjacentes a $n$
-é dado por $\mathcal{N}(n) = \{m : (n, m) \in \mathcal{E}\}$. 
+é dado por $\mathcal{N}(n) = \{m : (n, m) \in \mathcal{E}\}$.
+\symbl{$\mathcal{G}$}{grafo}
+\symbl{$\mathcal{V}$}{conjunto de vértices de um grafo}
+\symbl{$\mathcal{E}$}{conjunto de arestas de um grafo}
+\symbl{$\mathcal{N}(n)$}{conjunto de nós adjacentes ao nó $n$ em um grafo}
 
 A estrutura básica de uma GNN é composta por nós que recebem e agregam
 informações de sua vizinhança a cada iteração. Os nós vizinhos também agregam
@@ -467,6 +453,7 @@ a vizinhança do nó amarelo enquanto estado $\mathbf{h}^{(l+1)}_n$.
 \label{fig:gnn}
 \vspace{2em}
 
+\abbrev{MLP}{\textit{multi-layer perceptron}}
 A função de agregação pode ser uma soma, uma média ou a escolha dos valores
 máximos e mínimos do vetor de entrada. Para que operação tenha parâmetros
 treináveis, é concedido aos \textit{embeddings} adjacentes uma rede neural
@@ -528,6 +515,7 @@ as matrizes de pesos e o vetor de \textit{bias} da rede neural.
 
 \section{Redes Neurais \textit{Session-Based}}
 \subsection{CSRM}
+\abbrev{CSRM}{\textit{Collaborative Session-based Recommendation Machine}}
 O \textit{Collaborative Session-based Recommendation Machine} (CSRM) é um modelo
 híbrido que avalia o comportamento de sessões vizinhas para melhorar a
 recomendação da sessão atual \cite{collaborative2018}. O modelo é composto um
@@ -537,8 +525,7 @@ recentes como sessões vizinhas em potential, e um decodificador de recomendaç�
 que calcula a probabilidade da próxima interação com base nas saídas dos dois
 codificadores.
 
-O codificador interno é composto por uma unidade recorrente fechada (GRU, do
-inglês \textit{gated recurrent unit}), responsável por modelar
+O codificador interno é composto por uma GRU responsável por modelar
 o comportamento sequencial da sessão atual, enquanto que uma segunda GRU com
 mecanismo de atenção é responsável por codificar cada item de forma individual.
 A saída dessas duas unidades compõem um vetor de saída para o codificador interno.
@@ -554,8 +541,8 @@ item em determinada sessão. Para maximizar a probabilidade de predição de um
 item que de fato foi selecionado, a função de custo por entropia cruzada é
 empregada.
 
-\subsection{Gru4Rec}
-Gru4Rec  \cite{gru4rec_1} \cite{gru4rec_2} é uma RNN com unidades GRU
+\subsection{GRU4Rec}
+GRU4Rec  \cite{gru4rec_1, gru4rec_2} é uma RNN com unidades GRU
 modificadas, as quais são treinadas em \textit{mini-batches}, ou seja, em
 pequenas bateladas de amostras de treinamento. Essa forma de treinamento
 aproveita a capacidade de paralelismo do \textit{hardware}, tornando a
@@ -569,6 +556,7 @@ negativa quando o alvo de outra sessão é amostrado. A ideia é que itens
 populares os quais o usuário não interagiu são de conhecimento dele, mas sem
 interesse, o que deve ser reforçado com uma pontuação negativa.
 
+\abbrev{BPR}{Ranqueamento Bayesiano Personalizado}
 A função de custo, que pertence ao grupo de funções \textit{learning-to-rank},
 retorna o ranqueamento, isto é, a classificação ordenada dos itens de acordo com
 a probabilidade de serem selecionados. É utilizado o Ranqueamento Bayesiano
@@ -578,12 +566,11 @@ gradiente.
 
 \subsection{NextItNet}
 Modela a probabilidade condicional de uma sequência de itens a partir de uma
-rede neural convolucional (CNN, do inglês \textit{convolutional neural
-network}), cuja arquitetura é modificada para receber sequências de
+rede neural convolucional, cuja arquitetura é modificada para receber sequências de
 itens \cite{nextitnet}.
 
 Modela a probabilidade condicional das interações a partir de uma pilha de redes
-convolucionais de uma única dimensão.o modelo GRU4REC, modela-se na
+convolucionais de uma única dimensão.o modelo GRU4Rec, modela-se na
 saída uma única pdf condicional $p(x_i|x_{0:i-1}, \mathbf{\theta})$ alusiva ao
 último item $i$, dado um vetor de interações entrada e os hiperparâmetros. Por
 sua vez, o NextItNet modela uma pdf condicional para cada item da sequência
@@ -627,7 +614,9 @@ acesso aos itens seguintes da sequência. Isso é feito a partir de uma máscara
 aplicada na entrada da rede, que realiza operações de translação e deslocamento
 no vetor unidimensional de entrada.
 
-Finalmente, para alocar as \textit{pdf}s de cada item da sessão, é utilizada uma
+\abbrev{PDF}{função de densidade de probabilidade}
+Finalmente, para alocar as funções de densidade de probabilidade (PDF, do inglês
+\textit{probability density function}) de cada item da sessão, é utilizada uma
 matriz de valores esperados $\mathbf{E}^{p} \in \mathbb{R}^{t \times n}$, sendo
 $t$ a quantidade de itens da base de dados que compõem as \textit{top-N}
 predições, e $n$ a quantidade de itens na sessão. Cada linha $x_i$ ($0 < i \leq
@@ -641,6 +630,7 @@ $x_i$, utiliza-se a função \textit{softmax} amostrada para uma parcela reduzid
 dos itens.
 
 \subsection{NARM}
+\abbrev{NARM}{\textit{Neural Attentive Session-based Recommendation Model}}
 O modelo \textit{Neural Attentive Session-based Recommendation Model} (NARM)
 \cite{narm} consiste em um par codificador-decodificador com um gerador
 intermediário de parâmetros entre ambos, que recebe a representação oculta do
@@ -683,6 +673,7 @@ função de custo é a entropia cruzada.
 
 
 \subsection{SR-GNN}
+\abbrev{SR-GNN}{\textit{Session-based Recommendation with Graph Neural Networks}}
 O modelo \textit{Session-based Recommendation with Graph Neural Networks}
 (SR-GNN) utiliza uma rede neural em grafos com unidades GRU e mecanismo de
 atenção, representando internamente os dados como \textit{embeddings} de itens
@@ -725,8 +716,9 @@ da sessão. Para isso, é utilizada uma função de ativação \textit{softmax}.
 empregada é a entropia cruzada.
 
 \subsection{STAMP}
+\abbrev{STAMP}{\textit{Short-Term Attention/Memory Priority}}
 O modelo \textit{Short-Term Attention/Memory Priority} (STAMP), assim como o
-modelo \textit{NARM}, distingue e identifica os padrões de curto e longo prazo
+modelo NARM, distingue e identifica os padrões de curto e longo prazo
 nas interações dos usuários. Sua principal diferença é o reforço explícito na
 última interação realizada na sessão, como medida para realizar essa distinção.
 

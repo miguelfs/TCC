@@ -11,6 +11,12 @@ de uma série de estereótipos atualiza os valores nas dimensões do modelo de
 usuário, que são utilizadas para recomendar livros cujos modelos tenham valores
 similares.
 
+No exemplo da tabela \ref{grundy}, um usuário que se identifique com o estereótipo
+``\textit{atleta}'', independente de seu gênero, terá um incremento em suas
+motivações e interesses proporcionais à sua correspondência com o estereótipo.
+Dessa forma, leituras relacionadas a esportes ou que gerem excitação serão
+mais recomendadas a esse usuário.
+
 \vspace{2em}
 
 \begin{table}[h!]
@@ -30,10 +36,11 @@ similares.
        \hline
    \end{tabular}
    \caption{Exemplo de esterótipo do sistema de recomendação Grundy.}
+   \label{grundy}
 \end{center}
 \end{table}
 
-A abordagem de filtragem colaborativa, popularizada a partir dos anos 90 e
+A filtragem colaborativa, popularizada a partir dos anos 90 e
 incluída pela Amazon \cite{amazon2017} em seu comércio eletrônico, possui
 algumas diferenças em relação ao sistema proposto por Rice, segundo a própria
 autora \cite{rich:homepage}:
@@ -46,7 +53,7 @@ autora \cite{rich:homepage}:
    livros essas pessoas gostaram. Assim, ele pode recomendar novos livros a um
    usuário sem nenhum modelo aprofundado das preferências dele ou dos livros.
    Sistemas de filtragem colaborativa substituem o banco de dados menor e mais
-   aprofundado de Grundy com um banco de dados superficial e massivo."}
+   aprofundado de Grundy com um banco de dados superficial e massivo.''}
    \end{quotation}
 
 

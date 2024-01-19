@@ -1,1 +1,33 @@
-\section{Modelagem com inclusão de instrumento e gênero}
+% \section{Modelagem com inclusão de instrumento e gênero}
+\subsection{Remoção de \textit{forks} na base de treinamento} 
+
+Uma característica particular das sessões do Indaband é a capacidade de criar
+uma sessão a partir de outra já existente, modificá-la, adicionar novas
+gravações e publicá-la como uma nova iteração de uma sessão já existente.
+
+Essa funcionalidade é muito utilizada pelos usuários. A tabela \ref{tab_sessoes}
+mostra que 76\% das faixas criadas são geradas via \textit{fork}. Dessa forma,
+usuários distintos podem contribuir para uma mesma sessão em momentos distintos,
+ou um usuário pode contribuir para uma mesma sessão de outro usuário que
+era desconhecido até então.
+
+Uma vez que o objetivo é recomendar usuários prováveis de contribuir gravando
+uma faixa inédita para uma determinada sessão, é razoável gerar um cenário em
+que o recomendador continue considerando os \textit{forks} como dados de insumo
+para a recomendação \textit{sequence-aware}, porém limitando-se a prever ou a
+recomendar apenas o cenário de adição de um conteúdo inédito.
+
+Com essa finalidade, foi criada uma nova base de treinamento apenas com sessões
+em que o último item da sequência é a adição de uma faixa inédita. Essa
+identificação é feita a partir de um metadado disponível, informando se a faixa
+foi gerada por um \textit{fork} ou foi criada, seja por gravação, por importação
+de uma faixa ou por separação de fontes.
+
+Para essa abordagem, é utilizado o avaliador \textit{last-item}. Esse avaliador
+considera apenas o último item da sequência como o item a ser previsto, sem que
+os demais itens advindos de \textit{fork} sejam recomendados.
+
+
+
+
+

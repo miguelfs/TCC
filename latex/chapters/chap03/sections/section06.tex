@@ -1,7 +1,8 @@
 \section{Métodos Baseados em Fatoração}
 
 \subsection{FPMC}
-O modelo Factorized Personalized Markov Chains (FPMC) é um modelo \textit{session-aware}
+\abbrev{FPMC}{\textit{Factorized Personalized Markov Chains}}
+O modelo \textit{Factorized Personalized Markov Chains} (FPMC) é um modelo \textit{session-aware}
 que utiliza cadeias de Markov para recomendações de cestas de itens. \cite{mkv}
 
 Uma cadeia de Markov de ordem $m$ é definida como a probabilidade condicional de
@@ -32,6 +33,7 @@ autores utilizam e adaptam o critério de otimização utilizado no modelo BPR
 \cite{rendle2009}.
 
 \subsection{FISM}
+\abbrev{FISM}{\textit{Factorized Item Similarity Models}}
 O modelo \textit{Factorized Item Similarity Models} (FISM) \cite{kabbur2013fism}
 é um modelo que gera recomendações a partir da similaridade entre itens,
 estimados a partir de representações em matrizes de fator latente. O modelo FISM
@@ -51,8 +53,8 @@ similaridade é obtida ao realizar o produto interno do vetor latente de cada
 item avaliado com o fator latente do item a ser estimado.
 
 \subsection{Fossil}
-O modelo \textit{Factorized Session-based Similarity Learning} (FOSSIL) une a
-abordagem baseada em similaridade do modelo FISM com a abordagem
+O modelo \textit{Factorized Sequential Prediction with Item Similarity Models}
+(Fossil) \cite{fossil} une a abordagem baseada em similaridade do modelo FISM com a abordagem
 \textit{session-aware} baseada em cadeias de Markov do modelo FPMC. O objetivo é
 aproveitar a capacidade de modelar características temporais do modelo FPMC, em
 razão do uso de cadeias de Markov, com a compressão sobre matrizes esparsas do
@@ -62,10 +64,13 @@ preferências de curto prazo e seus padrões sequenciais são obtidos por uma
 cadeia de Markov.
 
 \subsection{SMF}
-O modelo \textit{Sequential Matrix Factorization} (SMF) \cite{ludewig_2018} assimila-se
-ao modelo FOSSIL, ao combinar fatoração de matrizes com cadeias de Markov. A distinção encontra-se
-na forma como a predição é calculada: o modelo substitui o vetor latente do usuário por
-um vetor de preferências de sessão, que é computado como um \textit{embedding} da sessão atual.
+\abbrev{SMF}{\textit{Session-based Matrix Factorization}} O modelo
+\textit{Session-based Matrix Factorization} (SMF) \cite{ludewig_2018}
+assimila-se ao modelo Fossil, ao combinar fatoração de matrizes com cadeias de
+Markov. A distinção encontra-se na forma como a predição é calculada: o modelo
+substitui o vetor latente do usuário por um vetor de preferências de sessão, que
+é computado como um \textit{embedding} da sessão atual. Dessa forma, o modelo
+lida melhor com problemas de \textit{cold-start}, 
 
 
 % \cite{fuse}.

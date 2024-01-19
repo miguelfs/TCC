@@ -338,46 +338,25 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
   \frontpage@maintext
   \vspace*{16mm}
   \nohyphens{%
-  \noindent\begin{tabularx}{\textwidth}[b]{@{}l@{ }>{\raggedright\arraybackslash}X@{}}
-    \local@advisorstring: &
-    \count1=0
-    \toks@={}
-    \@whilenum \count1<\@advisor \do{%
-    \ifcase\count1 % same as \ifnum0=\count1
-      \toks@=\expandafter{\csname CoppeAdvisorName:\the\count1%
-        \expandafter\endcsname\expandafter\space%
-        \csname CoppeAdvisorSurname:\the\count1\endcsname\\}
-    \else
-      \toks@=\expandafter\expandafter\expandafter{%
-        \expandafter\the\expandafter\toks@%
-        \expandafter&\expandafter\space%
-        \csname CoppeAdvisorName:\the\count1\expandafter\endcsname%
-        \expandafter\space\csname CoppeAdvisorSurname:\the\count1\endcsname\\
-      }%
-    \fi
-    \advance\count1 by 1}
-    \the\toks@
+  \noindent
+  \begin{tabularx}
+    {\textwidth}[b]{@{}l@{ }>{\raggedright\arraybackslash}X@{}}
+    \noindent\begin{tabular}{ll}
+      Autor: & \makebox[4.5in]{\hrulefill}\\
+      & Miguel Fernandes de Sousa\\[8ex]
+      Orientador: & \makebox[4.5in]{\hrulefill}\\
+      & \csname CoppeAdvisorTitle:0\endcsname\space\csname CoppeAdvisorName:0\endcsname\space\csname CoppeAdvisorSurname:0\endcsname\\\\[5ex]
+      Orientador: & \makebox[4.5in]{\hrulefill}\\
+      & \csname CoppeAdvisorTitle:1\endcsname\space\csname CoppeAdvisorName:1\endcsname\space\csname CoppeAdvisorSurname:1\endcsname\\\\[5ex]
+      Avaliador: & \makebox[4.5in]{\hrulefill}\\
+      & \csname CoppeExaminer:0\endcsname\space\csname CoppeExaminerName:0\endcsname\space\csname CoppeExaminerSurname:0\endcsname\\\\[5ex]     
+      Avaliador: & \makebox[4.5in]{\hrulefill}\\
+      & \csname CoppeExaminer:1\endcsname\space\csname CoppeExaminerName:1\endcsname\space\csname CoppeExaminerSurname:1\endcsname\\\\[5ex]     
+      \end{tabular}
+
   \end{tabularx}\par
-  \vspace*{20mm}
-  \noindent\begin{tabularx}{\textwidth}[b]{@{}l@{ }>{\raggedright\arraybackslash}X@{}}
-    Aprovada por: &
-    \count1=0
-    \toks@={}
-    \@whilenum \count1<\@examiner \do{%
-    \ifcase\count1 % same as \ifnum0=\count1
-      \toks@=\expandafter{\csname CoppeExaminer:\the\count1%
-        \expandafter\endcsname\expandafter\\}
-    \else
-      \toks@=\expandafter\expandafter\expandafter{%
-        \expandafter\the\expandafter\toks@%
-        \expandafter&\expandafter\space%
-        \csname CoppeExaminer:\the\count1\expandafter\endcsname%
-        \expandafter\space\\
-      }%
-    \fi
-    \advance\count1 by 1}
-    \the\toks@
-    \end{tabularx}}\par
+  \vspace*{0mm}
+  \noindent}\par
   \vspace*{\fill}
   \frontpage@bottomtext}
 \newcommand\coppe@hypersetup{%
@@ -479,7 +458,7 @@ T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
       \ifthenelse{\@advisor>1}{\ \emph{et~al.}{}}.
       II. \local@universityname, Escola Politécnica, Curso de \local@deptname.
       % II. \local@universityname, COPPE, Programa de \local@deptname.
-      III. T{\' i}tulo.}
+      III. T{\' i}tulo de Engenheiro.}
     \end{minipage}}
   \end{center}
   \vspace*{\fill}}

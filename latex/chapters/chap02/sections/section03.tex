@@ -1,9 +1,129 @@
+\section{Propriedades dos sistemas de recomendação}
+\subsection{\textit{Feedback} explícito e implícito}
+
+Em geral, recomendações personalizadas são baseadas no \textit{feedback} dos
+usuários, ou seja, em informações providas pelos usuários, utilizadas para
+identificar suas preferências. Essas informações são ações explícitas ou dados
+inferidos de forma implícita.
+
+Historicamente, a pesquisa em de sistemas de recomendação foi dominada por
+cenários nos quais os usuários declaram explicitamente seu interesse em itens,
+principalmente na forma de avaliações de itens em uma escala numérica de 1 a 5.
+Esses algoritmos modelam o problema como uma tarefa de preenchimento da matriz
+de avaliações.
+
+A facilidade de obter \textit{feedbacks} explícitos preenchidos por usuários
+depende do domínio da aplicação. Por exemplo, em sistemas de consumo de
+produtos, como comércio eletrônico ou \textit{streamings} de mídia. Por outro
+lado, uma aplicação sem qualquer forma de avaliação explícita torna o sistema de
+recomendação dependente de informações comportamentais monitoradas dos usuários,
+ou seja, de \textit{feedback} implícito \cite{ludewig2020advances}.
+
+O \textit{feedback} implícito do usuário é caracterizado por ações diretamente
+observáveis do usuário ou sinais de preferência indiretos, relacionados a
+características ou ações do
+usuário.
+
+A dificuldade na diferenciação de um sinal como interesse ou desinteresse é uma
+das desvantagens do \textit{feedback} implícito. Por exemplo, quando um usuário
+assiste a um vídeo curto em uma interface de \textit{Feed} como o TikTok ou
+Instagram, o usuário assistir o vídeo por completo não é necessariamente
+modelado como um \textit{feedback} positivo. Por sua vez, o usuário descartar
+imediatamente determinado vídeo pode ser interpretado como \textit{feedback}
+negativo. Apesar disso, sistemas de \textit{feedback} implícito em geral não contam
+com sinais negativos \cite{ludewig2020advances,JLZ18}.
+
+\subsection{Sistemas \textit{context-aware} e \textit{time-aware}} Abordagens
+tradicionais de sistemas de recomendação ignoram a ordem e o contexto do
+\textit{feedback} do usuário. Por exemplo, uma mudança nas preferências de longo
+e curto prazo do usuário, a sazonalidade de um produto, um interesse pontual ou
+o reinteresse em um item já consumido. A detecção e distinção dessas
+preferências influenciam positivamente na assertividade das recomendações.
+
+Padrões semelhantes são encontrados em diferentes aplicações. Nomes específicos
+foram cunhados para distingui-los, como a recomendação \textit{context-aware},
+\textit{time-aware} e \textit{sequence-aware}. Essas áreas compartilham
+características e similaridades. Por exemplo, sistemas \textit{session-based}
+são considerados um caso particular de sistemas \textit{context-aware}, em que o
+contexto é simplificado e delimitado por uma sessão \cite{survey_wang_2021}.
+Sistemas \textit{time-aware} são considerados um caso particular de sistemas
+\textit{sequence-aware}, em que o instante de tempo de cada interação é
+registrado e capaz de modelar a sequência de interações
+\cite{ludewig2020advances}.
+
+\subsubsection{\textit{Context-aware}} 
+
+Em sistemas de recomendação tradicionais, a estimativa da utilidade de um item a
+um determinado usuário é obtida em função desses dois dados. Dessa forma,
+usuário e item são as duas entidades fundamentais nesses sistemas. Apesar disso,
+uma série de outros fatores podem influenciar nas preferências do usuário. Por
+exemplo, o dia no ano, a localização e o clima podem impactar as preferências de
+compra de itens típicos associados a praias ou a invernos rigorosos. Essas
+informações são consideradas fatores contextuais \cite{rec_sys_handbook_2022_context}.
+Sistemas \textit{context-aware} estimam a utilidade de um item em função de três
+entidades: usuário, item e contexto.
+
+A disponibilidade dos fatores contextuais é classificada como explícita ou
+latente. Contextos explícitos são informações diretamente observáveis e
+mensuráveis. Contextos latentes são aqueles que não podem ser medidos
+diretamente, mas podem ser inferidos a partir de modelos de fatores latentes ou
+de \textit{embeddings} em modelos de aprendizado profundo.
+
+Por sua vez, a mutabilidade dos fatores contextuais ao longo do tempo é
+classificada como estática ou dinâmica. Contextos estáticos são informações com
+associação e valor inalterados ao longo do tempo. Por exemplo, informações
+contextuais de instante e preço de compra em um comércio eletrônico permanecem
+inalterados. Contextos dinâmicos são informações que podem ser alteradas ao
+longo do tempo. Por exemplo, informações de contexto do usuário vigente, no
+instante em que uma recomendação é realizada
+\cite{rec_sys_handbook_2022_context}.
+
+\subsubsection{\textit{Time-aware}}
+
+A informação da data da interação destaca-se
+pela facilidade de obtê-la explicitamente, uma vez que a grande maioria dos
+sistemas registram o instante de tempo associado às avaliações ou ao consumo de
+determinado item. Sistemas de recomendação \textit{time-aware} são um caso
+particular de sistemas \textit{context-aware}, em que o contexto é delimitado
+pela dimensão temporal.
+
+Geralmente, sistemas \textit{time-aware} utilizam o instante de tempo da
+interação, porém outras fontes de informação temporal, como a data de
+incorporação de um item no catálogo do sistema ou a data de registro do usuário,
+tornam o sistema em questão \textit{time-aware}.
+
+Por mais que sistemas \textit{time-aware} sejam capazes de inferir preferências
+de curto e longo prazo, a dependência de informações temporais torna-os
+suscetíveis a problemas de \textit{cold-start} \cite{rec_sys_handbook_2022_multi}.
+
+\subsubsection{\textit{Sequence-aware}}
+A recomendação \textit{sequence-aware} é dedicada a sequências e padrões
+repetitivos no \textit{feedback} dos usuários. Sistemas \textit{session-aware} e
+\textit{session-based} são classificados como uma subárea da recomendação
+\textit{sequence-aware}.
+
+Em geral, os dados de entrada em um problema \textit{sequence-aware} são listas
+de interações do usuário em ordem cronológica. Nos casos em que consta o instante
+de tempo de cada interação, também trata-se de um problema \textit{time-aware}.
+
+Devido à falta de conjuntos de
+dados publicamente disponíveis com informações adicionais de metadados e, ao
+mesmo tempo, visando a comparabilidade e reprodutibilidade, as técnicas
+apresentadas na literatura dependem apenas de um tipo de
+interação e não consideram metadados adicionais.
+
+Sistemas \textit{sequence-aware} são modelados a partir de sequências ordenadas
+de interações, sem necessariamente delimitar as ações em sessões. Não há
+modelagem explicita agrupando conjuntos de interações. As preferências de longo
+ou curto prazo são inferidas a partir da ordem, da co-ocorrência ou da distância
+entre interações \cite{sessionbaseddp, quadrana2018sequence}.
+
+
 \section{Sistemas de Recomendação \textit{Session-Based} e \textit{Session-Aware}}
 
 \subsection{Definição}
 
-Os sistemas de recomendação baseados em sessão (SBRS, do inglês
- \textit{session-based recommendation systems}) são aplicáveis quando os dados
+Os SBRS são aplicáveis quando os dados
  de entrada do modelo consistem em um conjunto ou uma sequência de interações do usuário
  durante uma mesma sessão de itens, tal que \cite{survey_wang_2021}:
 
@@ -67,17 +187,200 @@ $A$ é o conjunto das ações, tais como: criação de sessão, convite endereç
   É importante destacar que $s$ e $S$ podem
   ser definidos com um conjunto de interações desprovido de ordenação temporal
   ou como listas ordenadas de interações e de sessões. Essas duas abordagens
-  dependem das propriedades \textit{sequence-aware}, \textit{context-aware}
-  e \textit{time-aware}.
+  dependem das propriedades \textit{context-aware}, \textit{time-aware}
+  e \textit{sequence-aware} do sistema de recomendação.
 
-  \subsection{Sistemas de recomendação \textit{sequence-aware}}
+  No caso das recomendações \textit{session-based} e \textit{session-aware},
+  cada interação é associada a um identificador de sessão, agrupando várias
+  interações consecutivas. As interações são agrupadas em uma única sessão até
+  que o usuário não execute nenhuma interação por um período específico de
+  tempo, geralmente após trinta minutos de ociosidade.
+  
+  Ao contrário da recomendação \textit{sequence-aware}, os recomendadores
+  \textit{session-aware} necessariamente consideram a sessão atual do usuário.
+  Na recomendação \textit{sequence-aware}, algumas técnicas dependem apenas do
+  histórico de longo prazo dos usuários, levando em consideração a ordem dos
+  eventos.
 
-  \subsection{Exemplos}
+  % \subsection{Características}
 
-  Dois exemplos de aplicações de SBRS
-  são a recomendação de músicas em uma sessão de execução \cite{music_2013} e
-  produtos a serem adicionados em um carrinho de compras virtual
-  \cite{shopping_cart_2023}.
+
+% A recomendação \textit{session-based} pode ser interpretada tanto como
+% \textit{sequence-aware} quanto \textit{session-aware} em cenários de
+% \textit{cold-start} do usuário, ou seja, na ausência de informações históricas
+% para todos os usuários. Por outro lado, a recomendação \textit{session-based} é
+% desprovida de modelos personalizados de longo prazo. A personalização das
+% sugestões de itens depende exclusivamente das últimas interações do usuário.
+
+  \subsection{Avaliação de desempenho em SBRS}
+  A ideia geral da avaliação em SBRS consiste em revelar uma parte das interações
+  iniciais de uma sessão e comparar as interações recomendadas subsequentes com
+  as interações que o usuário realmente realizou.
+  
+  Duas abordagens são utilizadas na literatura para avaliar o desempenho de
+  sistemas \textit{session-based} e \textit{session-aware}: \textit{next-item}
+  e \textit{remaining items}.
+
+  Na abordagem \textit{next-item}, as primeiras $N$ interações de uma sessão de
+  teste são reveladas ao sistema de recomendação e apenas a interação
+  subsequente é utilizada como prova real e comparada com o valor recomendado.
+  Dessa forma, o sistema pode revelar item a item e avaliar cada recomendação,
+  ou revelar apenas o último item de cada sessão.
+
+  Por sua vez, a abordagem \textit{remaining items} revela todos os itens
+  subsequentes ao realizar a prova real. O valor recomendado é comparado
+  com todos os itens subsequentes, e não apenas com o próximo item.
+
+  \abbrev{HR}{\textit{Hit Rate}} \abbrev{MAP}{\textit{Mean Average Precision}}
+  \abbrev{MAR}{\textit{Mean Average Rank}} \abbrev{NDCG}{\textit{Normalized
+  Discounted Cumulative Gain}} Para a abordagem \textit{next-item}, as métricas
+  de avaliação utilizadas são \textit{Hit Rate} (HR) e \textit{Mean Reciprocal
+  Rank} (MRR). Para a abordagem \textit{remaining items}, as métricas de
+  avaliação utilizadas são a Precisão, \textit{Recall}, \textit{Mean Average
+  Precision} (MAP), \textit{Mean Average Rank} (MAR), \textit{Normalized
+  Discounted Cumulative Gain} (NDCG) e \textit{F1}.
+
+  Uma vez que sistemas de recomendação tendem a enviesar as recomendações para
+  itens populares, as métricas de cobertura e popularidade são utilizadas para
+  avaliar a diversidade e o viés das recomendações. Sessões assertivas com pouco
+  viés de popularidade e maior cobertura indicam maior qualidade na
+  personalização das recomendações.
+
+  \subsubsection{\textit{Hit Rate} (HR)}
+  O HR@N é a porcentagem de vezes em que um item relevante
+  é recomendado entre os $N$ primeiros itens da lista de recomendações:
+
+  \begin{equation}
+    % \text{HR}_{\text{N}} = \frac{1}{|U|} \sum_{u \in U} \sum_{i \in R_{u, N}} \frac{1}{N}
+    \text{HR@N} = \frac{1}{Q}\sum_{i=1}^{Q}\begin{cases}
+      1 & \text{se} \quad i \leq N \\
+      0 & \text{caso contrário}
+    \end{cases}
+  \end{equation}
+  em que $Q$ é o comprimento da lista de itens recomendados para uma determinada
+  predição e $i$ é a posição do item na lista de recomendações.
+  \subsubsection{\textit{Mean Reciprocal Rank} (MRR)} O MRR@N é similar ao HR@N,
+  porém leva em consideração a posição do item. Se o item recomendado
+  corretamente consta nas primeiras posições da lista de recomendações, o MRR@N
+  é maior, decaindo conforme a posição do item recomendado corretamente fica
+  mais distante do início da lista de recomendações. Por sua vez, o incremento
+  no HR@N em razão de um item recomendado no início ou no final da lista contém
+  pesos idênticos.
+
+  \begin{equation}
+    \text{MRR@N} = \frac{1}{Q}\sum_{i=1}^{Q}\begin{cases}
+      \dfrac{1}{i} & \text{se} \quad i \leq N \\
+      0 & \text{caso contrário}
+    \end{cases}
+  \end{equation}
+
+  \subsubsection{Precisão e \textit{Recall}}
+  No contexto de classificadores, a precisão e o \textit{recall} avaliam
+  a qualidade de um modelo a partir da matriz de confusão descrita
+  na tabela \ref{tab:confusion_matrix}::
+
+  \begin{align}
+    \text{Precisão} &= \frac{\text{VP}}{\text{VP} + \text{FP}} \\
+    \text{\textit{Recall}} &= \frac{\text{VP}}{\text{VP} + \text{FN}}
+  \end{align}
+
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|}
+      \cline{2-3}
+      & \multicolumn{2}{c|}{\textbf{Predição}} \\ \cline{2-3} 
+      & \textbf{Positivo} & \textbf{Negativo} \\ \hline
+      \multicolumn{1}{|c|}{\textbf{Positivo}} & Verdadeiro Positivo (VP) & Falso Positivo (FP) \\ \hline
+      \multicolumn{1}{|c|}{\textbf{Negativo}} & Falso Negativo (FN) & Verdadeiro Negativo (VN) \\ \hline
+    \end{tabular}
+    \caption{Matriz de confusão}
+    \label{tab:confusion_matrix}
+  \end{table}
+  \abbrev{VP}{Verdadeiro Positivo}
+  \abbrev{FP}{Falso Positivo}
+  \abbrev{FN}{Falso Negativo}
+  \abbrev{VN}{Verdadeiro Negativo}
+
+  No contexto de sistemas de recomendação, a Precisão@N avalia a quantidade de
+  itens relevantes em relação ao total de $N$ itens recomendados na lista. O conjunto
+  dos $N$ itens recomendados equivale aos verdadeiros e falsos positivos:
+
+  \begin{equation}
+    \text{Precisão@N} = \frac{\text{Qntd. de itens relevantes nas primeiras N recomendações}}{N}
+  \end{equation}
+
+  Por sua vez, o Recall@N equivale a quantidade de itens relevantes entre
+  os $N$ primeiros itens da lista de recomendações, desconsiderando a
+  posição do item na lista. O conjunto dos itens relevantes equivale
+  aos verdadeiros positivos e falsos negativos:
+
+  \begin{equation}
+    \text{Recall@N} = \frac{\text{Qntd. de itens relevantes nas primeiras N recomendações}}{\text{Quantidade de itens relevantes}}
+  \end{equation}
+
+  \subsubsection{\textit{Mean Average Precision} (MAP)} O MAP@N calcula a média
+  da precisão média (AP@N) para cada consulta. Após cada item relevante ser
+  recomendado, a precisão é medida, tal que a média é calculada por:
+
+  \begin{align}
+    \text{AP@N} &= \frac{\sum_{i = 1}^{K}\text{Precisão@k} \times \text{rel}_{k}}{\text{qntd. de resultados relevantes}} \\
+    \text{rel}_k &= \begin{cases}
+      1 & \text{se} \quad k \leq N \\
+      0 & \text{caso contrário} 
+    \end{cases} \\
+    \text{MAP@N} &= \frac{1}{Q}\sum_{q = 1}^{Q} \text{AP@N}_{q}
+  \end{align}
+  em que $K$ é a quantidade de itens recomendados, $\text{rel}_{k}$ é a
+  relevância do item na posição $k$ e $Q$ é a quantidade de consultas.
+
+  \subsubsection{\textit{Normalized Discounted Cumulative Gain} (NDCG)}
+  O NDCG é baseado no ganho cumulativo (CG). O ganho cumulativo é a soma dos
+  valores de relevância graduais de todos os itens em uma lista de
+  recomendações:
+
+  \begin{equation}
+    \text{CG@N} = \sum_{i = 1}^{N} \text{rel}_{i}
+  \end{equation}
+  
+  \abbrev{CG}{\textit{Cumulative Gain}}
+  \abbrev{DCG}{\textit{Discounted Cumulative Gain}}
+  \abbrev{IDCG}{\textit{Ideal Discounted Cumulative Gain}}
+  Por sua vez, o NDCG é a razão entre o ganho cumulativo
+  descontado (DCG) e o ganho cumulativo descontado ideal (IDCG). Ambos contém
+  um fator de penalidade no denominador:
+
+  \begin{align}
+    \text{DCG@N} &= \sum_{i = 1}^{N} \frac{2^{\text{rel}_{i}} - 1}{\log_{2}(i + 1)} \\
+    \text{IDCG@N} &= \sum_{i = 1}^{\text{REL}_N} \frac{\text{rel}_{i}}{{\log_{2}(i + 1)}} \\
+    \text{NDCG@N} &= \frac{\text{DCG@N}}{\text{IDCG@N}}
+  \end{align}
+  em que $\text{REL}_N$ é a lista de itens relevantes contidos em $N$, ordenados
+  por relevância.
+
+
+  \subsubsection{F1}
+É calculado a partir da média harmônica entre a precisão e o \textit{recall}. Dessa forma,
+um valor baixo ou próximo de zero para qualquer uma dessas duas métricas derruba
+o valor do F1:
+
+\begin{equation}
+  \text{F1} = \frac{2 \times \text{Precisão} \times \text{Recall}}{\text{Precisão} + \text{Recall}}
+\end{equation}
+
+  \subsubsection{Cobertura}
+  A cobertura mede a proporção de itens recomendados em relação ao total de
+  itens disponíveis. Se definirmos o conjunto de itens disponíveis como $I$ e o
+  conjunto de itens recomendados como $I_{p}$, a cobertura é dada por:
+  \begin{equation}
+    \text{Cobertura@N} = \frac{|I_{p}|}{|I|}.
+  \end{equation}
+
+  % \subsection{Exemplos}
+
+  % Dois exemplos de aplicações de SBRS
+  % são a recomendação de músicas em uma sessão de execução \cite{music_2013} e
+  % produtos a serem adicionados em um carrinho de compras virtual
+  % \cite{shopping_cart_2023}.
 
 % \subsection{Bases de comparação não-personalizadas}
 

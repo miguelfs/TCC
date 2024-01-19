@@ -10,11 +10,14 @@
 \usepackage{multirow}
 \usepackage{graphicx}
 \usepackage{forest}
+\usepackage{fancyhdr}
 \usepackage{tikz-qtree}
 \usepackage{csvsimple}
 \usepackage{rotating}
-\usepackage{multirow}
 \usepackage{booktabs}
+\usepackage{indentfirst}
+\usepackage{mathtools}
+\usepackage{subfigure}
 \usetikzlibrary{arrows, shapes, matrix, automata, positioning}
 \usepgflibrary{shapes.callouts}
 \usepackage{float}
@@ -30,17 +33,17 @@
   \advisor{Prof.}{Natanael}{Moura Júnior}{Ph.D.}
   \advisor{Prof.}{Leandro}{Balby Marinho}{Ph.D.}
 
-  \examiner{Prof.}{Nome do Primeiro Examinador Sobrenome}{D.Sc.}
-  \examiner{Prof.}{Nome do Segundo Examinador Sobrenome}{Ph.D.}
-  \examiner{Prof.}{Nome do Terceiro Examinador Sobrenome}{D.Sc.}
-  \examiner{Prof.}{Nome do Quarto Examinador Sobrenome}{Ph.D.}
-  \examiner{Prof.}{Nome do Quinto Examinador Sobrenome}{Ph.D.}
+  \examiner{Prof.}{Luiz Wagner Pereira Biscainho}{Ph.D.}
+  \examiner{Prof.}{Paulo Sergio Ramirez Diniz}{Ph.D.}
+  % \examiner{Prof.}{Nome do Terceiro Examinador Sobrenome}{D.Sc.}
+  % \examiner{Prof.}{Nome do Quarto Examinador Sobrenome}{Ph.D.}
+  % \examiner{Prof.}{Nome do Quinto Examinador Sobrenome}{Ph.D.}
   \department{ELE}
-  \date{08}{2023}
+  \date{01}{2024}
 
   \keyword{Sistemas de Recomendação}
   \keyword{Session-Based}
-  \keyword{\textit{Speech Enhancement}}
+  \keyword{Session-Aware}
 
   \hbadness=\maxdimen
   \maketitle
@@ -49,20 +52,88 @@
 
   \makecatalog
 
-  \dedication{``Potiusque sero quam nunquam.''
-  
-  Lívio, trecho de \textit{História de Roma}, por volta de 27 a.C.}
+
+  \newpage
+  \thispagestyle{fancy}
+  \renewcommand{\headrulewidth}{0pt}
+  \fancyhead[CO]{DECLARAÇÃO DE AUTORIA E DE DIREITOS}
+
+
+Eu, Miguel Fernandes de Sousa 146.809.857-80, autor da monografia
+\textit{Sistemas de Recomendação Baseados em Sessão do aplicativo Indaband},
+subscrevo para os devidos fins, as seguintes informações: 
+
+1. O autor declara que o trabalho apresentado na disciplina de Projeto de
+Graduação da Escola Politécnica da UFRJ é de sua autoria, sendo original em forma
+e conteúdo.
+
+2. Excetuam-se do item 1. eventuais transcrições de texto, figuras, tabelas,
+conceitos e ideias, que identifiquem claramente a fonte original, explicitando
+as autorizações obtidas dos respectivos proprietários, quando necessárias.
+
+3. O autor permite que a UFRJ, por um prazo indeterminado, efetue em qualquer
+mídia de divulgação, a publicação do trabalho acadêmico em sua totalidade, ou em
+parte. Essa autorização não envolve ônus de qualquer natureza à UFRJ, ou aos seus
+representantes.
+
+4. O autor pode, excepcionalmente, encaminhar à Comissão de Projeto de Graduação,
+a não divulgação do material, por um prazo máximo de 01 (um) ano, improrrogável,
+a contar da data de defesa, desde que o pedido seja justificado, e solicitado
+antecipadamente, por escrito, à Congregação da Escola Politécnica.
+
+5. O autor declara, ainda, ter a capacidade jurídica para a prática do presente
+ato, assim como ter conhecimento do teor da presente Declaração, estando ciente
+das sanções e punições legais, no que tange à cópia parcial, ou total, de obra
+intelectual, o que se configura como violação do direito autoral previsto no
+Código Penal Brasileiro no art.184 e art.299, bem como na Lei 9.610.
+
+6. O autor é o único responsável pelo conteúdo apresentado nos trabalhos
+acadêmicos publicados, não cabendo à UFRJ, aos seus representantes, ou ao(s)
+orientador(es), qualquer responsabilização/ indenização nesse sentido.
+
+7. Por ser verdade, firmo a presente declaração.
+
+% space until bottom
+% \vspace*{\fill}
+\vspace{4\baselineskip}
+
+\noindent\hfill \rule{4in}{0.7pt}
+
+\noindent\hfill Miguel Fernandes de Sousa
+\newpage
+
+
+  \dedication{Aos meus avós Aldinéa, Wilton e Henriqueta.}
   \hbadness=226
 
   \chapter*{Agradecimentos}
 
-  Orientadores: Natanael, Balby
+  Agredeço a orientação dos professores Natanael Moura Júnior e Leandro Balby
+  Marinho, pela direção e disponibilidade durante o desenvolvimento deste
+  trabalho. Agradeço também a todos os professores do Departamento de Engenharia
+  Eletrônica da UFRJ, em especial a Luiz Wagner Pereira Biscainho, por todo o
+  conhecimento transmitido durante a graduação, e a Carlos Fernando Teodósio
+  Soares, pela inspiração necessaria para não desistir nos momentos mais
+  difíceis. Sou grato a todos que tornam a Universidade Federal do Rio de
+  Janeiro a instituição pública de ensino e pesquisa de excelência que ela é.
 
-  Indaband: Medina, Helielson
+  Agradeço aos colegas de Indaband, em especial a Helielson a Medina, por me
+  depositarem o voto de confiança para o desenvolvimento deste trabalho, além de
+  cederem os recursos de infraestrutura e os dados necessários para a realização
+  da pesquisa aqui apresentada. Essa pesquisa só é possível em razão de mais
+  de três anos de trabalho de uma equipe extremamente qualificada.
 
-  Departamento: LW, Teodósio, UFRJ
+  Agradeço aos grandes amigos que fiz durante a graduação, por todo o apoio
+  diário, pelo suporte ao nível de cobrança a que nos submetemos e pelas
+  amizades que levarei para a vida toda: Ana Carolina, Danilo, Felipe, Gabriel,
+  Ian, João Guedes, João Amaral, José Ricardo, Raphael Palmeira, Pedro Pires, e
+  Rodrigo.
 
-  Família: Carol, Mãe, Pai
+  Agradeço a meus pais, João e Sonali, por me ensinarem a importância e o valor
+  da educação e do estudo.
+
+  Agradeço a minha esposa Carol, por todo o amor, parceria e apoio durante a realização
+  e a escrita desse trabalho.
 
   \begin{abstract}
 
@@ -132,7 +203,6 @@
   \bibliography{main}
 
   \appendix
-  \chapter{Algumas Demonstra{\c c}\~oes}
   \input{chapters/appendix/appendix.tex}
 
 \end{document}

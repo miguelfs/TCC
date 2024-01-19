@@ -2,21 +2,24 @@
 
 O trabalho proposto utiliza o \textit{framework} session-rec \cite{sessionrec}
 em Python, uma vez que agrega os modelos SBRS e a avaliação objetiva de forma
-prática, replicando o padrão de pesquisas recentes sobre o tema. 
+prática, replicando o padrão de pesquisas recentes sobre o tema. Os dados
+utilizados no trabalho foram cedidos pela empresa Indaband, na condição de
+anonimização dos usuários tal como ordena a Lei Geral de Proteção de
+Dados \cite{lgpd}. Os experimentos foram realizados em uma máquina virtual com
+12GB de memória RAM, 75GB de memória de armazenamento e GPU Tesla T4.
 
-O segundo capítulo aborda os sistemas de recomendação de forma abrangente,
-apresentando abordagens baseadas em conteúdo e em filtragem
-colaborativa. Em seguida, apresenta a definição formal das recomendações
-\textit{session-based} e \textit{session-aware}.
+O presente texto é organizado da seguinte forma: o segundo capítulo introduz a
+base teórica e aborda os sistemas de recomendação de forma abrangente,
+apresentando as abordagens mais tradicionais e que sustentam a intuição de
+modelos mais sofisticados. Em seguida, apresenta a definição formal das
+recomendações \textit{session-based} e \textit{session-aware}.
 
-O terceiro capítulo apresenta de forma mais aprofundada os diferentes modelos de
-aprendizado de máquina que serão utilizados no comparativo, com suas
-arquiteturas e definições formais.
+O terceiro capítulo apresenta os modelos específicos de aprendizado de máquina
+utilizados no comparativo, descrevendo suas arquiteturas e funcionamento.
 
-O quarto capítulo apresenta o tratamento dos dados de usuários do aplicativo
-Indaband, uma proposta de modelagem mais simples e outra que inclui metadados no
-contexto dos itens da base de dados.
+O quarto capítulo apresenta os comparativos realizados em abordagens distintas a
+partir do conjunto de dados do aplicativo Indaband, incluindo as métricas
+objetivas de desempenho obtidas e a avaliação do autor sobre os resultados.
 
-O quinto capítulo apresenta os resultados do comparativo entre os modelos de
-aprendizado de máquina, com as métricas objetivas de desempenho. O capítulo
-também apresenta a proposta de trabalhos futuros.
+O quinto capítulo discute o desempenho dos modelos a partir das métricas
+obtidas. Também apresenta a proposta de trabalhos futuros.
