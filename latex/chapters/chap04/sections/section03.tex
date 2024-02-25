@@ -3,19 +3,36 @@
 
 Uma característica particular das sessões do Indaband é a capacidade de criar
 uma sessão a partir de outra já existente, modificá-la, adicionar novas
-gravações e publicá-la como uma nova iteração de uma sessão já existente.
+gravações e publicá-la como uma nova iteração.
 
 Essa funcionalidade é muito utilizada pelos usuários. A tabela \ref{tab_sessoes}
-mostra que 76\% das faixas criadas são geradas via \textit{fork}. Dessa forma,
-usuários distintos podem contribuir para uma mesma sessão em momentos distintos,
-ou um usuário pode contribuir para uma mesma sessão de outro usuário que
-era desconhecido até então.
+mostra que 76\% das faixas criadas são geradas via \textit{fork},
+independentemente se foram publicadas ou não. Dessa forma, usuários distintos
+podem contribuir para uma mesma sessão em momentos distintos, ou um usuário pode
+contribuir para uma mesma sessão de outro usuário que era desconhecido até
+então.
 
 Uma vez que o objetivo é recomendar usuários prováveis de contribuir gravando
 uma faixa inédita para uma determinada sessão, é razoável gerar um cenário em
 que o recomendador continue considerando os \textit{forks} como dados de insumo
 para a recomendação \textit{sequence-aware}, porém limitando-se a prever ou a
-recomendar apenas o cenário de adição de um conteúdo inédito.
+recomendar apenas o cenário de adição de um conteúdo inédito. Não há necessidade
+de avaliar a recomendação de um item inserido na sessão no instante de criação.
+
+As abordagens \textit{next-item} e \textit{remaining-items} são as mais
+utilizadas nos comparativos publicados porque aproveitam todos os itens de
+cada sessão para o treinamento ou para a avaliação. No caso de uma aplicação em
+que haja redundância entre as sessões, em que usários possam salvar, repetir e
+compartilhar sessões entre si, essas abordagens acabam por facilitar o trabalho
+do recomendador. O ideal seria um cenário em que não fossem geradas e avaliadas
+recomendações para itens adicionados de forma concomitante à criação
+da sessão.
+
+Em contraponto, a abordagem \textit{last-item} é a que mais se aproxima do
+cenário mencionado, uma vez que mantém inalterada a sequência de itens das
+sessões. O que muda é a forma de avaliação, que passa a considerar apenas o
+último item da sequência como o item a ser previsto, sem que os demais itens
+anteriores sejam avaliados.
 
 Com essa finalidade, foi criada uma nova base de treinamento apenas com sessões
 em que o último item da sequência é a adição de uma faixa inédita. Essa
@@ -27,6 +44,100 @@ Para essa abordagem, é utilizado o avaliador \textit{last-item}. Esse avaliador
 considera apenas o último item da sequência como o item a ser previsto, sem que
 os demais itens advindos de \textit{fork} sejam recomendados.
 
+% Metrics;HitRate@1: ;HitRate@3: ;HitRate@5: ;HitRate@10: ;HitRate@15: ;HitRate@20: ;MRR@1: ;MRR@3: ;MRR@5: ;MRR@10: ;MRR@15: ;MRR@20: ;Coverage@10: ;Popularity@10: ;
+% csrm-hidden_units=100-epoch=10-lr=0.0009-memory_size=256;0.09594333547971667;0.2108821635544108;0.2640051513200258;0.3428847392144237;0.40019317450096586;0.44140373470701866;0.09594333547971667;0.14536381197681889;0.15772698003863458;0.16809631128691008;0.17263257240720203;0.17494414586567672;0.5957696827262045;0.13698027615786773;
+
+% Metrics;HitRate@1: ;HitRate@3: ;HitRate@5: ;HitRate@10: ;HitRate@15: ;HitRate@20: ;MRR@1: ;MRR@3: ;MRR@5: ;MRR@10: ;MRR@15: ;MRR@20: ;Coverage@10: ;Popularity@10: ;
+% csrm-hidden_units=100-epoch=10-lr=0.0009-memory_size=256;0.09594333547971667;0.2108821635544108;0.2640051513200258;0.3428847392144237;0.40019317450096586;0.44140373470701866;0.09594333547971667;0.14536381197681889;0.15772698003863458;0.16809631128691008;0.17263257240720203;0.17494414586567672;0.5957696827262045;0.13698027615786773;
+
+\begin{table}[htbp]
+    \begin{tabular}{|l|l|l|l|l|l|l|l|}
+      \hline
+      Modelo & HR@5 & HR@10 & MRR@5 & MRR@10 & Cov@10 & Pop@10  \\
+      \hline
+      GNN & \textbf{0,551} & \textbf{0,625} & \textbf{0,437} & \textbf{0,446} & 0,660 & 0,202  \\
+      \hline
+      $\text{STAMP}_1$ & 0,519 & 0,584 & 0,377 & 0,386 & 0,610 & 0,217 \\
+      \hline
+      % skNN & 0,518 & 0,647 & 0,213 & 0,231 & 0,643 & 0,169  \\
+%       Metrics;HitRate@1: ;HitRate@3: ;HitRate@5: ;HitRate@10: ;HitRate@15: ;HitRate@20: ;MRR@1: ;MRR@3: ;MRR@5: ;MRR@10: ;MRR@15: ;MRR@20: ;Coverage@10: ;Popularity@10: ;
+% sknn_best-k=100-sample_size=10000-similarity=jaccard;0.0489375402446877;0.33322601416613007;0.51513200257566;0.6416613007083065;0.6954282034771411;0.7189311010946555;0.0489375402446877;0.16688130500107215;0.20917042283751952;0.2263179815819878;0.23053885729352694;0.23185070674721797;0.5916568742655699;0.1971672051062875;
+      sknn2 & 0,518 & 0,647 & 0,213 & 0,230 & 0,643 & 0,169 \\
+      \hline
+      sknn1 & 0,515 & 0,642 & 0,209 & 0,226 & 0,592 & 0,197 \\
+      \hline
+% sknn_2nd-k=50-sample_size=1000-similarity=jaccard;0.05119124275595621;0.3415969092079845;0.5183515775917579;0.6471345782356729;0.6867353509336768;0.7009014810045074;0.05119124275595621;0.17235458252843872;0.21303391285683695;0.23086831427140594;0.23400714796400668;0.2348253638587173;0.6427732079905993;0.1689483377784831;
+      ct & 0,509 & 0,579 & 0,390 & 0,399  & 0,477 & 0,349 \\
+      \hline
+      $\text{STAMP}_2$ & 0,506 & 0,590 & 0,366 & 0,377 & 0,609 & 0,201 \\
+      \hline
+      $\text{NextItNet}_2$ & 0,465 & 0,563 & 0,341 & 0,354 & 0,566 & 0,249 \\
+      \hline
+      $\text{STAN}_2$ & 0,464 & 0,596 & 0,178 & 0,196 & 0,547 & 0,179 \\
+      \hline
+      $\text{STAN}_1$ & 0,451 & 0,572 & 0,186 & 0,202 & 0,529 & 0,177 \\
+      \hline
+      $\text{NextItNet}_1$ & 0,449 & 0,536 & 0,337 & 0,349 & 0,525 & 0,257\\
+      \hline
+      vsknn1 & 0,447 & 0,580 & 0,1193 & 0,211 & 0,544 & 0,208 \\
+      \hline
+      $\text{VSTAN}_1$ & 0,441 & 0,580 & 0,180 & 0,198 & 0,507 & 0,221 \\
+      \hline
+      $\text{SMF}_2$ & 0,439 & 0,553 & 0,291 & 0,306 & 0,306 & 0,240 \\
+      \hline
+      $\text{SMF}_1$ & 0,431 & 0,530 & 0,298 & 0,311 & 0,240 & 0,257 \\
+      \hline
+      vsknn2 & 0,427 & 0,564 & 0,172 & 0,190 & 0,618 & 0,163 \\
+      \hline
+      $\text{SR}_2$ & 0,423 & 0,534 & 0,277 & 0,291 & 0,471 & 0,238 \\
+     \hline
+      $\text{VSTAN}_2$ & 0,418 & 0,546 & 0,171 & 0,189 & 0,588 & 0,142 \\
+      \hline
+      $\text{SR}_1$ & 0,410 & 0,512 & 0,279 & 0,292 & 0,445 & 0,259 \\
+      \hline
+      ar & 0,395 & 0,498 & 0,248 & 0,262 & 0,454 & 0,265 \\
+      \hline 
+      $\text{NARM}_1$ & 0,361 & 0,455 & 0,229 & 0,241 & 0,658 & 0,199 \\
+      \hline
+      $\text{NARM}_2$ & 0,324 & 0,440 & 0,211 & 0,226 & 0,665 & 0,188 \\
+      \hline
+      FOSSIL & 0,287 & 0,420 & 0,137 & 0,154 & 0,776 & 0,249 \\
+      \hline
+      FPMC & 0,281 & 0,419 & 0,124 & 0,143 & 0,764 & 0,241 \\
+      \hline
+      FISM & 0,275 & 0,434 & 0,120 & 0,141 & 0,749 & 0,240 \\
+      \hline
+      BPRMF & 0,271 & 0,407 & 0,122 & 0,141 & 0,744 & 0,250 \\
+      \hline
+      CSRM & 0,264 & 0,343 & 0,158 & 0,168 & 0,596 & 0,137  \\ 
+      \hline
+      $\text{GRU4Rec}_2$ & 0,208 & 0,278 & 0,130 & 0,139 & 0,873 & \textbf{0,030}  \\
+      \hline
+      $\text{GRU4Rec}_1$ & 0,195 & 0,271 & 0,123 & 0,134 & \textbf{0,858} & 0,040  \\
+      \hline
+      rpop & 0,165 & 0,225 & 0,106 & 0,113 & 0,009 & 0,319 \\
+      \hline
+      pop & 0,127 & 0,242 & 0,083 & 0,098 & 0,006 & 0,530 \\
+      \hline
+      spop & 0,125 & 0,219 & 0,059 & 0,071 & 0,299 & 0,471 \\
+      \hline
+      random & 0,003 & 0,005 & 0,001 & 0,001 & 1,000 & 0,014 \\
+      \hline
+      \end{tabular}
+      \label{tab:results_last_item}
+    \caption{Resultado dos modelos \textit{session-based} na abordagem
+    \textit{single item}, avaliando o último item da sessão. Modelos ordenados por HR@5. }
+  \end{table}
+
+  A tabela \ref{tab:results_last_item} mostra os resultados obtidos pela abordagem
+  \textit{last-item}. As métricas obtiveram valores na mesma faixa
+  da abordagem \textit{next-item}, o que é positivo e demonstra que, por mais
+  que a avaliação seja reservada apenas ao último item da sequência, os modelos
+  conseguem manter um bom desempenho.
+  
+  Novamente, o modelo GNN obteve os melhores resultados. Modelos
+  mais simples, como o skNN e a árvore de contexto também obtiveram bons
+  resultados.
 
 
 

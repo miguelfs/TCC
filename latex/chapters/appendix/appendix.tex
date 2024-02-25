@@ -251,9 +251,8 @@ o modelo com taxa de aprendizado igual a 0,0009.
 % stamp-decay_rate=0.5-init_lr=0.008	0.412970  0.64638    0.3116279	0.22910
 % stamp-decay_rate=0.6-init_lr=0.009	0.393594  0.62547    0.3401993	0.22372
 % stamp-decay_rate=0.0-init_lr=0.006	0.360398 0.58935 0.4079734	0.19806
-n epochs igual a 30. O modelo $\text{STAMP}_{1}$ é o modelo com taxa de
-aprendizado inicial igual a 0,008 e decaimento igual a 0,5. O modelo $\text{STAMP}_{2}$
-é o modelo com taxa de aprendizado inicial igual a 0,006 e decaimento igual a 0.
+n epochs igual a 30. O modelo $\text{STAMP}_{1}$ e $\text{STAMP}_{2}$
+são o primeiro e segundo modelos na tabela.
 
 \begin{table}[htbp]
   \centering
@@ -264,8 +263,6 @@ aprendizado inicial igual a 0,008 e decaimento igual a 0,5. O modelo $\text{STAM
       lr inicial & decay & MRR & HR & Cov & Pop \\
       \hline
       0,008 & 0,5 & \textbf{0,413} & \textbf{0,646} & 0,312 & 0,229 \\
-      \hline
-      0,009 & 0,6 & 0,394 & 0,625 & 0,340 & 0,224 \\
       \hline
       0,006 & 0 & 0,360 & 0,589 & \textbf{0,408} & \textbf{0,198} \\
       \hline
@@ -281,7 +278,7 @@ aprendizado inicial igual a 0,008 e decaimento igual a 0,5. O modelo $\text{STAM
 % dropout_p_hidden=0.5-momentum=	0.1030222 0.18821 0.52358	0.052286
 
 Função de custo BPR max, função de ativação final ELU, \textit{dropout} igual a 0,5,
-momentum igual a 0,0, \textit{constrained embedding} igual a False.
+\textit{momentum} igual a 0, \textit{constrained embedding} igual a False.
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|}
@@ -297,6 +294,31 @@ momentum igual a 0,0, \textit{constrained embedding} igual a False.
     \end{tabular}
     \caption{GRU4Rec}
 \end{table}
+
+
+
+\subsubsection{CSRM}
+
+% Metrics	MRR@10: HitRate@10:  Coverage@10:	Popularity@10:
+% dropout_p_hidden=0.2-momentum=	0.120705 0.2395437 0.55415	0.044515
+% dropout_p_hidden=0.5-momentum=	0.1030222 0.18821 0.52358	0.052286
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{4}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      un. ocultas & \textit{epochs}  & lr  & m.s. & MRR & HR & Cov & Pop \\
+      \hline
+      100  & 10 & 0,0008 & 256 & \textbf{0,167} & 0,319 & \textbf{0,328} & \textbf{0,151} \\
+      \hline
+      100  & 10 & 0,0005 & 128 & 0,148 & \textbf{0,323} & 0,148 & 0,302 \\
+      \hline
+    \end{tabular}
+    \caption{CSRM}
+\end{table}
+
+\newpage
 
 
 % \subsubsection{GRU4Rec}
@@ -493,7 +515,7 @@ A duração da otimização para cada modelo consta na tabela
 GNN com \textit{hidden size} igual a 100, \textit{out size} igual a 100,
 \textit{step} igual a 1, \textit{nonhybrid} igual a True, \textit{batch size}
 igual a 100, \textit{n epoch} igual a 10, \textit{batch predict} igual a True.
-Resultados na tabela \ref{opt:GNN_rem}.
+Resultados na tabela \ref{opt:GNN_rem}. O modelo selecionado é o com NDCG@10 igual a 0,555.
 
 \begin{table}[htbp]
   \centering
@@ -515,23 +537,6 @@ Resultados na tabela \ref{opt:GNN_rem}.
 \end{tabular}
       \caption{GNN}
       \label{opt:GNN_rem}
-\end{table}
-
-A partir desses parâmetros, uma segunda otimização foi realizada, variando os
-parâmetros anteriormente fixos. Apesar disso, não superaram o melhor modelo da
-primeira otimização.
-
-\begin{table}[htbp]
-  \centering
-  \begin{tabular}{|c|c|c|c|c|c|c|c|}
-    \hline
-      \multicolumn{4}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
-      \hline
-      t.c. & b.s. & \textit{epochs} & passo & MAP & NDCG & Cov & Pop \\
-      \hline
-\end{tabular}
-      \caption{GNN}
-      \label{opt:GNN_rem_2nd_opt}
 \end{table}
 
 \subsubsection{GRU4Rec}
@@ -595,8 +600,6 @@ negativas, respectivamente. Resultados na tabela \ref{opt:NextItNet_rem}.
       \hline
       30 & 0,0008 & True & \textbf{0,069} & \textbf{0,428} & 0,236 & 0,293 \\
       \hline
-      30 & 0,0009 & True & 0,065 & 0,419 & 0,229 & 0,299 \\
-      \hline
       20 & 0,008 & True & 0,043 & 0,243 & \textbf{0,282} & \textbf{0,287} \\
       \hline
 \end{tabular}
@@ -618,13 +621,10 @@ similaridade, respectivamente. Resultados na tabela \ref{opt:skNN_rem}.
       % sknn-k=500-sample_size=2500-similarity=jaccard	0.0895745066087272 0.40672235175568466	0.22857142857142856	0.2458629883636784
       500 & 2500 & Jaccard & \textbf{0,090} & 0,407 & 0,229 & 0,246 \\
       \hline
-      % sknn-k=1500-sample_size=500-similarity=jaccard	0.08867146478363203 0.40859496915888316	0.2159468438538206	0.2589694988191
-      1500 & 500 & Jaccard & 0,089 & \textbf{0,409} & 0,216 & 0,259 \\
-      \hline
       % sknn-k=50-sample_size=5000-similarity=cosine	0.08360175629187037 0.3853441132352958	0.32491694352159467	0.19385074426789317
       50 & 5000 & Cosseno & 0,084 & 0,385 & \textbf{0,325} & \textbf{0,194} \\
       \hline
-\end{tabular}
+      \end{tabular}
       \caption{skNN}
       \label{opt:skNN_rem}
 \end{table}
@@ -648,10 +648,7 @@ Resultados na tabela \ref{opt:smf_rem}.
       % smf-objective=bpr_max_org-activation=linear-dropout=0.1-skip=0.5-momentum=0.2-learning_rate=0.007	0.07934184320115877 0.4686334137765623	0.1707641196013289	0.28147958389613953
       BPR & Linear & 0,1 & 0,5 & 0,2 & 0,007 & 0,079 & \textbf{0,469} & 0,171 & 0,281 \\
       \hline
-      % smf-objective=bpr_max_org-activation=linear-dropout=0.0-skip=0.3-momentum=0.3-learning_rate=0.2	0.05901321745428217 0.376004185428563	0.4418604651162791	0.19589218424989885
-      BPR & Linear & 0,0 & 0,3 & 0,3 & 0,2 & 0,059 & 0,376 & \textbf{0,442} & \textbf{0,196} \\
-      \hline
-\end{tabular}
+      \end{tabular}
       \caption{smf}
       \label{opt:smf_rem}
 \end{table}
@@ -722,9 +719,6 @@ pontuação e peso idf.
       % vsknn-k=100-sample_size=500-weighting=same-weighting_score=quadratic-idf_weighting=False	0.0898551511859497 0.41207888552936317	0.23056478405315614	0.24516626318785026
       100 & 500 & N/A & Quadrático & False & \textbf{0,090} & \textbf{0,412} & 0,231 & \textbf{0,245} \\
       \hline
-      % vsknn-k=50-sample_size=500-weighting=quadratic-weighting_score=same-idf_weighting=False	0.08886701068260003 0.4064019458188433	0.23920265780730898	0.23342406399920027
-      50 & 500 & Quadrático & N/A & False & 0,089 & 0,406 & 0,239 & 0,233 \\
-      \hline
       % vsknn-k=50-sample_size=2500-weighting=log-weighting_score=log-idf_weighting=10	0.08605784899511137 0.3893277949089159	0.30033222591362124	0.18338254222327224
       50 & 2500 & Log & Log & 10 & 0,086 & 0,389 & \textbf{0,300} & 0,183 \\
       \hline
@@ -732,6 +726,64 @@ pontuação e peso idf.
       \caption{vsKNN}
       \label{opt:vsknn_rem}
 \end{table}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{5}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      k & t.a. & $\lambda_{\text{spw}}$ & $\lambda_{\text{snh}}$ & $\lambda_{\text{inh}}$ & MAP & NDCG & Cov & Pop \\
+      \hline
+      % stan-k=500-sample_size=1000-lambda_spw=7.24-lambda_snh=20-lambda_inh=3.62	0.08788430200977725 0.3981468203881023	0.21993355481727575	0.2417896510239575
+      500 & 1000 & 7,24 & 20 & 3,62 & \textbf{0,088} & 0,398 & \textbf{0,220} & \textbf{0,242} \\
+      \hline
+      % stan-k=1500-sample_size=2500-lambda_spw=1.81-lambda_snh=40-lambda_inh=3.62	0.08684636972659784 0.4041810177346703	0.21926910299003322	0.2626352865797759
+      1500 & 2500 & 1,81 & 40 & 3,62 & 0,087 & \textbf{0,404} & 0,219 & 0,263 \\
+      \hline 
+\end{tabular}
+      \caption{STAN}
+      \label{opt:stan_rem}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{8}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      k & t.a. & sim & $\lambda_{\text{spw}}$ & $\lambda_{\text{snh}}$ & $\lambda_{\text{inh}}$ & $\lambda_{\text{ipw}}$ & $\lambda_{\text{IDF}}$ & MAP & NDCG & Cov & Pop \\
+      \hline
+      % vstan-k=1500-sample_size=10000-similarity=cosine-lambda_spw=1.81-lambda_snh=80-lambda_inh=7.24-lambda_ipw=3.62-lambda_idf=False	0.08434048524352708 0.4080046765728457	0.21661129568106313	0.2684444159175518
+      1500 & 10000 & Cosseno & 1,81 & 80 & 7,24 & 3,62 & False & \textbf{0,084} & \textbf{0,408} & 0,217 & 0,268 \\
+      \hline
+      % vstan-k=100-sample_size=2500-similarity=vec-lambda_spw=3.62-lambda_snh=80-lambda_inh=0.905-lambda_ipw=0.905-lambda_idf=10	0.07795627376425854 0.3555359734993043	0.3229235880398671	0.15615397024291666
+      100 & 2500 & Vetorial & 3,62 & 80 & 0,905 & 0,905 & 10 & 0,078 & 0,356 & \textbf{0,323} & \textbf{0,156} \\
+      \hline
+\end{tabular}
+      \caption{vstan}
+      \label{opt:vstan_rem}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{4}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      un. ocultas & epochs & l.r. & m.s. & MAP & NDCG & Cov & Pop \\
+      \hline
+      % csrm-hidden_units=100-epoch=10-lr=0.0009-memory_size=256	0.036032953105196476
+      100 & 10 & 0,0009 & 256 & \textbf{0,036} & \textbf{0,256} & 0,300 & 0,210 \\
+      \hline
+      % csrm-hidden_units=100-epoch=10-lr=0.0007-memory_size=128	0.03471845011768966
+      100 & 10 & 0,0007 & 128 & 0,035 & 0,247 & \textbf{0,301} & \textbf{0,211} \\
+      \hline
+     \end{tabular}
+      \caption{CSRM}
+      \label{opt:csrm_rem}
+\end{table}
+
 
 \newpage
 
@@ -785,8 +837,6 @@ item}. Os parâmetros fixos são os mesmos para a otimização na abordagem \tex
       % gru4rec-loss=.0-momentum=0.1-learning_rate=0.2-constrained_embedding=False	0.1848809523809524 0.3 0.44518272425249167	0.03536316103973709
       TOP1 & ELU & 0,0 & 0,1 & False & 0,2 & 0,185 & 0,300 & \textbf{0,445} & \textbf{0,035} \\
       \hline
-
-
 \end{tabular}
       \caption{GRU4Rec}
       \label{opt:GRU4Rec_last}
@@ -931,4 +981,63 @@ item}. Os parâmetros fixos são os mesmos para a otimização na abordagem \tex
 \end{tabular}
       \caption{vsKNN}
       \label{opt:vsknn_last}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{5}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      k & t.a. & $\lambda_{\text{spw}}$ & $\lambda_{\text{snh}}$ & $\lambda_{\text{inh}}$ & MRR & HR & Cov & Pop \\
+      \hline
+      % stan-k=100-sample_size=10000-lambda_spw=3.62-lambda_snh=80-lambda_inh=7.24	0.1949330274745558 0.5488372093023256 0.1949330274745558	0.5302325581395348
+      100 & 10000 & 3,62 & 80 & 7,24 & \textbf{0,195} & 0,549 & 0,530 & \textbf{0,189}  \\
+      \hline
+      % stan-k=100-sample_size=10000-lambda_spw=7.24-lambda_snh=80-lambda_inh=0.905	0.18852976849654562 0.5558139534883721 0.5475083056478405	0.1907618564549799
+      100 & 10000 & 7,24 & 80 & 0,905 & 0,189 & \textbf{0,556} & \textbf{0,548} & 0,191 \\
+      \hline
+\end{tabular}
+      \caption{stan}
+      \label{opt:stan_last}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{8}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      k & t.a. & sim & $\lambda_{\text{spw}}$ & $\lambda_{\text{snh}}$ & $\lambda_{\text{inh}}$ & $\lambda_{\text{ipw}}$ & $\lambda_{\text{IDF}}$ & MRR & HR & Cov & Pop \\
+      \hline
+      % vstan-k=1000-sample_size=2500-similarity=vec-lambda_spw=7.24-lambda_snh=40-lambda_inh=1.81-lambda_ipw=0.905-lambda_idf=False	0.18798172757475112 0.5325581395348837 0.5156146179401994	0.24296693523331747
+      1000 & 2500 & vec & 7,24 & 40 & 1,81 & 0,905 & False & \textbf{0,188} & \textbf{0,533} & 0,516 & 0,243 \\
+      \hline
+      % vstan-k=100-sample_size=5000-similarity=cosine-lambda_spw=1.81-lambda_snh=100-lambda_inh=7.24-lambda_ipw=0.905-lambda_idf=1	0.1771929547012607 0.501328903654485 0.5833887043189369	0.1506057092829696
+      100 & 5000 & cosseno & 1,81 & 100 & 7,24 & 0,905 & 1 & 0,177 & 0,501 & \textbf{0,583} & \textbf{0,151} \\
+      \hline
+\end{tabular}
+      \caption{vstan}
+      \label{opt:vstan_last}
+\end{table}
+
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{4}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      un. ocultas & \textit{epochs} & l.r. & m.s. & MRR & HR & Cov & Pop \\
+      \hline
+      % csrm-hidden_units=100-epoch=10-lr=0.0009-memory_size=256	0.21431547619047617 0,395 0,281 0,143
+      100 & 10 & 0,0009 & 256 & \textbf{0,214} & \textbf{0,395} & \textbf{0,281} & \textbf{0,143} \\
+      \hline
+      100 & 10 & 0,001 & 256 & 0,175 & 0,405 & 0,274 & 0,134 \\
+      \hline
+
+
+\end{tabular}
+      \caption{CSRM}
+      \label{opt:csrm_last}
 \end{table}

@@ -413,7 +413,7 @@ No caso da árvore de regressão, é necessário decidir um valor de limiar para
 tomada de decisão em cada nó. Esse valor é obtido ao minimizar o valor residual
 entre as variáveis independentes e o valor proposto.
 
-\subsubsection{Regras de Associação}
+\subsubsection{Regras de Associação e Regras de Sequência}
 Regras de associação são técnicas para identificação de padrões relacionais
 na forma de regras, analisando conjuntos de dados de transações. Os métodos que
 utilizam dessa técnica, como o algoritmo Apriori, realizam uma análise exaustiva
@@ -428,9 +428,9 @@ Uma regra de associação é uma
 implicação da forma $X \Rightarrow Y$, em que $X$ e $Y$ estão contidos em $I$ e
 $X \cap Y = \emptyset$ \cite{ordonez2011evaluating}.
 
-o suporte de um conjunto de itens genérico é definido como a razão de todas as
-transações em que esse conjunto esteja contido. Por exemplo, para o conjunto de
-itens X:
+O suporte de um conjunto de itens genérico é definido como a razão entre a
+quantidade de transações em que esse conjunto esteja contido pela quantidade
+total. Por exemplo, para o conjunto de itens X:
 
 \begin{equation}
 s(X) = \frac{|\{T_i \in \mathcal{T} : X \subseteq T_i\}|}{|\mathcal{T}|} = P(X)
@@ -468,6 +468,21 @@ Para definir quais regras de associação são representativas para o conjunto d
 dados, é necessário definir um limiar mínimo para cada uma das propriedades.
 Caso determinada regra de associação satisfaça os limiares de suporte,
 confiança e \textit{lift}, ela é incluída no modelo.
+
+As regras de sequência, por sua vez, são uma extensão das regras de associação,
+em que a ordem dos itens é considerada. Uma implementação de regras de sequência
+pode ser implementada com a estrutura de dados de dicionário da seguinte forma:
+
+\begin{center}
+    \begin{tabular}{c}
+
+\begin{lstlisting}[language=Python]
+    {A: {X: 1}, B: {Y: 2}, C: {Z: 3}}
+\end{lstlisting}
+\end{tabular}
+\end{center}
+em que A, B e C são os itens antecedentes e X, Y e Z são os itens consequentes, com
+uma, duas e três ocorrências, respectivamente.
 
 \subsubsection{\textit{Naive Bayes}}
 
@@ -553,14 +568,26 @@ aprendizado supervisionado utilizado geralmente para tarefas de classificação.
 algoritmo considera a similaridade ou a proximidade entre vetores de atributos
 para classificá-los.
 
-Para classificar uma entrada $x$, os $K$ vetores mais próximos a $x$ no conjunto
-de treinamento são $N_k(x,\mathcal{D})$, em que $\mathcal{D} = \{ (x_n, y_n) : n=1: N \}$
-representa o conjunto de dados.
+No caso de um SBRS, o algoritmo kNN calcula as similaridades de determinada
+sessão vigente com todas as sessões disponíveis no conjunto de treinamento. Essa
+pontuação de similaridade é calculada a partir da quantidade de itens comuns
+entre as sessões. Ao filtrar as $k$ sessões mais similares à sessão vigente, são
+identificados os $k$ vizinhos mais próximos.
 
-A probabilidade de uma saída $y$ obter determinada classificação é dada por:
+Os itens contidos nessas $k$ sessões são os candidatos à recomendação. Os
+itens mais recomendados serão aqueles que acumularem mais ocorrências entre as
+$k$ sessões, ponderados pela pontuação de similaridade de suas
+respectivas sessões.
+
+Uma definição formal \cite{murphy} para o algoritmo kNN consiste na probabilidade
+condicional de uma saída $y$ obter determinada classificação $c$ dado um conjunto
+de treinamento $\mathcal{D}$ e um novo vetor de entrada $x$:
+
 \begin{equation}
     p(y=c|x, \mathcal{D}) = \frac{1}{K} \sum_{n \in N_k (x, \mathcal{D})} \mathbb{I}(y_n = c)
 \end{equation}
+em que $\mathcal{D} = \{(x_i, y_i )\}^{N}_{i=1}$ e $\mathbb{I}$ é a função
+indicadora.
 
 
 
