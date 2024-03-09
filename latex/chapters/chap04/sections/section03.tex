@@ -1,9 +1,10 @@
 % \section{Modelagem com inclusão de instrumento e gênero}
-\subsection{Remoção de \textit{forks} na base de treinamento} 
+\subsection{Base restrita a faixas inéditas} 
 
 Uma característica particular das sessões do Indaband é a capacidade de criar
 uma sessão a partir de outra já existente, modificá-la, adicionar novas
-gravações e publicá-la como uma nova iteração.
+gravações e publicá-la como uma nova iteração a partir da funcionalidade de
+\textit{fork}.
 
 Essa funcionalidade é muito utilizada pelos usuários. A tabela \ref{tab_sessoes}
 mostra que 76\% das faixas criadas são geradas via \textit{fork},
@@ -14,19 +15,17 @@ então.
 
 Uma vez que o objetivo é recomendar usuários prováveis de contribuir gravando
 uma faixa inédita para uma determinada sessão, é razoável gerar um cenário em
-que o recomendador continue considerando os \textit{forks} como dados de insumo
-para a recomendação \textit{sequence-aware}, porém limitando-se a prever ou a
-recomendar apenas o cenário de adição de um conteúdo inédito. Não há necessidade
-de avaliar a recomendação de um item inserido na sessão no instante de criação.
+que o recomendador seja treinado e avaliado estritamente para prever a próxima
+faixa inédita gravada.
 
 As abordagens \textit{next-item} e \textit{remaining-items} são as mais
-utilizadas nos comparativos publicados porque aproveitam todos os itens de
-cada sessão para o treinamento ou para a avaliação. No caso de uma aplicação em
-que haja redundância entre as sessões, em que usários possam salvar, repetir e
+utilizadas nos comparativos publicados porque aproveitam todos os itens de cada
+sessão para o treinamento ou para a avaliação. No caso de uma aplicação em que
+haja redundância entre as sessões, em que usuários possam salvar, repetir e
 compartilhar sessões entre si, essas abordagens acabam por facilitar o trabalho
-do recomendador. O ideal seria um cenário em que não fossem geradas e avaliadas
-recomendações para itens adicionados de forma concomitante à criação
-da sessão.
+do recomendador, uma vez que introduzem uma série de cópias com pequenas
+variações. O cenário mais desafiador é aquele em que o item a ser avaliado
+é necessariamente um item inédito.
 
 Em contraponto, a abordagem \textit{last-item} é a que mais se aproxima do
 cenário mencionado, uma vez que mantém inalterada a sequência de itens das

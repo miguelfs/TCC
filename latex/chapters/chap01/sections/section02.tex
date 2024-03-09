@@ -2,19 +2,46 @@
 
 Apesar do maior interesse recente em SBRS, há questões no tema que carecem de
  pesquisa. A principal motivação para o presente trabalho é a carência de
- pesquisa e bibliografia sobre SBRS aplicados a recomendações de usuários entre
- si, ou recomendações de grupos de usuários até o presente momento.
+ pesquisa e bibliografia sobre SBRS aplicados a recomendações de usuários, ou
+ recomendações de grupos de usuários até o presente momento.
  
  A grande maioria dos trabalhos de SBRS apresenta uma nova arquitetura ou um
- novo modelo de aprendizado de máquina que supera o estado da arte a partir de
- um \textit{dataset} público, por mais que existam aplicações em que uma
- variedade de modelos de base de comparação superem modelos mais arrojados.
+ novo modelo de aprendizado de máquina voltado à recomendação de itens, visando
+ alcançar o estado da arte a partir de um \textit{dataset} público, por mais que
+ existam aplicações em que uma variedade de modelos de base de comparação
+ superem modelos mais arrojados.
  
  Também é de interesse da plataforma Indaband que os usuários tenham as
  ferramentas e soluções para publicarem sessões de qualidade, sem haver desgaste
- no processo de convidar e encontrar outros usuários com afinidade. Além disso,
- o conjunto de sessões com ao menos um convite aceito tem maior taxa de
- publicação se comparadas ao conjunto de todas as sessões.
+ no processo de convidar e encontrar outros usuários relevantes, o que pode
+ diminuir o tempo de publicação e melhorar a qualidade das sessões. Além disso,
+ o conjunto de sessões com ao menos um convite aceito ou recusado tem maior taxa
+ de publicação se comparadas ao conjunto de todas as sessões, como destacado na
+ tabela \ref{tab:publicacao_sessoes}.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Publicadas} & \textbf{Não Publicadas} \\
+        \hline
+        \textbf{Todas as sessões} & 84,9\% & 15,1\% \\ 
+        \hline
+        \textbf{Sem convites emitidos} & 14,6\% & 85,4\% \\
+        \hline
+        \textbf{Com convites emitidos} & 43,2\% & 56,8\% \\ 
+        \hline
+        \textbf{Com convites aceitos} & 66,1\% & 33,9\% \\
+        \hline
+        \textbf{Com convites recusados} & 80,5\% & 19,5\% \\
+        \hline
+        \textbf{Com convites ignorados} & 0,6\% & 99,4\% \\
+        \hline
+    \end{tabular}
+    \caption{Taxa de publicação de sessões nos três últimos meses de 2023.}
+    \label{tab:publicacao_sessoes}
+\end{table}
+
 
  Algumas das oportunidades de pesquisa em SBRS são \cite{rec_sys_handbook_2022}:
  \begin{inparaenum}[(1)]

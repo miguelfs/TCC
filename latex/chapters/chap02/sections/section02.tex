@@ -1,29 +1,36 @@
-\section{Modelos Básicos de Sistemas de Recomendação}
 \subsection{Recomendações Não-Personalizadas}
-Recomendações não-personalizadas oferecem de forma homogênea conteúdo relevante
-a todos os usuários, a partir da preferência conjunta. Sua vantagem é a
-abordagem intuitiva e de fácil implementação. No entanto, as preferências
-individuais têm menos peso que as preferências conjuntas, resultando em
-recomendações menos relevantes para uma parcela dos usuários.
+Recomendações não-personalizadas oferecem de forma homogênea conteúdo
+potencialmente relevante a todos os usuários a partir da opinião agregada, sem
+considerar preferências individuais \cite{poriya2014non}. Sua vantagem é a
+abordagem intuitiva e de fácil implementação. No entanto, a preferência
+individual de cada usuário é posta em detrimento da preferência coletiva.
 
 Uma recomendação não-personalizada típica é a de itens mais populares, podendo
 ser modelada de formas distintas. Por exemplo, os modelos \textit{MostPop},
-\textit{RecentPop} e \textit{DecayPop} representam, respectivamente, os itens
-com maior popularidade global, maior popularidade da última semana e mais populares das
-últimas seis semanas com decaimento exponencial.
+\textit{RecentPop} e \textit{DecayPop} \cite{ji2020re, jing2023capturing}
+representam, respectivamente, os itens com maior popularidade global, maior
+popularidade da última semana e mais populares das últimas seis semanas com
+decaimento exponencial.
 
 Uma característica da recomendação por popularidade é a distribuição em
 cauda-longa da frequência de recomendações: uma pequena parcela dos itens
 concentra a maior parte das avaliações. Como consequência, essa forma de
-recomendação possui diversidade mínima \cite{aggarwal2016recommender}.
+recomendação possui diversidade mínima \cite{aggarwal2016recommender}. A
+diversidade implica que, em uma lista de recomendações, cada recomendação
+individual seja o mais distinta possível das demais. Esse aspecto evita que,
+caso o usuário não se interesse por determinado item, ele não se interesse por
+nenhum dos demais. Uma maior diversidade de um sistema de recomendação implica
+em uma maior cobertura desse mesmo sistema \cite{aggarwal2016recommender}.
 
 Uma abordagem de recomendação não-personalizada com diversidade máxima é a
 recomendação aleatória. Possui pouco uso prático ao usuário final, exceto em
 situações em que deseja-se receber recomendações inéditas independentes da
 popularidade. Apesar disso, é uma forma de recomendação útil em base de
-comparações de desempenho de outros modelos, em razão de sua diversidade.
+comparações de desempenho de outros modelos, uma vez que expõe um valor mínimo
+de taxa de acerto a ser superada. Um recomendador útil deve superar a taxa de
+acerto de um recomendador aleatório.
 
-\subsection{Filtragem Colaborativa \textit{Neighborhood-based}} A filtragem
+\subsection{Filtragem Colaborativa Baseada em Vizinhança} A filtragem
 colaborativa baseada em vizinhança é um método de aprendizado não-supervisionado
 que divide-se em duas categorias:
 \begin{enumerate}
@@ -83,7 +90,8 @@ valores discretos dentro de uma escala limitada ou valores binários.
 
 A prática mais comum é optar por alguma medida de similaridade entre vetores em
 um espaço de usuários ou itens, como o produto escalar normalizado, o cosseno
-entre dois vetores ou o coeficiente de correlação de Pearson.
+entre dois vetores ou o coeficiente de correlação de Pearson. Tanto os vetores
+de usuário quanto os vetores de item podem utilizar Pearson ou cosseno.
 
 \subsubsection{Similaridade de Usuário}
 O coeficiente de correlação de Pearson é a razão da covariância com o produto
@@ -121,13 +129,22 @@ considerando a similaridade deles com o usuário $u$ em questão:
 \begin{align}
     \label{eq:predicao}
 \hat{R}_{uj} &= \bar{u} + \frac{\sum_{v \in Pu(j)} r(u,v) \cdot s_{vj}}{\sum_{v \in Pu(j)} |r(u,v)|} \\
-s_{vj} &= R_{vj} - \bar{v}
+s_{vj} &= R_{vj} - \bar{v} \label{eq:centered_mean}
 \end{align}
 
 As variações da função de predição em \ref{eq:predicao} utilizam o desvio padrão
 para realizar o ajuste em vez das médias $\bar{u}$ e $\bar{v}$, amplificam o
 peso $r(u,v)$ ao elevá-lo por uma potência maior que 1 e descontam o peso quando
 dois usuários tem poucos itens em comum.
+
+A equação \ref{eq:centered_mean} ajusta as avaliações de um usuário
+que avalia todos seus itens de forma muito rigorosa com notas baixas, enquanto
+que outro usuário muito satisfeito avalia todos seus itens com notas altas. Esse
+ajuste desconta a média das avaliações de determinado usuário, retornando uma avaliação
+centrada na média dele.
+
+é a média centrada das avaliações de
+determinado usuário $v$ sobre os itens que ele avaliou.
 
 A abordagem apresentada é considerada um problema de regressão, dado que o objetivo é prever
 o valor de uma variável contínua a partir de outras variáveis. Apesar disso, é
@@ -146,7 +163,10 @@ produto interno:
 \end{equation}
 
 Para utilizar o cosseno como medida de similaridade entre itens, é necessário
-primeiramente ajustar as avaliações de cada item pela sua média.
+primeiramente ajustar as avaliações de cada item pela sua
+média~\cite{aggarwal2016recommender}. O processo é análogo ao descrito para a
+equação \ref{eq:centered_mean}. A intuição é identificar o quanto determinada
+avaliação desvia da média das avaliações de determinado item.
 
 \begin{align}
     s_{ui} &= R_{ui} - \bar{i} \\
@@ -172,18 +192,48 @@ usuário $u$ sobre os itens contidos em $Q_t (u)$:
     \hat{R}_{ut} = \frac{\sum_{j \in Q_t(u)} \cos(s_{uj},s_{ut}) \cdot s_{uj}}{\sum_{j \in Q_t(u)} |\cos(s_{uj},s_{ut})|}
 \end{equation}
 
-As principais vantagens dos métodos baseados em vizinhança são sua abordagem
-simples, intuitiva e de fácil implementação. Entretanto, a complexidade do
-algoritmo é de $O(m^2)$, podendo ser custoso ou inviável a depender do quão
-grande e esparsa for a base de dados. Principalmente, há modelos atuais que são
-mais precisos, inclusive os baseados em modelos.
+\subsubsection{Pares de Grupos}
 
-\subsection{Técnicas de redução de dimensionalidade}
+Uma otimização para estimar avaliações em tempo real consiste em pares de grupos
+pré-calculados. Esses pares são o conjunto limitado de usuários ou itens com
+maior similaridade entre si. Nessa abordagem, a etapa \textit{offline} gera os
+pares de grupos, atualizada periodicamente. A etapa \textit{online} estima uma
+avaliação a partir dos pares pré-calculados.
+
+Na etapa \textit{offline} do método por similaridade de usuário, determinado
+usuário que tenha avaliado $n' \ll n$ itens é associado a um grupo de usuários
+de maior similaridade com ele, o que exige complexidade de $O(m \cdot n')$ em
+tempo de execução ao perpassar por todos os $m$ usuários em cerca de $n'$ itens
+avaliados. A etapa \textit{online} consiste em estimar a avaliação a partir dos
+$k$ usuários do grupo, o que exige complexidade de $O(k)$ em tempo de execução,
+o que torna viável para calcular recomendações em tempo real.
+ 
+As principais vantagens dos métodos baseados em vizinhança são sua abordagem
+simples, intuitiva e de fácil implementação. A depender do tamanho da base, é
+impraticável estimar uma avaliação em tempo real sem o uso de pares de grupos,
+uma vez que a complexidade em tempo de execução seria de $O(m \cdot n')$, ao
+perpassar por todos os usuários e itens avaliados. Principalmente, há modelos
+atuais que são mais precisos, inclusive os baseados em modelos.
+
+\subsection{Sistemas de Recomendação \textit{Model-based}}
+A filtragem colaborativa baseada em modelos é um método de aprendizado em que um
+modelo representativo dos dados é necessariamente criado primeiro, com etapas de
+treinamento e predição estritamente separadas. Essa característica  não é uma
+restrição nos métodos baseados em vizinhança, apesar de ser uma prática que
+concede eficiência em sua execução.
+
+As principais vantagens dos métodos baseados em modelos, quando comparados aos de vizinhança, são:
+\begin{itemize}
+    \item compressão do modelo, em que seu tamanho é bem menor que o da matriz de avaliações $R_{m \times n}$;
+    \item rapidez de treinamento e predição, uma vez que o modelo é mais compacto, sendo necessário perpassar por menos dados.
+    % \item evita overfitting    
+\end{itemize}
+
 \subsubsection{Fatoração de Matrizes}
-A fatoração de matrizes pode ser empregada em métodos baseados em vizinhança,
-reduzindo a dimensionalidade do conjunto de dados. Nesse método, obtém-se
-vetores de variáveis latentes que representam os usuários e itens de forma
-compacta, reduzindo os transtornos associados à esparsidade do conjunto de
+A fatoração de matrizes pode ser empregada como alternativa aos métodos baseados
+em vizinhança, reduzindo a dimensionalidade do conjunto de dados. Nesse método,
+obtém-se vetores de variáveis latentes que representam os usuários e itens de
+forma compacta, reduzindo os transtornos associados à esparsidade do conjunto de
 dados.
 
 \abbrev{SVD}{\textit{singular value decomposition}}
@@ -307,112 +357,6 @@ desse par:
     \hat{R}_{uj} = \mathbf{q}_j \mathbf{p}_u^{\mathbf{T}}
 \end{equation}
 
-\subsection{Sistemas de Recomendação \textit{Model-based}}
-A filtragem colaborativa baseada em modelos é um método de aprendizado em que um
-modelo representativo dos dados é necessariamente criado primeiro, com etapas de
-treinamento e predição estritamente separadas. Essa característica  não é uma
-restrição nos métodos baseados em vizinhança, apesar de ser uma prática que
-concede eficiência em sua execução.
-
-As principais vantagens dos métodos baseados em modelos, quando comparados aos de vizinhança, são:
-\begin{itemize}
-    \item compressão do modelo, em que seu tamanho é bem menor que o da matriz de avaliações $R_{m \times n}$;
-    \item rapidez de treinamento e predição, uma vez que o modelo é mais compacto, sendo necessário perpassar por menos dados.
-    % \item evita overfitting    
-\end{itemize}
-\subsubsection{Árvores de Decisão e Regressão}
-Árvores de decisão e regressão são modelos preditivos não-lineares e de
-treinamento supervisionado para tarefas de classificação e regressão,
-respectivamente. São construídos a partir das relações entre as as variáveis
-independentes do conjunto de dados de treinamento, gerando a estimativa de um
-processo de causalidade a nós com hierarquia que se dividem e segue o processo
-decisório até o valor da variável dependente.
-
-\begin{figure}[h!]
-    \begin{center}
-\begin{tikzpicture}        
-    \tikzset{edge from parent/.style={draw,edge from parent path={(\tikzparentnode.south)-- +(0,-8pt)-| (\tikzchildnode)}}}
-    \Tree [.$x$
-    [.$x_{1}\leq t_{1}$
-    [.$x_{2}\leq t_{2}$
-    $R_1$ ]
-    [.$x_{2}\textgreater t_{2}$
-    $R_2$ ] ]
-    [.$x_{1}\textgreater t_{1}$
-    [.$x_{2}\leq t_{2}$  $R_3$ ]
-    [.$x_{2}\textgreater t_{2}$  $R_4$ ] ] ] ] ]
-\end{tikzpicture}    
-\end{center}
-\caption{Exemplo de árvore binária de decisão com folhas $R_1$, $R_2$, $R_3$ e $R_4$.}
-\label{fig:decision_tree}
-\end{figure}
-
-A árvore de decisão é definida como uma função do vetor de entrada $x$ e dos
-parâmetros $\theta$ do modelo, que são as folhas $R_j$ e os valores de saída
-$w_j$ das folhas \cite{pml1Book}. Por exemplo, para a figura
-\ref{fig:decision_tree}, temos as folhas que são dadas formalmente por:
-
-\begin{align*}
-    R_1 &=\{x:x_1 \leqslant  t_1,x_2 \leqslant t_2\}\\
-    R_2 &=\{x:x_1 \leqslant  t_1,x_2 \textgreater t_2\}\\
-    R_3 &=\{x:x_1 \textgreater  t_1,x_2 \leqslant t_2\}\\
-    R_4 &=\{x:x_1 \textgreater  t_1,x_2 \textgreater t_2\}
-\end{align*}
-
-Caso os valores de entrada satisfaçam a condição de determinada folha, a saída
-correspondente é retornada:
-
-\begin{align}
-    \theta &= \{(R_j, w_j) : j = 1 : J \} \\
-    f(x;\theta) &= \sum_{j=1}^{J} w_j \mathbb{I} (x \in R_j)
-\end{align}
-
-\symbl{$\mathbb{I}(e)$}{função indicadora}
-em que $\mathbb{I}(e)$ é a função indicadora:
-
-\begin{equation}
-    \mathbb{I}(e) = \begin{cases} 
-          1 & \text{se } e \text{ é verdadeiro} \\
-          0 & \text{se } e \text{ é falso} 
-       \end{cases}
-    \end{equation}
-    
-
-Para gerar a árvore de decisão, atribui-se primeiramente uma medida de qualidade
-de informação aos nós candidatos, isto é, o quanto a afirmação contida em um nó
-generaliza bem para o conjunto de dados de treinamento. É possível obter essa
-medida de formas distintas, como pelo cálculo da entropia, pelo índice de Gini,
-pelo erro de classificação, entre outras.
-
-O índice de Gini quantifica o
-quão impuro é determinado nó considerando suas $N$ ramificações, sendo $p_i$
-a razão de quantas instâncias seguem a i-ésima ramificação:
-
-\begin{equation}
-    G(s) = 1 - \sum_{i=1}^{N} p_{i}^{2},
-\end{equation}
-
-Por exemplo, para $N = 2$, $p_{0} = 0$ e $p_{1} = 1$, temos que $G(s) = 0$,
-tratando-se de um nó puro, ou seja, um nó que generaliza bem para o conjunto de
-dados observados no treinamento.
-
-Finalmente, o índice geral de Gini é igual a média ponderada dos índices de Gini
-dos filhos de determinado nó. Por exemplo, para dois nós:
-
-
-\begin{equation}
-    Gini(S_1, S_2) = \frac{N_1 \centerdot G(S_1) +  N_2 \centerdot G(S_2)}{N_1 + N_2}
-\end{equation}
-
-O nó com o menor índice geral de Gini, isto é, o nó com maior pureza é promovido
-a nó principal do modelo, uma vez que ele é o nó que melhor generaliza para a
-variável dependente em função das demais. Esse processo é repetido de forma a
-preencher a hierarquia de nós do modelo, completando a árvore.
-
-No caso da árvore de regressão, é necessário decidir um valor de limiar para a
-tomada de decisão em cada nó. Esse valor é obtido ao minimizar o valor residual
-entre as variáveis independentes e o valor proposto.
-
 \subsubsection{Regras de Associação e Regras de Sequência}
 Regras de associação são técnicas para identificação de padrões relacionais
 na forma de regras, analisando conjuntos de dados de transações. Os métodos que
@@ -532,11 +476,11 @@ simplificação:
 \subsection{Sistemas de Recomendação Baseados em Conteúdo}
 
 Sistemas de recomendação baseados em conteúdo são utilizados em aplicações cujos
-itens são descritos por um conjunto de atributos. Por exemplo, um sistema de
-recomendação de filmes pode utilizar atributos como gênero, diretor, país de
-origem e ano de lançamento. Nesse caso, as avaliações do usuário sobre os demais
-itens e a similaridade entre os atributos são suficientes para gerar as
-recomendações.
+itens e usuários são descritos por um conjunto de atributos. Por exemplo, um
+sistema de recomendação de filmes pode utilizar atributos como gênero, diretor,
+país de origem e ano de lançamento. Nesse caso, o conteúdo dos itens que o
+usuário avaliou e a similaridade entre os atributos são
+suficientes para gerar as recomendações.
 
 Uma segunda aplicação típica de sistemas baseados em conteúdo é a recomendação
 de itens com descrição textual e sem atributos explícitos. Documentos,

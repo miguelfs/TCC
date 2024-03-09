@@ -1,15 +1,48 @@
-\section{Introdução}
-
+\section{Sistemas de Recomendação}
 A primeira publicação sobre sistemas de recomendação é creditada a
-\citet{rich1979user}. A autora apresenta, em 1979, um sistema para recomendação de livros
-em uma biblioteca. O sistema, chamado \textit{Grundy}, realiza uma série de
-perguntas abertas ao usuário sobre suas características e personalidade, com o objetivo
-de identificar as afinidades entre ele e o conteúdo recomendado. Caso as
-respostas contenham palavras específicas de gatilho para o sistema, é atribuído
-um estereótipo ao modelo de usuário que representa o interlocutor. A atribuição
-de uma série de estereótipos atualiza os valores nas dimensões do modelo de
-usuário, que são utilizadas para recomendar livros cujos modelos tenham valores
-similares.
+\citet{rich1979user}. A autora apresenta, em 1979, um sistema para recomendação
+de livros em uma biblioteca. O sistema, chamado \textit{Grundy}, realiza uma
+série de perguntas abertas ao usuário sobre suas características e
+personalidade, com o objetivo de identificar as afinidades entre o usuário e o
+conteúdo recomendado. Caso as respostas contenham palavras específicas de
+gatilho para o sistema, é atribuído um estereótipo ao modelo de usuário, que
+incrementa valores em dimensões do modelo de usuário, em que cada dimensão
+corresponde a uma faceta.
+
+\vspace{2em}
+\begin{table}[h!]
+   \begin{center}
+      \begin{tabular}{|m{3cm}|m{2cm}|m{2cm}|}
+          \hline
+          \textbf{FACET} & \textbf{Value} & \textbf{Rating} \\
+          \hline
+          Activated by & ``\textit{athletic}'' & \\
+          Gender & any person & \\
+          \hline
+          Motivations: & & \\
+          \hspace{1mm} Excite & 3 & 600 \\
+          \hline
+          Interests: & & \\
+          \hspace{1mm} Sports & 4 & 800 \\
+          \hline
+      \end{tabular}
+      \caption{Exemplo de esterótipo do sistema de recomendação Grundy. O estereótipo de atleta incrementa uma faceta de motivação e outra de interesse do usuário.}
+      \label{grundy}
+   \end{center}
+   \end{table}
+
+A atribuição de uma série de estereótipos atualiza os valores nas dimensões do
+modelo de usuário, utilizadas para recomendar um livro de cada vez. A aplicação
+segue as seguintes regras para gerar uma recomendação:
+
+\begin{enumerate}
+   \item Seleciona uma faceta no modelo do usuário com valores altos.
+   \item Busca por livros os quais tenham essa faceta associada com valor similar.
+   \item Para cada livro dessa faceta específica, compara as demais facetas
+   do modelo de usuário com as dimensões do livro. Elimina livros que excedam
+   limites estabelecidos pelo usuário, como tolerância para violência.
+   \item Dos livros que não foram eliminados, escolhe o que melhor corresponde.
+\end{enumerate}
 
 No exemplo da tabela \ref{grundy}, um usuário que se identifique com o estereótipo
 ``\textit{atleta}'', independente de seu gênero, terá um incremento em suas
@@ -17,33 +50,10 @@ motivações e interesses proporcionais à sua correspondência com o estereóti
 Dessa forma, leituras relacionadas a esportes ou que gerem excitação serão
 mais recomendadas a esse usuário.
 
-\vspace{2em}
-
-\begin{table}[h!]
-\begin{center}
-   \begin{tabular}{|m{3cm}|m{2cm}|m{2cm}|}
-       \hline
-       \textbf{FACET} & \textbf{Value} & \textbf{Rating} \\
-       \hline
-       Activated by & ``\textit{athletic}'' & \\
-       Gender & any person & \\
-       \hline
-       Motivations: & & \\
-       \hspace{1mm} Excite & 3 & 600 \\
-       \hline
-       Interests: & & \\
-       \hspace{1mm} Sports & 4 & 800 \\
-       \hline
-   \end{tabular}
-   \caption{Exemplo de esterótipo do sistema de recomendação Grundy.}
-   \label{grundy}
-\end{center}
-\end{table}
-
-A filtragem colaborativa, popularizada a partir dos anos 90 e
-incluída pela Amazon \cite{amazon2017} em seu comércio eletrônico, possui
-algumas diferenças em relação ao sistema proposto por Rice, segundo a própria
-autora \cite{rich:homepage}:
+A filtragem colaborativa, popularizada a partir dos anos 90 e utilizada pela
+Amazon \cite{amazon2017} para realizar recomendações,
+possui algumas diferenças em relação ao sistema proposto por Rice, segundo a
+própria autora \cite{rich:homepage}:
 
 \begin{quotation}\small\noindent \textit{``Na filtragem colaborativa, a única
    coisa que o sistema sabe sobre os livros é quem os comprou. A única coisa que
@@ -55,38 +65,3 @@ autora \cite{rich:homepage}:
    Sistemas de filtragem colaborativa substituem o banco de dados menor e mais
    aprofundado de Grundy com um banco de dados superficial e massivo.''}
    \end{quotation}
-
-
-% A popularização dos sistemas de recomendação ocorre a partir dos anos 90,
-% conjuntamente com a democratização no uso da internet e o aparecimento das
-% primeiras grandes empresas que se tornaram referência no uso de sistemas de
-% recomendação e que dependem deles para maior sucesso de seus negócios.
-
-% A popularização dos sistemas de recomendação ocorre a
-% partir dos anos 90, conjuntamente com a popularização da internet.
-
-% Os objetivos de um sistema de recomendação são (aggrawal):
-% \begin{itemize}
-%    \item Relevância: garantir que as recomendações sejam adequadas e úteis para
-%    o usuário, levando em consideração suas preferências e necessidades. Não é
-%    suficiente que as recomendações tenham bom desempenho em avaliação
-%    \textit{offline}, é necessário que realmente faça sentido para o usuário
-%    final.
-%    \item Acurácia: ?
-%    \item Cobertura: garantir que o sistema não fique restrito a recomendar uma
-%    pequena parcela da base disponível.
-%    \item Novidade: apresentar ao usuário itens ou informações que sejam novos,
-%    que ainda não foram consumidos ou que sejam desconhecidos dele.
-%    \item Serendipidade: surpreender o usuário com recomendações inesperadas e
-%    relevantes, que vão além das preferências e padrões usuais e óbvios,
-%    explorando associações que não sejam explicitas nos dados de recomendação.
-%    \item Diversidade: oferecer ao usuário maior variedade de opções, evitando
-%    que recomendações muito similares possam ser desaprovadas pelo usuário caso
-%    alguma delas não o agrade.
-%    \item Confiança e Trust:?
-%    \item Robustez e Estabilidade:
-%    \item escalabilidade.
-% \end{itemize}
-
-% Para a maioria dos objetivos acima, há uma métrica de avaliação correspondente,
-% que será descrita a seguir.

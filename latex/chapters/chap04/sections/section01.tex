@@ -2,7 +2,7 @@
 desenvolvida para facilitar experimentos comparando recomendadores
 \textit{session-based} em Python. A biblioteca contém as implementações dos
 modelos previamente citados no presente trabalho. Um novo modelo pode ser
-implementado seguindo o polimofismo das demais implementações.
+implementado seguindo o polimorfismo das demais implementações.
 
 Cada experimento é declarado em um arquivo .yml, contendo as informações dos
 dados a serem utilizados, dos modelos a serem avaliados e de seus hiperparâmetros.
@@ -35,15 +35,6 @@ Os dados utilizados neste trabalho consistem nas sessões de gravação no
 Indaband, no período compreendido entre 01 de janeiro de 2023 até 19 de dezembro
 de 2023.
 
-% Metric                         Value
-% ---------------------------  -------
-% Sessions created               93314
-% Sessions published             18845
-% Users who added tracks         11968
-% Users with published tracks     3630
-% Tracks added                  457224
-% Fork tracks                   349060
-% Tracks published              134004
 
 \begin{table}[H]
   \centering
@@ -96,34 +87,35 @@ potencialmente possam contribuir.
 Dessa forma, os itens das sessões serão os próprios usuários, e não as faixas,
 evitando que o sistema recomende um usuário que já tenha uma faixa incluída na
 sessão. Além disso, seguindo a abordagem \textit{session-aware}, o criador de
-cada sessão será considerado como o usuário ativo. Isso permite que o sistema
-modele as preferências individuais de usuários ao criarem sessões.
+cada sessão será considerado como o usuário ativo, ou seja, o usuário que
+receberá as recomendações. Isso permite que o sistema modele as preferências
+individuais de usuários ao criarem sessões.
 
-Em razão da modelagem apresentada, os padrões mais esperados para os modelos são:
+% Em razão da modelagem apresentada, os padrões mais esperados para os modelos são:
 
-\begin{itemize}
-  \item Usuários que co-participem de sessões e tendem a repetir as
-  colaborações serem previstos corretamente como próximo usuário e recomendados;
-  \item Sessões com muitos \textit{forks} sejam mais fáceis de prever o próximo
-  usuário e os usuários restantes, uma vez que a base de dados contém diferentes
-  variações dessas sessões e de seus \textit{forks};
-  \item Na abordagem \textit{session-based}, a predição do último usuário da
-sessão erre mais do que a predição do próximo usuário e do que a dos
-usuários restantes, por tratar-se de um item inédito tanto naquela sessão quanto
-nas sessões precedentes no caso de um \textit{fork};
-  \item Que na abordagem \textit{session-based}, usuários que se isolam e que
- praticam a partir de \textit{forks} de outros usuários, sem necessariamente
- publicar suas versões, sejam previstos incorretamente como o próximo usuário
- para sessões de outros usuários e recomendado -- o que não necessariamente
- seria algo negativo, sob o ponto de vista de integrá-lo à comunidade -- e que esse
- mesmo comportamento não seja observado na abordagem \textit{session-aware}, uma vez que 
- há a informação do dono da sessão;
-  \item Na abordagem \textit{session-aware}, que os principais colaboradores de
-  determinado dono da sessão sejam recomendados, por mais que ambos não constem como
-  itens na sessão.
-\end{itemize}
+% \begin{itemize}
+%   \item Usuários que co-participem de sessões e tendem a repetir as
+%   colaborações serem previstos corretamente como próximo usuário e recomendados;
+%   \item Sessões com muitos \textit{forks} sejam mais fáceis de prever o próximo
+%   usuário e os usuários restantes, uma vez que a base de dados contém diferentes
+%   variações dessas sessões e de seus \textit{forks};
+%   \item Na abordagem \textit{session-based}, a predição do último usuário da
+% sessão erre mais do que a predição do próximo usuário e do que a dos
+% usuários restantes, por tratar-se de um item inédito tanto naquela sessão quanto
+% nas sessões precedentes no caso de um \textit{fork};
+%   \item Que na abordagem \textit{session-based}, usuários que se isolam e que
+%  praticam a partir de \textit{forks} de outros usuários, sem necessariamente
+%  publicar suas versões, sejam previstos incorretamente como o próximo usuário
+%  para sessões de outros usuários e recomendado -- o que não necessariamente
+%  seria algo negativo, sob o ponto de vista de integrá-lo à comunidade -- e que esse
+%  mesmo comportamento não seja observado na abordagem \textit{session-aware}, uma vez que 
+%  há a informação do dono da sessão;
+%   \item Na abordagem \textit{session-aware}, que os principais colaboradores de
+%   determinado dono da sessão sejam recomendados, por mais que ambos não constem como
+%   itens na sessão.
+% \end{itemize}
 
- \section{Bases de comparação}
+ \section{Outros domínios}
  A seguir, são apresentadas as bases de dados utilizadas na bibliografia de
   SBRS. O domínio de cada uma dessas bases é de comércio eletrônico, música e
   notícias. Os valores das tabelas \ref{tab:datasets} e
@@ -367,7 +359,7 @@ resultados superiores, considerando as métricas HR@5, HR@10 e MRR@5 e MRR@10.
 Apesar dos modelos de vizinhança não apresentarem resultados inferiores de HitRate,
 o MRR decai consideravelmente.
 
-\subsubsection{métodos baseados em fatoração}
+\subsubsection{Métodos baseados em fatoração}
 Em seguida, são avaliados os modelos baseados em fatoração: FPMC, FISM, Fossil,
 BPRMF e smf. Os resultados estão apresentados na tabela \ref{tab_fatoracao}.
 
@@ -613,7 +605,7 @@ superar os demais conforme a quantidade de eventos por \textit{split} aumenta.
 A figura \ref{fig:progressao} apresenta a progressão do HR e MRR conforme a
 quantidade de valores preditos. É possível observar que as pontuações tendem
 a convergir.
-\newpage
+
 
 \begin{figure}[htbp]
   \hfill
@@ -627,9 +619,8 @@ a convergir.
 
 \subsection{Abordagem \textit{windowed}, \textit{session-based}, \textit{remaining-items}}
 Para a abordgem \textit{remaining-items}, foi realizada uma nova otimização
-considerando a métrica MAP@10. Essa nova otimização é necessária dado que a
-avaliação do modelo é realizada com métricas que avaliam os acertos nos demais
-itens subsequentes, e não para um único item.
+considerando a métrica MAP@10, uma vez que essa métrica substitui o HR@10 para
+avaliações de listas ou de conjuntos de itens.
 
 Dessa forma, os modelos com nome subscrito aqui presentes possuem hiperparâmetros
 distintos da abordagem anterior, constando no apêndice.

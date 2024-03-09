@@ -1,47 +1,5 @@
 \section{Introdução}
 
-Uma definição típica de aprendizado de máquina consiste em afirmar que ``\textit{um
-programa de computador aprende com a experiência $E$ a realizar uma tarefa $T$
-com medida de desempenho $P$ caso seu desempenho em $T$, medido por $P$, melhore
-com a experiência $E$} ''\cite{mitchell1997}.
-
-Por exemplo, um programa que aprende a jogar xadrez a partir de uma série de
-partidas contra si mesmo, em que a vitória é a medida de desempenho. Ou ainda,
-um carro autônomo que aprende a dirigir assistindo a um motorista humano, cuja
-distância percorrida de forma autônoma em ambiente controlado é a medida de
-desempenho.
-
-O aprendizado supervisionado é a forma mais comum de aprendizado de máquina.
-Nele, a tarefa $T$ consiste em aprender uma função $f(\mathbf{x}) = \mathbf{y}$,
-de $\mathbf{x}$ entradas e $\mathbf{y}$ saídas, tipicamente sob a forma de
-vetores. As entradas são chamadas de atributos ou \textit{features}, enquanto
-que as saídas estão sob a forma de um ou mais rótulos ou valores-alvo. A
-experiência $E$ é obtida a partir de um conjunto de tuplas de entradas e saídas
-$D = \{(\mathbf{x}_n, \mathbf{y}_n)\}_{n=1}^N$, conhecido como conjunto de
-treinamento, que contém $N$ amostras \cite{pml1Book}.
-
-% In some cases an extra validation set is drawn from the training set to validate
-% the performance of the learning algorithm during training; in particular
-% validation sets are frequently used to determine when training should stop, in
-% order to prevent overfitting. The goal is to use the training set to minimise
-% some task-specific error measure E defined on the test set. For example, in a
-% regression task, the usual error measure is the sum-of- squares, or squared
-% Euclidean distance between the algorithm outputs and the test-set targets. For
-% parametric algorithms (such as neural networks) the usual approach to error
-% minimisation is to incrementally adjust the algorithm parameters to optimise a
-% loss function on the training set, which is as closely related as possible to
-% E. The transfer of learning from the training set to
-Em alguns casos, uma parcela do conjunto de treinamento é reservada na forma de
-um conjunto de validação, utilizado para validar o desempenho do algoritmo de
-aprendizado durante o treinamento, determinar quando o treinamento deve parar a
-fim de evitar o \textit{overfitting}, ou ainda ajustar e definir os parâmetros
-que otimizam o modelo.
-
-No aprendizado supervisionado, assume-se que cada entrada $\mathbf{x}$ no
-conjunto de treinamento $D$ está associada a uma saída $y$. A tarefa $T$
-trata-se de obter um mapeamento ótimo entre as entradas e as saídas. No
-aprendizado não supervisionado, não há saídas determinadas à priori. As entradas
-observadas não possuem saídas correspondentes \cite{pml1Book}.
 
 % falar de aprendizado não supervisionado
 

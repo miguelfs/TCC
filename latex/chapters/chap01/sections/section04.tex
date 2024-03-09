@@ -1,21 +1,21 @@
 \section{Escopo e Objetivos}
 
 O estudo limita-se ao comparativo entre modelos de SBRS aplicados a convites de
-usuários no aplicativo Indaband. Esses modelos dividem-se nos seguintes
-grupos: 
+usuários no aplicativo Indaband. Mais especificamente, o modelo deve prever qual
+o próximo usuário mais provável de adicionar uma faixa em determinada sessão.
+Esses modelos dividem-se nos seguintes grupos: 
 \begin{inparaenum}[(1)]
-  \item base de comparação com modelos não-personalizados,
-  \item base de comparação com extração de padrões,
-  \item vizinhos mais próximos,
-  \item fatoração de matrizes e
+  \item modelos não-personalizados,
+  \item modelos baseados em regras de associação,
+  \item modelos baseados em vizinhos mais próximos,
+  \item modelos baseados em fatoração de matrizes e
   \item redes neurais.
 \end{inparaenum}
 
 O estudo visa descobrir quais abordagens geram maior capacidade preditiva nas
-recomendações de participantes, com maior cobertura e personalização, e menor
-viés. Esses aspectos da recomendação serão avaliados por meio de métricas
-objetivas, tais como:
-\abbrev{MRR}{\textit{Mean Reciprocal Rank}}
+recomendações de participantes, com maior cobertura e acurácia. Esses aspectos
+da recomendação serão avaliados por meio de métricas objetivas apresentadas em
+\ref{chap:desempenho}, tais como: \abbrev{MRR}{\textit{Mean Reciprocal Rank}}
 \begin{inparaenum}[(1)]
   \item \textit{Hit rate};
   \item MRR (do inglês \textit{Mean Reciprocal Rank});
