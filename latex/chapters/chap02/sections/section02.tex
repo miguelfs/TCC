@@ -357,7 +357,7 @@ desse par:
     \hat{R}_{uj} = \mathbf{q}_j \mathbf{p}_u^{\mathbf{T}}
 \end{equation}
 
-\subsubsection{Regras de Associação e Regras de Sequência}
+\subsubsection{Regras de Associação}
 Regras de associação são técnicas para identificação de padrões relacionais
 na forma de regras, analisando conjuntos de dados de transações. Os métodos que
 utilizam dessa técnica, como o algoritmo Apriori, realizam uma análise exaustiva
@@ -371,6 +371,49 @@ um subconjunto de itens, isto é, $T_i \subseteq I$.
 Uma regra de associação é uma
 implicação da forma $X \Rightarrow Y$, em que $X$ e $Y$ estão contidos em $I$ e
 $X \cap Y = \emptyset$ \cite{ordonez2011evaluating}.
+
+Uma modelo de regras de associação
+pode ser implementado com a estrutura de dados de dicionário da seguinte forma:
+
+\begin{center}
+    \begin{tabular}{c}
+
+\begin{lstlisting}[language=Python]
+    {A: {X: 1}, B: {Y: 2}, C: {Z: 3}}
+\end{lstlisting}
+\end{tabular}
+\end{center}
+em que A, B e C são subconjuntos de itens antecedentes e X, Y e Z são
+subconjuntos de itens consequentes, com uma, duas e três ocorrências,
+respectivamente. O dicionário é implementado a partir de uma matriz de ocorrências,
+em que cada linha representa uma transação e cada coluna representa um item, tal
+como a tabela \ref{tab:transactions}.
+
+No contexto de sistemas de recomendação, filtra-se as regras de associação a partir
+de um limiar mínimo de suporte, confiança e \textit{lift}. Para gerar uma recomendação
+a partir de uma transação em curso, basta buscar pelas regras de associação em
+que essa transação seja o subconjunto antecedente. Essas regras de associação com maior
+confiança são as recomendadas.
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \textbf{Consumidor} & pão & manteiga & leite & presunto & queijo \\
+        \hline
+        João & 1 & 1 & 0 & 0 & 0 \\
+        Maria & 1 & 1 & 1 & 0 & 0 \\
+        Pedro & 0 & 0 & 1 & 1 & 0 \\
+        Roberta & 0 & 1 & 0 & 1 & 1 \\
+        Carol & 0 & 1 & 0 & 0 & 1 \\
+        José & 1 & 1 & 1 & 1 & 1 \\
+        \hline
+    \end{tabular}
+    \label{tab:transactions}
+\end{center}
+\caption{Tabela de transações de compras de supermercado, utilizada como uma matriz de ocorrências em um modelo de regras de associação.}
+\end{table}
+
 
 O suporte de um conjunto de itens genérico é definido como a razão entre a
 quantidade de transações em que esse conjunto esteja contido pela quantidade
@@ -408,70 +451,19 @@ forte dependência entre X e Y. Por sua vez, um \textit{lift}  menor que 1 indic
 que a ocorrência conjunta de X e Y é menos frequente do esperado se fossem
 eventos independentes, indicando que são conjuntos substituíveis entre si.
 
-Para definir quais regras de associação são representativas para o conjunto de
-dados, é necessário definir um limiar mínimo para cada uma das propriedades.
-Caso determinada regra de associação satisfaça os limiares de suporte,
-confiança e \textit{lift}, ela é incluída no modelo.
+\subsubsection{Regras de Sequência}
+Regras de sequência herdam o mesmo racional das regras de associação, de forma
+que a sequência de subconjuntos de itens seja considerada~\cite{liu2007web}.
 
-As regras de sequência, por sua vez, são uma extensão das regras de associação,
-em que a ordem dos itens é considerada. Uma implementação de regras de sequência
-pode ser implementada com a estrutura de dados de dicionário da seguinte forma:
+Uma regra de sequência é uma implicação da forma $X \Rightarrow Y$, em que $Y$ é
+uma sequência de subconjuntos de itens. $X$ é uma subsequência de $Y$, tal que o
+comprimento de $Y$ é maior que o comprimento de $X$. Cada sequência é
+compreendida como uma lista ordenada de subconjuntos de itens.
 
-\begin{center}
-    \begin{tabular}{c}
-
-\begin{lstlisting}[language=Python]
-    {A: {X: 1}, B: {Y: 2}, C: {Z: 3}}
-\end{lstlisting}
-\end{tabular}
-\end{center}
-em que A, B e C são os itens antecedentes e X, Y e Z são os itens consequentes, com
-uma, duas e três ocorrências, respectivamente.
-
-\subsubsection{\textit{Naive Bayes}}
-
-\textit{Naive Bayes} é um classificador bayesiano que pode ser utilizado como um
-modelo de aprendizado supervisionado. É um classificador que baseia-se nas distribuições de
-probabilidade dos eventos e no teorema de Bayes, dado por:
-
-\symbl{$P(Y|X)$}{Probabilidade condicional de Y dado X}
-\begin{equation}
-    P(Y|X) = \frac{P(X|Y)P(Y)}{P(X)}
-    \end{equation}
-No contexto de um estimador bayesiano, a probabilidade à posteriori $P(Y|X)$ é
-obtida a partir da verossimilhança $P(X|Y)$ e das probabilidades à priori $P(Y)$
-e $P(X)$, sendo $X$ o evento associado às entradas e $Y$ à saída do modelo.
-
-O classificador \textit{Naive Bayes}, por característica principal, assume que
-as probabilidades condicionais das $x_i$ entradas são independentes entre si.
-Dessa forma, temos que a verossimilhança e a probabilidade à posteriori são:
-
-\begin{align}
-    P(X|Y) &= \prod_{i=1}^{n}P(x_i|Y) \\
-    P(Y|X) &= \frac{\prod_{i=1}^{n}P(x_i|Y)P(Y)}{P(X)}
-\end{align}
-
-Por mais que a independência entre as variáveis de entrada seja uma premissa
-que simplifica o modelo, é suficiente para que o classificador tenha um bom
-desempenho em casos práticos.
-
-Para uma aplicação de filtragem colaborativa em sistemas de recomendação, o
-classificador \textit{Naive Bayes} determina a probabilidade de um usuário $u$
-avaliar um item $i$ com um valor $v_s$, dadas suas avaliações nos demais $I_u$
-itens:
-
-\begin{equation}
-    P(i = v_s|I_u) = \frac{\prod_{n}^{N}P(i_{n}|i = v_s)P(i = v_s)}{P(I_u)}
-\end{equation}
-
-O objetivo é determinar qual o valor $v_s$ mais provável para uma avaliação
-hipotética $\hat{R}_{uj}$ do usuário $u$ sobre o item $j$. Uma vez que o denominador $P(I_u)$
-é constante para todos os valores $v_s$, pode-se desconsiderá-lo para fins de
-simplificação:
-
-\begin{equation}
-    \hat{R}_{uj} = \mathrm{arg\,max}_{v_s} P(R_{uj} = v_s) \prod_{k \in I_{u}}^{N}P(R_{uk}|R_{uj} = v_s)
-\end{equation}
+O suporte de uma regra de sequência $X \Rightarrow Y$ em um banco de dados de
+sequências $S$ é a fração de sequências em $S$ que contém $Y$. A confiança de
+uma regra de sequência $X \Rightarrow Y$ em $S$ é a taxa de sequências em
+$S$ que contém $X$ e $Y$.
     
 \subsection{Sistemas de Recomendação Baseados em Conteúdo}
 
@@ -507,6 +499,7 @@ atributos e uma função objetiva que deve ser minimizada ou maximizada. A funç
 objetiva pode ser o índice de Gini, a entropia, a informação mútua, etc.
 
 \subsubsection{kNN}
+\abbrev{kNN}{\textit{k-nearest neighbors}}
 O algoritmo kNN (do inglês \textit{k-nearest neighbors}) é um método de
 aprendizado supervisionado utilizado geralmente para tarefas de classificação. O
 algoritmo considera a similaridade ou a proximidade entre vetores de atributos
@@ -516,7 +509,8 @@ No caso de um SBRS, o algoritmo kNN calcula as similaridades de determinada
 sessão vigente com todas as sessões disponíveis no conjunto de treinamento. Essa
 pontuação de similaridade é calculada a partir da quantidade de itens comuns
 entre as sessões. Ao filtrar as $k$ sessões mais similares à sessão vigente, são
-identificados os $k$ vizinhos mais próximos.
+identificados os $k$ vizinhos mais próximos. Esse procedimento é realizado
+justamente no modelo skNN~\cite{ludewig_2019}:
 
 Os itens contidos nessas $k$ sessões são os candidatos à recomendação. Os
 itens mais recomendados serão aqueles que acumularem mais ocorrências entre as
@@ -531,40 +525,57 @@ de treinamento $\mathcal{D}$ e um novo vetor de entrada $x$:
     p(y=c|x, \mathcal{D}) = \frac{1}{K} \sum_{n \in N_k (x, \mathcal{D})} \mathbb{I}(y_n = c)
 \end{equation}
 em que $\mathcal{D} = \{(x_i, y_i )\}^{N}_{i=1}$ e $\mathbb{I}$ é a função
-indicadora.
+indicadora caso o item pertença à 
+
+\subsubsection{skNN e vskNN}
+\abbrev{skNN}{\textit{Session-Based} kNN}
+\abbrev{vskNN}{\textit{Vector Multiplication Session-Based} kNN}
+Para modelos de recomendação baseados em sessão, diferentes abordagens inspiradas em kNN
+foram propostas, a exemplo do skNN (\textit{Session-Based} kNN) e do vsKNN
+(\textit{Vector Multiplication Session-Based} kNN).
+
+o modelo skNN considera todos os itens da sessão ao calcular a similaridade
+entre as sessões. Todos os itens tem o mesmo peso e contribuem de forma
+igualitária na pontuação de similaridade, independentemente de sua
+recência ou de sua posição~\cite{ludewig_2019}. A pontuação de um item candidato para sessão
+é dado pelo somatório das similaridades entre a sessão vigente às sessões vizinhas
+que contém o item candidato:
+
+\begin{equation}
+    \hat{r}_{\text{skNN}}(i, s) = \sum_{n \in N_s} \text{sim}(s,n) \times \mathbb{I}_n(i)
+\end{equation}
+em que $N_s$ é o conjunto de sessões vizinhas e $\mathbb{I}_n(i)$ é a função
+indicadora caso o item pertença à sessão $n$.
+
+A vizinhança de cada sessão é definida a partir da maior
+similaridade entre as sessões. Essa abordagem difere do ikNN
+(\textit{item-based} KNN), que considera a similaridade entre os itens de cada
+sessão. 
+
+O vsKNN, por sua vez, concede maior importância a eventos mais recentes,
+aplicando uma decaimento sobre o peso dos eventos. Quanto mais antigo, maior o
+decaimento. O nome ``\textit{Vector Multiplication}'' se dá pelo calculo da
+similaridade com a sessão $s$ representada como um vetor de valores reais em
+razão do decaimento.
 
 
+\subsubsection{STAN e VSTAN}
+O modelo STAN (\textit{sequence and time-aware neighborhood}) é uma extensão do
+SKNN com três propriedades adicionadas às pontuações: posição dos itens na
+sessão ativa, recência da sessão vizinha e posição do item candidato na sessão
+vizinha. Cada um desses componentes possui sua própria função de decaimento.
 
-% The idea is as follows: to classify a new input x, we find the K closest
-% examples to x in the training set, denoted NK(x,D), and then look at their
-% labels, to derive a distribution over the outputs for the local region around x.
-% More precisely, we compute
-
-
-% Now suppose that we have collected a data set comprising N observations drawn
-% from p(x). Because each data point has a probability P of falling within R, the
-% total number K of points that lie inside R will be distributed according to the
-% binomial distribution
-
-
-% \subsubsection{rule-based Classifiers}
-
-% \subsection{Knowledge-based}
-% Sistemas \textit{knowledge-based} são similares aos baseados em conteúdo, mas
-% com a diferença de que o usuário pode especificar explicitamente suas
-% preferências, enquanto
-% que nos sistemas baseados em conteúdo as preferências são inferidas a partir do
-% histórico de avaliações do usuário.
-% \subsubsection{Constraint-based}
-% \subsubsection{Case-based}
-
-
-% \subsection{Outros modelos}
-% \subsubsection{Utility-based}
-% \subsubsection{Context-based}
-% \subsubsection{Time-sensitive}
-% \subsubsection{Location-based}
-
-% \subsection{Avaliação de Sistemas de Recomendação}
-% - online/offline evaluation
-% - métricas
+Por sua vez, o VSTAN combina características dos modelos STAN e vsKNN,
+adicionando dois novos pesos. O primeiro peso é associado à posição do último
+item da sessão ativa que coexiste na sessão vizinha. Além disso, um segundo peso
+é obtido a partir da medida do inverso da frequência do termo no documento (IDF,
+do inglês \textit{inverse document frequency}). O IDF é uma medida de raridade
+de um termo em um documento, em que termos muito recorrentes são penalizados.
+É obtido a partir do logaritmo do inverso da frequência do termo em um
+conjunto de documentos:
+\begin{equation}
+    \text{IDF}(t) = \log \frac{N}{n_t}
+\end{equation}
+em que $N$ é a quantidade de documentos e $n_t$ é a quantidade de documentos
+que contém o termo $t$. No contexto do vsKNN, o IDF é utilizado para penalizar
+itens muito recorrentes no conjunto de treinamento.

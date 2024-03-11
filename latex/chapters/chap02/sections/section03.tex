@@ -1385,6 +1385,7 @@ similaridade é obtida ao realizar o produto interno do vetor latente de cada
 item avaliado com o fator latente do item a ser estimado.
 
 \subsubsection{Fossil}
+\abbrev{Fossil}{\textit{Factorized Sequential Prediction with Item Similarity Models}}
 O modelo \textit{Factorized Sequential Prediction with Item Similarity Models}
 (Fossil) \cite{fossil} une a abordagem baseada em similaridade do modelo FISM com a abordagem
 \textit{session-aware} baseada em cadeias de Markov do modelo FPMC. O objetivo é
@@ -1399,11 +1400,19 @@ cadeia de Markov.
 \abbrev{SMF}{\textit{Session-based Matrix Factorization}} O modelo
 \textit{Session-based Matrix Factorization} (SMF) \cite{ludewig_2018}
 assimila-se ao modelo Fossil, ao combinar fatoração de matrizes com cadeias de
-Markov. A distinção encontra-se na forma como a predição é calculada: o modelo
-substitui o vetor latente do usuário por um vetor de preferências de sessão, que
-é computado como um \textit{embedding} da sessão atual. Dessa forma, o modelo
-lida melhor com problemas de \textit{cold-start}.
+Markov. A diferença consiste na substituição da parcela responsável por modelar
+as preferências de longo prazo do usuário por preferências de sessão. Essa
+mudança se dá com o objetivo de tornar o modelo aplicável em situações de
+\textit{cold-start}, sem necessidade de histórico de interações do usuário.
 
+Uma fato importante sobre o comparativo entre os modelos baseados em fatoração é
+o fato de os modelos originais FISM, Fossil e FPMC utilizarem
+\textit{embeddings} de usuários e serem projetados para prever a próxima ação de
+usuários. Não foram originalmente projetados para cenários de recomendação
+\textit{session-based} com usuários anônimos. Dessa forma, a aplicação desses
+modelos em cenários \textit{session-based} são adaptações de seus usos
+originais~\cite{ludewig2020advances}. O único modelo originalmente projetado
+para cenários \textit{session-based} é justamente o SMF.
 
 \section{Indaband}
 
@@ -1429,11 +1438,14 @@ Toda sessão publicada é disponível para visualização pública e contém ao 
 uma faixa. A publicação pode ser posteriormente removida pelo dono da sessão.
 
 
-\begin{figure}[htbp]
+\begin{figure}[h]
   \begin{center}
     \subfigure[]{\includegraphics[width=0.4\textwidth]{chapters/chap02/images/wayfaring_original.jpeg}}
     \subfigure[]{\includegraphics[width=0.4\textwidth]{chapters/chap02/images/wayfaring_fork.jpg}}
-    \caption{Duas sessões publicadas no aplicativo Indaband. A primeira sessão é a sessão original, enquanto a segunda é um \textit{fork} subsequente da primeira.}
+    \caption{Duas sessões publicadas no aplicativo Indaband. A primeira sessão é
+    a sessão original, enquanto a segunda é um \textit{fork} subsequente da
+    primeira. Ambas compartilham o mesmo nome e as faixas da primeira sessão. A
+    segunda sessão contém faixas adicionais.}
     \label{fig:session_and_fork}
   \end{center}
   \end{figure}
@@ -1448,15 +1460,20 @@ pré-existentes que forem mantidas, além da referência para a sessão anterior
 
 O \textit{fork} é uma das principais formas de colaboração assíncrona entre
 usuários. A figura \ref{fig:session_and_fork} ilustra duas sessões, sendo a
-segunda um \textit{fork} da primeira. Note que a quantidade de faixas e usuários
-presentes na segunda sessão aumenta. Além disso, conta com maior quantidade de
-visualizações, comentários e outras formas de engajamento positivo. 
+segunda um \textit{fork} subseqeuente da primeira. Note que a quantidade de
+faixas e usuários presentes na segunda sessão aumenta. Além disso, conta com
+maior quantidade de visualizações, comentários e outras formas de engajamento
+positivo. Entre essas duas sessões, houve uma série de \textit{forks}
+intermediários, realizados por cada um dos usuários que adicionaram faixas às
+suas sessões.
 
 
 \subsubsection{Faixa}
 A faixa é uma mídia com áudio e vídeo que geralmente contém a gravação de um
-instrumento ou voz. Uma faixa necessariamente é uma gravação original, um \textit{fork} de uma faixa publicada anteriormente ou uma importação de uma mídia de áudio ou de vídeo.
-
+instrumento ou voz. Uma faixa necessariamente é criada a partir de um entre três
+recursos: tal como uma gravação original, tal como um \textit{fork} de uma faixa
+publicada anteriormente ou como uma importação de uma mídia de áudio ou de
+vídeo.
 
   % \subsection{Exemplos}
 
