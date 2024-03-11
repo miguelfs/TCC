@@ -2,6 +2,7 @@
 
 \section{\textit{session-based}, \textit{next-item}}
 \subsubsection{skNN e vskNN}
+\abbrev{IDF}{\textit{Inverse Document Frequency}}
 Em que $k$ é a quantidade de vizinhos os quais a pontuação dos itens é
 calculada, $N$ é o tamanho da amostra de sessões utilizadas para calcular os
 vizinhos mais próximos, $Sim$ é a função de similaridade, $W_{atual}$ é a função
@@ -19,17 +20,17 @@ documento (\textit{Inverse Document Frequency}).
       \hline
       k & N & Sim & MRR & HR & Cov & Pop\\
       \hline
-      50 & 500 & Cosseno & \textbf{0.172} & 0.571 & \textbf{0.645} & \textbf{0.204} \\
+      50 & 500 & Cosseno & \textbf{0,172} & 0.571 & \textbf{0,645} & \textbf{0,204} \\
       \hline
-      50 & 500 & Jaccard & 0.165 & 0.534 & 0.534 & 0.289 \\
+      50 & 500 & Jaccard & 0,165 & 0,534 & 0,534 & 0,289 \\
       \hline
-      1000 & 500 & Jaccard & 0.166 & 0.534 & 0.534 & 0.279 \\
+      1000 & 500 & Jaccard & 0,166 & 0,534 & 0,534 & 0,279 \\
       \hline
-      1500 & 500 & Cosseno & 0.160 & 0.511 & 0.529 & 0.283 \\
+      1500 & 500 & Cosseno & 0,160 & 0,511 & 0,529 & 0,283 \\
     %   \hline
     %   50 & 10000 & Jaccard & \textbf{0.176} & \textbf{0.587} & \textbf{0.700} & 0.210 \\
       \hline
-      100 & 2500 & Cosseno & \textbf{0.172} & \textbf{0.577} & 0.611 & 0.232 \\
+      100 & 2500 & Cosseno & \textbf{0,172} & \textbf{0,577} & 0.611 & 0.232 \\
       \hline
     \end{tabular}
     \caption{\textit{session-based} kNN (sKNN)}
@@ -51,20 +52,20 @@ documento (\textit{Inverse Document Frequency}).
     \hline
     k & N & $W_{atual}$ & $W_{candidato}$ & IDF & MRR & HR & Cov & Pop \\
     \hline
-    50 & 500 & Linear & log & 5 & 0.156 & 0.522  & 0.638 & \textbf{0.183} \\
+    50 & 500 & Linear & log & 5 & 0,156 & 0,522  & 0,638 & \textbf{0,183} \\
     \hline
-    50 & 2500 & Quadrático & Div & 1 & 0.157 & 0.532 & 0.653 & 0.200 \\
+    50 & 2500 & Quadrático & Div & 1 & 0,157 & 0,532 & 0,653 & 0,200 \\
     \hline
-    50 & 2500 & N/A & Log & 1 & \textbf{0.160} & \textbf{0.557} & \textbf{0.657} & 0.200 \\
+    50 & 2500 & N/A & Log & 1 & \textbf{0,160} & \textbf{0,557} & \textbf{0,657} & 0,200 \\
     \hline
-    1500 & 2500 & N/A & Div & 10 & 0.146 & 0.507 & 0.580 & 0.242 \\
+    1500 & 2500 & N/A & Div & 10 & 0,146 & 0,507 & 0,580 & 0,242 \\
     \hline
-    1500 & 500 & Quadrático & Log & N/A & 0.142 & 0.489 & 0.524 & 0.282 \\
+    1500 & 500 & Quadrático & Log & N/A & 0,142 & 0,489 & 0,524 & 0,282 \\
     \hline
-    1500 & 500 & N/A & Linear & 10 & 0.142 & 0.485 & 0.575 & 0.213 \\
+    1500 & 500 & N/A & Linear & 10 & 0,142 & 0,485 & 0,575 & 0,213 \\
     \hline
   \end{tabular}
-  \caption{\textit{Vector multiplication session-based kNN} (vsKNN)}
+  \caption{\textit{Vector multiplication session-based} kNN (vsKNN)}
 \end{table}
 
 \subsubsection{Regras de sequência}
@@ -77,26 +78,26 @@ em que as métricas são a quantidade de passos e a função de pesos.
         \hline
         Passos & W & MRR@10 & HR@10 & Cov@10 & Pop@10 \\
         \hline
-        6 & Div & 0.264 & \textbf{0.533} & 0.502 & 0.286 \\
+        6 & Div & 0.264 & \textbf{0,533} & 0.502 & 0.286 \\
         \hline
         6 & Log & 0.255 & 0.519 & 0.490 & 0.293 \\
         \hline
-        6 & Quadrático & \textbf{0.270} & \textbf{0.533} & 0.516 & 0.275 \\
+        6 & Quadrático & \textbf{0,270} & \textbf{0,533} & 0.516 & 0.275 \\
         \hline
         11 & Div & 0.264 & 0.532 & 0.503 & 0.287 \\
         \hline
         11 & Linear & 0.253 & 0.519 & 0.488 & 0.293 \\
         \hline
-        11 & Log & 0.254 & 0.516 & 0.490 & \textbf{0.296} \\
+        11 & Log & 0.254 & 0.516 & 0.490 & \textbf{0,296} \\
         \hline
-        12 & Quadrático & \textbf{0.270} & \textbf{0.533} & \textbf{0.517} & 0.275 \\
+        12 & Quadrático & \textbf{0,270} & \textbf{0,533} & \textbf{0,517} & 0.275 \\
         \hline
         \end{tabular}
     \caption{Regras de sequência}
 \end{table}
 
 
-\subsubsection{stan}
+\subsubsection{STAN}
 \begin{table}[htbp]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -123,7 +124,7 @@ em que as métricas são a quantidade de passos e a função de pesos.
   \end{table}
 
 
-\subsubsection{vstan}
+\subsubsection{VSTAN}
 \begin{table}[htbp]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
@@ -761,7 +762,7 @@ pontuação e peso idf.
       100 & 2500 & Vetorial & 3,62 & 80 & 0,905 & 0,905 & 10 & 0,078 & 0,356 & \textbf{0,323} & \textbf{0,156} \\
       \hline
 \end{tabular}
-      \caption{vstan}
+      \caption{VSTAN}
       \label{opt:vstan_rem}
 \end{table}
 

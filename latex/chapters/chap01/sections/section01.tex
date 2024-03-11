@@ -33,27 +33,29 @@ demais faixas gravadas. Aplicações como \textit{BandLab}, \textit{Ableton Live
 e \textit{Soundtrap by Spotify} funcionam sob essa abordagem.
 
 Uma segunda característica da prática musical coletiva, seja no contexto
-presencial ou remoto, é depender que uma pessoa tenha os meios de encontrar
-outros interessados com gostos musicais similares, instrumentos que se
-complementem, etc. Uma pessoa que deseja tocar um estilo musical específico,
-incomum na região em que vive, sofreria dessa dificuldade. Um meio de resolver
-esse problema é a partir de comunidades virtuais ou redes sociais. Ao encontrar
-outros interessados, caso a distância impeça a prática presencial, a atividade
-pode ser realizada a partir da prática musical colaborativa assíncrona.
-Plataformas como \textit{Cifra Club} e \textit{Ultimate Guitar} permitem que
-usuários contribuam com tablaturas de músicas e comentários, formando uma
-comunidade virtual.
+presencial ou remoto, é a necessidade de encontrar outros interessados com
+gostos musicais similares, instrumentos que se complementem, etc. Uma pessoa que
+deseja tocar um estilo musical específico, incomum na região em que vive,
+sofreria dessa dificuldade. Um meio de resolver esse problema é recorrer à
+comunidades virtuais ou redes sociais. Ao encontrar outros interessados, caso a
+distância impeça a prática presencial, a atividade pode ser realizada a partir
+da prática musical colaborativa assíncrona. Plataformas como \textit{Cifra Club}
+e \textit{Ultimate Guitar} permitem que usuários contribuam com tablaturas de
+músicas e comentários, formando uma comunidade virtual.
 
 
 Tanto a prática musical colaborativa assíncrona quanto a formação de comunidades
-virtuais de música são problemas os quais o mercado não oferecia uma solução
-integrada. \textit{Bandlab} e \textit{Ableton Live} não contam com uma camada de
-interação, descoberta e recomendação de usuários. \textit{Cifra Club} e
-\textit{Ultimate Guitar} não permitem a gravação colaborativa de forma
-assíncrona. A aplicação \textit{Collab}, da Meta, preenchia parcialmente esses
-critérios antes de ser descontinuado, apesar de seus usuários estabelecerem a comunicação via
-\textit{Discord}. O aplicativo móvel Indaband foi criado para ocupar esse
-espaço não preenchido no mercado.
+virtuais de música são problemas os quais o mercado oferece poucas soluções
+integradas. Estações de trabalho de áudio digital (DAWs, do inglês
+\textit{Digital Audio Workstations}) mais tradicionais, como \textit{Pro Tools},
+\textit{Logic Pro} e \textit{Ableton Live} são desprovidos de funcionalidades de
+interação social. \textit{Cifra Club} e \textit{Ultimate Guitar} não permitem a
+gravação colaborativa de forma assíncrona. \textit{Soundtrap by Spotify} e
+\textit{BandLab} permitem a edição colaborativa em tempo real, porém apenas o
+último contém funcionalidades de interação e integração social entre usuários. A
+aplicação \textit{Collab}, da Meta, preenchia parcialmente esses critérios antes
+de ser descontinuada. O aplicativo móvel Indaband foi criado para ocupar esse
+espaço pouco preenchido no mercado.
 
 \subsection{Indaband}
 
@@ -83,16 +85,17 @@ e mixagem. O ambiente de pré-visualização, edição e produção da sessão c
 Uma vez que o usuário conclua as etapas de produção da sessão no \textit{Studio}
 e esteja satisfeito com o resultado final, ele tem a opção de publicar a sessão
 no \textit{Feed} público da aplicação. No \textit{Feed}, todos os usuários da
-plataforma podem visualizar e interagir com a sessão publicada
-adicionando comentários, compartilhando com outros usuários dentro e fora da
-aplicação, etc.
+plataforma podem visualizar e interagir com a sessão publicada adicionando
+comentários, aplausos e compartilhando com outros usuários dentro e fora da
+aplicação.
 
 Após três anos de desenvolvimento, a aplicação conta com dezenas de milhares de
-usuários visitantes, os quais centenas de usuários que gravam mensalmente. Dado
-o catálogo grande de usuários, o processo de encontrar pessoas com interesses
+usuários cadastrados, os quais centenas gravam mensalmente. Dado o grande
+catálogo de usuários, o processo de encontrar pessoas com interesses musicais
 similares demanda tempo e esforço. O mesmo ocorre ao procurar uma sessão que
-seja de interesse em meio ao excesso de conteúdo publicado. Essa dificuldade
-percebida pelo usuário é consequência da sobrecarga de informação.
+seja de interesse em meio ao grande volume de conteúdo publicado. Essa
+dificuldade percebida pelo usuário é conhecida na literatura de sistemas de
+recomendação como sobrecarga de informação \cite{roetzel2019information}.
 
 \subsection{Sobrecarga de informação}
 
@@ -138,7 +141,7 @@ Figura \ref{fig:u_invertida} \cite{roetzel2019information}.
 
 Experimentos realizados por \citet{liang2006personalized} mostraram que, ao
 avaliar a satisfação de voluntários com um sistema de recomendação de notícias,
-a precisão do conteúdo recomendado sob personalização e o número de itens
+a precisão do conteúdo recomendado e o número de itens
 recomendados influenciam diretamente na satisfação do usuário, reduzindo a
 sobrecarga de informação e a insatisfação gerada pela sobrecarga.
 
@@ -164,16 +167,14 @@ distribuição dos itens a partir de suas preferências pessoais.
 \end{figure}
 
 
-Personalização é o processo de coleta e uso de informações pessoais para
-distribuir conteúdo de forma única a um usuário, atendendo suas necessidades
-percebidas pelo serviço ou declaradas explicitamente pelo usuário
-\cite{liang2006personalized}. Recomendações não-personalizadas distribuem o
-conteúdo recomendado de forma igualitária para todos os usuários. Uma
-recomendação a partir da lista de reportagens mais lidas em um portal de
-notícias é um exemplo de recomendação não-personalizada
+Personalização é o processo de coleta e uso de informações pessoais para filtrar
+conteúdo de forma única a um usuário, atendendo suas necessidades percebidas
+pelo serviço ou declaradas explicitamente. \cite{liang2006personalized}.
+Recomendações não-personalizadas distribuem o conteúdo recomendado de maneira
+igualitária para todos os usuários, desconsiderando suas preferências
+individuais. Uma recomendação a partir da lista de reportagens mais lidas em um
+portal de notícias é um exemplo de recomendação não-personalizada.
 \cite{falk2019practical}.
-
-
 
 \begin{figure}[ht]
     \centering
@@ -235,11 +236,12 @@ itens que determinado usuário interagiu. Sistemas de Recomendação Baseados em
 Sessão (SBRS, do inglês \textit{session-based recommender systems}) atuam
 justamente nesse cenário.
 
-Os SBRS se caracterizam pelos seus dados representarem um conjunto delimitado
-de interações obtidas por \textit{feedback} implícito. Esse conjunto é
-denominado sessão. Uma sessão pode conter uma sequência temporalmente ordenada
-de ações executadas por um usuário, ou um conjunto de ações executadas por um
-usuário anônimo sem uma ordem específica.
+Os SBRS se caracterizam pelos seus dados representarem um conjunto delimitado de
+interações obtidas por \textit{feedback} implícito, ou seja, por preferências
+indiretas identificadas a partir de ações ou padrões de navegação. Essas interações
+são agrupadas em conjuntos denominados sessões. Uma sessão pode conter uma sequência temporalmente
+ordenada de ações executadas por um usuário, ou um conjunto de ações executadas
+por um usuário anônimo sem uma ordem específica.
 
 Os objetivos de um SBRS incluem
 prever a próxima interação do usuário durante uma sessão em andamento,
@@ -255,9 +257,9 @@ recomendar uma sessão inteira \cite{domingues_large_2023, survey_wang_2021}.
     \centering
         \begin{tikzpicture}
         % Draw the list cells
-        \node[draw, rectangle, minimum width=2cm, minimum height=1cm] (cell1) at (0, 0) {TV};
+        \node[draw, rectangle, minimum width=2cm, minimum height=1cm] (cell1) at (0, 0) {Jay-Z};
         \node[draw, rectangle, minimum width=2cm, minimum height=1cm] (cell2) at (2.5, 0) {N/A};
-        \node[draw, rectangle, minimum width=2cm, minimum height=1cm] (cell3) at (5, 0) {pipoca};
+        \node[draw, rectangle, minimum width=2cm, minimum height=1cm] (cell3) at (5, 0) {Beyoncé};
         \node[draw, dashed, rectangle, minimum width=2cm, minimum height=1cm] (cell4) at (7.5, 0) {?};
 
         % Draw the arrow
@@ -275,7 +277,7 @@ recomendar uma sessão inteira \cite{domingues_large_2023, survey_wang_2021}.
         \node[draw, dashed, rectangle, minimum width=2cm, minimum height=1cm] (topcell4) at (7.5, 1.0) {?};
 
     \end{tikzpicture}
-    \caption{Exemplo de uma sessão em andamento. A predição atua sobre a interação subsequente.}
+    \caption{Exemplo de uma sessão em andamento, em que a ação A corresponde a navegar ao perfil de determinado artista, enquanto que a ação B corresponde a criar uma \textit{playlist} vazia. Nem toda ação é necessariamente associada a um item. A predição atua sobre a interação subsequente.}
 \end{figure}
 
 Cada interação das sessões está associada a tuplas que contém um ou mais dos
