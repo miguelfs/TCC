@@ -1,23 +1,41 @@
 \section{Avaliação dos Resultados}
-O presente trabalho demonstra que é possível utilizar técnicas de SBRS para
-recomendação de usuários e indivíduos a grupos de participantes, o que é um
-domínio novo na literatura de SBRS. Foi demonstrado que há modelos de base de
-comparação eficazes e competitivos para a base de dados apresentada. Modelos
-mais sofisticados, como os baseados em redes neurais, podem ser utilizados para
-melhorar os resultados obtidos, ao custo de maior complexidade computacional,
-tempo de treinamento e otimização, e maior necessidade de dados de treinamento.
 
-Foi demonstrado que modelos \textit{session-aware}, quando comparados a seus
-equivalentes \textit{session-based}, apresentam incremento de desempenho. Além
-disso, alguns modelos \textit{session-aware} superam os modelos
-\textit{session-based} de maior desempenho. Também foi demonstrado que a
-abordagem \textit{last-item} obteve resultados equivalentes à abordagem
-\textit{next-item}, por mais que os itens na abordagem \textit{last-item} sejam
-necessariamente inéditos.
+As medidas de avaliação obtidas com a base do presente trabalho demonstram que,
+para as características específicas da base, incluindo escopo, tamanho e
+quantidade média de itens por sessão, os modelos de SBRS apresentam resultados
+satisfatórios que justificam seu uso em um ambiente de produção do aplicativo
+Indaband. Além disso, os modelos \textit{session-aware} apresentaram os melhores
+resultados entre todos os modelos avaliados, indicando melhora significativa ao
+incluir o metadado do usuário dono da sessão. Entre os modelos
+\textit{session-based}, destacaram-se modelos baseados em regras de sequência,
+vizinhos mais próximos e GNN. Os resultados positivos para esses modelos
+condizem com medidas de avaliação em publicações mais
+recentes~\cite{shehzad2024performance}.
 
-Ao comparar os resultados obtidos com os de outros trabalhos, observamos que há
-consonância na ordem de grandeza dos resultados, indicando que a base de dados
-criada para esse trabalho é adequada para o estudo de SBRS, apesar das
-limitações de tamanho e desbalanceamento em razão do crescimento do aplicativo
-Indaband. A tendência é que essas duas questões sejam mitigadas com o crescimento da base
-de usuários.
+Por mais que a base INDABAND contenha menos sessões do que as demais bases da
+literatura, os valores para as métricas como HR@5, HR@10, MRR@5 e MRR@10 são
+compatíveis com os de outras bases maiores, como RSC15, ZALANDO, CLEF e
+RETAILROCKET. Um cenário possível, com o crescimento da base de usuários ao
+longo do tempo, é o das métricas de avaliação obterem valores maiores, em
+particular para os modelos baseados em redes neurais. Na figura
+\ref{fig:next-item-single-123}, é possível observar a tendência de melhora no
+HR@5 para cada \textit{split}, cada um contendo mais sessões do que
+\textit{split} anterior, como destacado na tabela \ref{tab:windowed_data}. A
+tendência é que o desbalanceamento de sessões ao longo do tempo seja mitigado
+com o crescimento da base de usuários.
+
+O presente trabalho demonstra que é possível modelar e utilizar técnicas de SBRS
+para recomendação de usuários e indivíduos a grupos de participantes, o que é um
+domínio novo na literatura de SBRS. Modelos mais sofisticados, como os baseados
+em redes neurais, podem ser utilizados para melhorar os resultados obtidos, ao
+custo de maior complexidade computacional, tempo de treinamento e otimização.
+Apesar disso, modelos mais simples, como os baseados em regras de sequência ou
+em vizinhos mais próximos, obtém resultados satisfatórios, superiores à maioria
+modelos de redes neurais do comparativo.
+
+A abordagem \textit{last-item} obteve resultados equivalentes à abordagem
+\textit{next-item}, por mais que os itens avaliados na abordagem
+\textit{last-item} sejam necessariamente inéditos para suas respectivas sessões.
+Esse resultado indica que, mesmo em um cenário de avaliação mais exigente e mais
+próximo do que a aplicação exige, os modelos SBRS entregam resultados
+satisfatórios que justificam sua futura implementação na aplicação.

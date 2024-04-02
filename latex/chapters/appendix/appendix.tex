@@ -69,7 +69,7 @@ documento (\textit{Inverse Document Frequency}).
 \end{table}
 
 \subsubsection{Regras de sequência}
-em que as métricas são a quantidade de passos e a função de pesos.
+Métricas são a quantidade de passos e a função de pesos.
 \begin{table}[htbp]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|}
@@ -98,6 +98,12 @@ em que as métricas são a quantidade de passos e a função de pesos.
 
 
 \subsubsection{STAN}
+% stan-k=2000-sample_size=2500-lambda_spw=3.62-lambda_snh=100-lambda_inh=7.24
+% stan-k=100-sample_size=2500-lambda_spw=1.81-lambda_snh=40-lambda_inh=0.197
+$stan_1$ é o modelo com $k$ igual a 2000, $N$ igual a 2500, $\lambda_{\text{spw}}$ igual a 3,62.
+$stan_2$ é o modelo com $k$ igual a 100, $N$ igual a 2500, $\lambda_{\text{spw}}$ igual a 1,81.
+
+
 \begin{table}[htbp]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
@@ -125,6 +131,10 @@ em que as métricas são a quantidade de passos e a função de pesos.
 
 
 \subsubsection{VSTAN}
+$vstan_1$ é o modelo com $k$ igual a 1000 e $N$ igual a 5000. 
+$vstan_2$ é o modelo com $k$ igual a 2000 e $N$ igual a 1000. 
+
+
 \begin{table}[htbp]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}

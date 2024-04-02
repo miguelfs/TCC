@@ -248,7 +248,7 @@ aplicação específica:
 
   \subsubsection{\textit{Hit Rate} (HR)}
   O HR@N é a porcentagem de vezes em que um item relevante
-  é recomendado entre os $N$ primeiros itens da lista de recomendações:
+  é recomendado entre os $N$ primeiros itens da lista de recomendações~\cite{sessionbaseddp}:
 
   \begin{equation}
     % \text{HR}_{\text{N}} = \frac{1}{|U|} \sum_{u \in U} \sum_{i \in R_{u, N}} \frac{1}{N}
@@ -265,7 +265,7 @@ aplicação específica:
   é maior, decaindo conforme a posição do item recomendado corretamente fica
   mais distante do início da lista de recomendações. Por sua vez, o incremento
   no HR@N em razão de um item recomendado no início ou no final da lista contém
-  pesos idênticos.
+  pesos idênticos~\cite{sessionbaseddp}.
 
   \begin{equation}
     \text{MRR@N} = \frac{1}{Q}\sum_{i=1}^{Q}\begin{cases}
@@ -302,7 +302,7 @@ aplicação específica:
   \abbrev{VN}{Verdadeiro Negativo}
 
   No contexto de sistemas de recomendação, a Precisão@N avalia a quantidade de
-  itens relevantes em relação ao total de $N$ itens recomendados na lista. O conjunto
+  itens relevantes em relação ao total de $N$ itens recomendados na lista~\cite{sessionbaseddp}. O conjunto
   dos $N$ itens recomendados equivale aos verdadeiros e falsos positivos:
 
   \begin{equation}
@@ -320,7 +320,7 @@ aplicação específica:
 
   \subsubsection{\textit{Mean Average Precision} (MAP)} O MAP@N calcula a média
   da precisão média (AP@N) para cada consulta. Após cada item relevante ser
-  recomendado, a precisão é medida, tal que a média é calculada por:
+  recomendado, a precisão é medida, tal que a média é calculada por~\cite{carnevali2023offline}:
 
   \begin{align}
     \text{AP@N} &= \frac{\sum_{i = 1}^{K}\text{Precisão@k} \times \text{rel}_{k}}{\text{qntd. de resultados relevantes}} \\
@@ -336,7 +336,7 @@ aplicação específica:
   \subsubsection{\textit{Normalized Discounted Cumulative Gain} (NDCG)}
   O NDCG é baseado no ganho cumulativo (CG). O ganho cumulativo é a soma dos
   valores de relevância graduais de todos os itens em uma lista de
-  recomendações:
+  recomendações~\cite{carnevali2023offline}:
 
   \begin{equation}
     \text{CG@N} = \sum_{i = 1}^{N} \text{rel}_{i}
@@ -361,7 +361,7 @@ aplicação específica:
   \subsubsection{F1}
 É calculado a partir da média harmônica entre a precisão e o \textit{recall}. Dessa forma,
 um valor baixo ou próximo de zero para qualquer uma dessas duas métricas derruba
-o valor do F1:
+o valor do F1~\cite{sessionbaseddp}:
 
 \begin{equation}
   \text{F1} = \frac{2 \times \text{Precisão} \times \text{Recall}}{\text{Precisão} + \text{Recall}}
@@ -370,7 +370,7 @@ o valor do F1:
   \subsubsection{Cobertura}
   A cobertura mede a proporção de itens recomendados em relação ao total de
   itens disponíveis. Se definirmos o conjunto de itens disponíveis como $I$ e o
-  conjunto de itens recomendados como $I_{p}$, a cobertura é dada por:
+  conjunto de itens recomendados como $I_{p}$, a cobertura é dada por~\cite{sessionbaseddp}:
   \begin{equation}
     \text{Cobertura@N} = \frac{|I_{p}|}{|I|}.
   \end{equation}
@@ -502,7 +502,7 @@ recurrent unit}), também possui estados auxiliares, denominados portas, que
 controlam a atualização de seu estado principal, e ambas realizam a soma linear
 entre o estado anterior com o estado candidato. A principal diferença entre
 essas duas unidades é a capacidade da LSTM controlar o quanto do estado anterior
-é assimilado, o que não há na GRU.
+é assimilado, o que não há na GRU~\cite{chung2014empirical}.
 
 Na GRU, porta de atualização $\mathbf{z_t}$ pondera o quanto do
 estado candidato $\mathbf{\hat{h_t}}$ e do estado anterior $\mathbf{h_{t-1}}$
@@ -527,40 +527,40 @@ entrada, retornando a sequência mais provável na saída
 o decodificador são treinados conjuntamente para maximizar a probabilidade de
 uma tradução correta, dada uma frase inserida na entrada do modelo.
 
-\vspace{1cm}
-\begin{figure}[htbp]
-    \centering
-    \begin{tikzpicture}
-        % Draw rectangles
-        \draw (0,0) rectangle (1,1); % First square
-        \draw (1,0) rectangle (2,1); % Second square
-        \draw (2,0) rectangle (3,1); % Third square
-        \draw (3,0) rectangle (4,1); % Fourth square
+% \vspace{1cm}
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{tikzpicture}
+%         % Draw rectangles
+%         \draw (0,0) rectangle (1,1); % First square
+%         \draw (1,0) rectangle (2,1); % Second square
+%         \draw (2,0) rectangle (3,1); % Third square
+%         \draw (3,0) rectangle (4,1); % Fourth square
       
-        % Add text "encoder" above the rectangle
-        \node at (2,1.2) {codificador};
+%         % Add text "encoder" above the rectangle
+%         \node at (2,1.2) {codificador};
         
-        % Draw error line
-        \draw[->, red] (4,0.5) -- (5,0.5); % Error line
+%         % Draw error line
+%         \draw[->, red] (4,0.5) -- (5,0.5); % Error line
         
-        % Draw horizontal rectangle named "c"
-        \draw (5,0) rectangle (6,1); % Rectangle "c"
-        \node at (5.5,0.5) {c}; % Text "c" inside rectangle
+%         % Draw horizontal rectangle named "c"
+%         \draw (5,0) rectangle (6,1); % Rectangle "c"
+%         \node at (5.5,0.5) {c}; % Text "c" inside rectangle
         
-        % Draw arrow to decoder
-        \draw[->, red] (6,0.5) -- (7,0.5); % Arrow to decoder
+%         % Draw arrow to decoder
+%         \draw[->, red] (6,0.5) -- (7,0.5); % Arrow to decoder
         
-        % Draw rectangles for decoder
-        \draw (7,0) rectangle (8,1); % First square
-        \draw (8,0) rectangle (9,1); % Second square
-        \draw (9,0) rectangle (10,1); % Third square
-        \draw (10,0) rectangle (11,1); % Fourth square
-        % Add text "decoder" above the rectangle
-        \node at (9,1.2) {decodificador};
-      \end{tikzpicture}
-      \caption{Encoder-Decoder Framework}
+%         % Draw rectangles for decoder
+%         \draw (7,0) rectangle (8,1); % First square
+%         \draw (8,0) rectangle (9,1); % Second square
+%         \draw (9,0) rectangle (10,1); % Third square
+%         \draw (10,0) rectangle (11,1); % Fourth square
+%         % Add text "decoder" above the rectangle
+%         \node at (9,1.2) {decodificador};
+%       \end{tikzpicture}
+%       \caption{Diagrama para uma arquitetura codificador-decodificador.}
 
-\end{figure}
+% \end{figure}
 
 Nessa arquitetura, o codificador lê um vetor de entrada $\mathbf{x}$ e retorna
 um vetor intermediário $\mathbf{c}$, tal que:   
@@ -571,7 +571,7 @@ um vetor intermediário $\mathbf{c}$, tal que:
 em que $h_t \in \mathbb{R}^n$ é o estado oculto no instante $t$, $\mathbf{c}$ é o vetor
 gerado a partir da sequência dos estados ocultos, $f$ é uma função não-linear,
 como uma unidade LSTM, e $q(\cdot)$ é uma função sobre os estados ocultos. Por
-exemplo, caso a função $q$ retorne apenas o último estado, $q(\cdot) =
+exemplo, caso a função $q$ retorne apenas o último estado, $q(\mathbf{h_1}, \ldots, \mathbf{h_{T_x}}) =
 \mathbf{h_{T_x}}$.
 
 O decodificador é treinado para prever a próxima palavra $\mathbf{y_t}$, dado o
@@ -628,38 +628,14 @@ em que $\mathbf{v_a} \in \mathbb{R}^n$, $\mathbf{W_a} \in \mathbb{R}^{n \times
 n}$ e $\mathbf{U_a} \in \mathbb{R}^{n \times m}$ são as matrizes com os pesos da
 camada.
 
-\subsection{Auto-atenção}
-Auto-atenção (do inglês \textit{self-attention}) é uma forma de mecanismo de
-atenção cujos pesos dependem apenas de uma única sequência, em vez de duas
-sequências distintas \cite{kim2017structured}. O mecanismo de atenção
-tradicional não modela diretamente as dependências entre os elementos da
-sequência de entrada, mas sim a relação entre os estados ocultos do codificador
-e do decodificador. O uso mais reconhecido do mecanismo de auto-atenção ocorre
-na arquitetura de transformadores (do inglês \textit{transformers}), que
-viabilizam o uso do mecanismo de atenção em modelos que não sejam
-necessariamente sequenciais, como as redes neurais recorrentes.
-
-A arquitetura de transformadores replica a estrutura do mecanismo de
-auto-atenção em diferentes locais de sua arquitetura. Essa estrutura calcula a
-atenção a partir de três matrizes de pesos: consultas (do inglês
-\textit{queries}), chaves (do inglês \textit{keys}) e valores (do inglês
-\textit{values}), dadas respectivamente pelas matrizes $\mathbf{Q}$,
-$\mathbf{K}$ e $\mathbf{V}$. $\mathbf{Q}$ e $\mathbf{K}$ são matrizes de dimensões $d_k
-\times n$ e $\mathbf{V}$ de dimensões $d_v \times n$, em que $d_k$ e $d_v$
-são as dimensões dos \textit{embeddings}.
-
-
-As matrizes Q, K e V modelam, respectivamente, a
-relevância do \textit{embedding} de entrada, a relevância do \textit{embedding}
-de saída e a probabilidade dos elementos do \textit{embedding} de saída.
-Dessa forma, a atenção é calculada a partir da similaridade entre as matrizes de
-consultas e chaves, ponderada pela matriz de valores:
-
-\begin{equation}
-    \text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}(\frac{\mathbf{QK}^\top}{\sqrt{d_k}})\mathbf{V}
-\end{equation}
-em que $\sqrt{d_k}$ é o fator de escala, que normaliza o produto escalar entre
-as matrizes de consultas e chaves.
+A literatura recente de aprendizado profundo concedeu destaque a modelos de
+auto-atenção (do inglês \textit{self-attention}), dado que são o componente
+principal de arquiteturas de transformadores~\cite{kim2017structured}. O
+mecanismo de atenção tradicional é geralmente utilizado como um codificador de
+uma sequência ou de uma camada de estados de uma rede neural. No caso da
+auto-atenção, cada elemento de uma sequência ou camada possui seu próprio
+estado ou valor de atenção, obtido ao compará-lo com todos os demais estados
+de atenção.
 
 \subsection{CNN}
 \abbrev{CNN}{redes neurais convolucionais}
@@ -723,7 +699,7 @@ A representação em grafos torna possível identificar padrões
 não-triviais entre os dados. Também são facilmente interpretáveis, o que
 permite a aplicação de uma variedade de métodos de aprendizado de máquina. Um
 desses métodos é o aprendizado profundo em redes neurais de grafos (GNNs, do
-inglês \textit{graph neural networks}).
+inglês \textit{graph neural networks})~\cite{Bishop:DeepLearning24}.
 
 
 Na notação formal, o grafo $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ consiste no conjunto de
@@ -937,7 +913,7 @@ as matrizes de pesos e o vetor de \textit{bias} da rede neural.
 
 \section{Aprendizado de Máquina aplicado ao SBRS}
 
-As implementações de SBRS utilizam utilizam módulos, conceitos e arquiteturas
+As implementações de SBRS utilizam módulos, conceitos e arquiteturas
 característicos dos sistemas de aprendizado de máquina. As arquiteturas de SBRS
 podem ser divididas nas implementações mais simples, com abordagens básicas,
 eficientes e de menor carga computacional. Essas arquiteturas são compõem a base de referência, do inglês
@@ -978,10 +954,10 @@ item que de fato foi selecionado, a função de custo por entropia cruzada é
 empregada.
 
 \subsubsection{GRU4Rec}
-GRU4Rec  \cite{gru4rec_1, gru4rec_2} é uma RNN com unidades GRU
-modificadas, as quais são treinadas em \textit{mini-batches}, ou seja, em
-pequenas bateladas de amostras de treinamento. Essa forma de treinamento
-aproveita a capacidade de paralelismo do \textit{hardware}, tornando a
+GRU4Rec  \cite{gru4rec_1, gru4rec_2} é uma RNN com unidades GRU modificadas, as
+quais são treinadas em \textit{mini-batches}, ou seja, em pequenas bateladas de
+amostras de treinamento. Essa forma de treinamento aproveita a capacidade de
+paralelismo do \textit{hardware} e da própria arquitetura do modelo, tornando a
 convergência do gradiente descendente mais rápida e estável.
 
 Na saída, a rede calcula as pontuações apenas para os itens marcados como
@@ -998,32 +974,32 @@ retorna o ranqueamento, isto é, a classificação ordenada dos itens de acordo 
 a probabilidade de serem selecionados. É utilizado o Ranqueamento Bayesiano
 Personalizado (BPR \cite{rendle2009}, do inglês \textit{Bayesian Personalized
 Ranking}), com modificações visando resolver o problema de desaparecimento do
-gradiente. 
+gradiente, que pode ocorrer em arquiteturas de RNNs.
 
 \subsubsection{NextItNet}
 Modela a probabilidade condicional de uma sequência de itens a partir de uma
-rede neural convolucional, cuja arquitetura é modificada para receber sequências de
-itens \cite{nextitnet}.
+CNN, cuja arquitetura é modificada para receber sequências de itens
+\cite{nextitnet}. Essas probabilidades são obtidas a partir de uma pilha de
+redes convolucionais de uma única dimensão.
 
-Modela a probabilidade condicional das interações a partir de uma pilha de redes
-convolucionais de uma única dimensão.o modelo GRU4Rec, modela-se na
-saída uma única pdf condicional $p(x_i|x_{0:i-1}, \mathbf{\theta})$ alusiva ao
-último item $i$, dado um vetor de interações entrada e os hiperparâmetros. Por
-sua vez, o NextItNet modela uma pdf condicional para cada item da sequência
-$x_{0:i}$. Por exemplo, para uma sequência de $[x_0, x_1, ..., x_i]$ itens, a
-saída prevê os itens $[x_1, x_2, ..., x_i, x_{i+1}]$. Essa abordagem permite
-aplicar técnicas de \textit{data augmentation} \cite{tan2016improved}, que
-consiste em gerar novas amostras de treinamento a partir de amostras existentes.
+A modelagem é distinta do modelo GRU4Rec, no qual modela-se na saída uma única
+pdf condicional $p(x_i|x_{0:i-1}, \mathbf{\theta})$ alusiva ao último item $i$,
+dado um vetor de interações entrada e os hiperparâmetros. Por sua vez, o
+NextItNet modela uma pdf condicional para cada item da sequência $x_{0:i}$. Por
+exemplo, para uma sequência de $[x_0, x_1, ..., x_i]$ itens, a saída prevê os
+itens $[x_1, x_2, ..., x_i, x_{i+1}]$. Essa abordagem permite aplicar técnicas
+de \textit{data augmentation} \cite{tan2016improved}, gerando novas amostras de
+treinamento a partir de amostras existentes.
 
-O modelo utiliza convolução dilatada, que consiste em aumentar o tamanho do
-núcleo, preenchendo com zeros os espaços entre seus valores. Essa técnica
-permite aumentar o campo receptivo da rede para uma mesma quantidade de
+O modelo utiliza convolução dilatada: uma técnica que aumenta o tamanho do
+núcleo ao preenchê-lo com zeros nos espaços entre os valores existentes. Dessa
+forma, o campo receptivo da rede aumenta para uma mesma quantidade de
 parâmetros. No modelo em questão, sessões com uma grande quantidade de
 interações conseguem ser modeladas com menos parâmetros, aumentando a eficiência
 do modelo.
 
 A arquitetura da NextItNet utiliza blocos residuais, proporcionando vantagens em
-comparação com as CNNs tradicionais \cite{he2016deep}. Um aspecto das CNNs
+comparação às CNNs tradicionais \cite{he2016deep}. Um aspecto das CNNs
 tradicionais durante o treinamento é o acúmulo de ruído nos valores produzidos
 pela camada de saída. Isso ocorre devido aos pesos aleatórios na inicialização
 da rede, resultando em uma convergência lenta do gradiente em redes profundas.
@@ -1035,11 +1011,12 @@ necessidade de os blocos aprenderem quais informações da camada de entrada dev
 ser selecionadas ou transmitidas, já que essa informação é passada diretamente
 pela entrada.
 
-Além disso, outra característica importante dos blocos residuais é o gradiente
+Outra característica importante dos blocos residuais é o gradiente
 calculado pela função de custo ser transmitido para cada bloco residual, em vez
 de ser transmitido apenas para a camada de entrada. Esse método acelera a
 convergência do gradiente, proporcionando um treinamento mais eficiente e rápido
 da rede.
+\abbrev{PDF}{função de densidade de probabilidade}
 
 Cada bloco residual é composto em ordem por uma camada de convolução dilatada,
 uma camada de normalização, uma função de ativação ReLU, uma segunda camada de
@@ -1049,21 +1026,6 @@ Outro aspecto importante da arquitetura é evitar que o item a ser previsto tenh
 acesso aos itens seguintes da sequência. Isso é feito a partir de uma máscara
 aplicada na entrada da rede, que realiza operações de translação e deslocamento
 no vetor unidimensional de entrada.
-
-\abbrev{PDF}{função de densidade de probabilidade}
-Finalmente, para alocar as funções de densidade de probabilidade (PDF, do inglês
-\textit{probability density function}) de cada item da sessão, é utilizada uma
-matriz de valores esperados $\mathbf{E}^{p} \in \mathbb{R}^{t \times n}$, sendo
-$t$ a quantidade de itens da base de dados que compõem as \textit{top-N}
-predições, e $n$ a quantidade de itens na sessão. Cada linha $x_i$ ($0 < i \leq
-t$) da matriz após a aplicação da função \textit{softmax} representa uma
-distribuição categórica sobre determinada posição da sessão.
-
-A otimização é feita ao maximizar o logaritmo da probabilidade de $x_i$, o que
-equivale a minimizar a soma das entropias cruzadas para cada item de $x_i$. Por
-não ser prático o cálculo da função \textit{softmax} para todos os itens de
-$x_i$, utiliza-se a função \textit{softmax} amostrada para uma parcela reduzida
-dos itens.
 
 \subsubsection{NARM}
 \abbrev{NARM}{\textit{Neural Attentive Session-based Recommendation Model}}
@@ -1102,9 +1064,7 @@ maiores.
 Em seguida, uma camada é responsável por calcular a
 similaridade entre os parâmetros intermediários e os \textit{embeddings} dos
 itens, cujo resultado é emitido a uma camada de função \textit{softmax}, obtendo
-a probabilidade de cada item ser o próximo da sessão.
-
-O modelo é treinado em \textit{mini-batches}, tal qual o modelo GRU4REC. A
+a probabilidade de cada item ser o próximo da sessão. O modelo é treinado em \textit{mini-batches}, tal qual o modelo GRU4REC. A
 função de custo é a entropia cruzada.
 
 
@@ -1213,7 +1173,7 @@ O modelo é treinado em \textit{mini-batches}. A função de custo utilizada foi
 
 \subsubsection{IIRNN}
 \abbrev{IIRNN}{\textit{Inter-Intra Recurrent Neural Network}}
-  O principal objetivo do modelo IIRNN (Inter-Intra RNN) é aumentar a acurácia
+  O principal objetivo do modelo IIRNN~\cite{skrede2017inter} (Inter-Intra RNN) é aumentar a acurácia
 ao prever os itens iniciais de uma sessão. Em geral, as preferências da sessão
 vigente no início de uma sessão em uma situação de \textit{cold-start} não são
 suficientes para recomendar de forma acurada, seja pela falta de contexto
@@ -1248,7 +1208,7 @@ generalização.
 
 \subsubsection{NCSF}
 \abbrev{NCSF}{\textit{Neural Cross-Session Filtering}}
-Os autores do modelo \textit{Neural Cross-Session Filtering} (NCSF) discorrem
+Os autores do modelo \textit{Neural Cross-Session Filtering} (NCSF)~\cite{hu2018neural} discorrem
 sobre três problemas que afetam o desempenho em sistemas de recomendação
 \textit{session-based}: a falta do contexto da sessão, em que um item adquirido
 recentemente pode significar a falta de desejo nele; a modelagem da ordem dos
@@ -1282,9 +1242,9 @@ Finalmente, a pontuação associada ao item-alvo e sua probabilidade condicional
 dado o vetor de contexto são calculados a partir de uma função softmax.
   
 \subsubsection{NSAR}
-\abbrev{NSAR}{\textit{Neural Session-Aware Recommender}}
-O modelo \textit{Neural Session-Aware Recommender} (NSAR) é uma RNN de camadas GRU,
-com a representação do usuário inserida no modelo, de forma análoga à
+\abbrev{NSAR}{\textit{Neural Session-Aware Recommender}} O modelo \textit{Neural
+Session-Aware Recommender} (NSAR)~\cite{phuong2019neural} é uma RNN de camadas
+GRU, com a representação do usuário inserida no modelo, de forma análoga à
 representação dos itens e sessões. Dessa forma, o \textit{embedding} de usuário
 é combinado ao estado oculto na saída de cada GRU.
 
@@ -1306,7 +1266,7 @@ gerando a probabilidade do item subsequente.
 A arquitetura \textit{Sequential Hierarchical Attention Network} (SHAN) utiliza uma rede
 de atenção hierárquica, capturando preferências de longo prazo a partir de um
 mecanismo de atenção, as quais são combinadas com os interesses de curto
-prazo\cite{shan}.
+prazo~\cite{shan}.
 
 Primeiramente, as sessões anteriores à sessão vigente compõem o conjunto de
 sessões de longo prazo. Uma primeira rede neural atua como mecanismo de atenção
@@ -1333,24 +1293,24 @@ probabilidade a posteriori.
 \subsection{Métodos Baseados em Fatoração}
 
 \subsubsection{FPMC}
-\abbrev{FPMC}{\textit{Factorized Personalized Markov Chains}}
-O modelo \textit{Factorized Personalized Markov Chains} (FPMC) é um modelo \textit{session-aware}
-que utiliza cadeias de Markov para recomendações de cestas de itens. \cite{mkv}
+\abbrev{FPMC}{\textit{Factorized Personalized Markov Chains}} O modelo
+\textit{Factorized Personalized Markov Chains} (FPMC) é um modelo que utiliza
+cadeias de Markov para recomendações de cestas de itens~\cite{mkv}.
 
 Uma cadeia de Markov de ordem $m$ é definida como a probabilidade condicional de
-um evento dados os $m$ eventos anteriores. Visando simplificar o modelo e evitar
-problemas de esparsidade, o modelo FPMC utiliza uma cadeia de Markov de ordem
-$1$, ou seja, a probabilidade condicional de um evento dado o evento anterior.
-Dessa forma, a matriz de transição do espaço de estados é suficiente para
-descrever a cadeia.
+um evento dados os $m$ eventos anteriores. Visando simplificar o modelo, o
+modelo FPMC utiliza uma cadeia de Markov de ordem $1$, ou seja, a probabilidade
+condicional de um evento dado o evento anterior. Dessa forma, a matriz de
+transição do espaço de estados é suficiente para descrever a cadeia.
 
 Uma vez que deseja-se recomendar cestas de itens, as transições entre estados
 consistem em transições de valores binários representando cada item que descreve
 determinada cesta. Para modelar as preferências de um único usuário, basta que a
 matriz de transição tenha dimensões $|I| \times |I|$, onde $|I|$ é a quantidade
 de itens distintos no conjunto de dados. Para modelar as preferências de todos
-os usuários, é necessário compor um tensor de dimensão $|U|
-\times |I| \times |I|$.
+os usuários, é necessário compor um tensor de dimensão $|U| \times |I| \times
+|I|$. Dessa forma, o modelo FPMC original é um modelo \textit{session-aware},
+porém adaptado para recomendação \textit{session-based} no comparativo.
 
 Uma vez que o tensor de transição seria esparso, a convergência de um modelo de
 máxima verossimilhança seria inviável. Dessa forma, o modelo FPMC utiliza a
@@ -1365,16 +1325,15 @@ autores utilizam e adaptam o critério de otimização utilizado no modelo BPR
 \cite{rendle2009}.
 
 \subsubsection{FISM}
-\abbrev{FISM}{\textit{Factorized Item Similarity Models}}
-O modelo \textit{Factorized Item Similarity Models} (FISM) \cite{kabbur2013fism}
-é um modelo que gera recomendações a partir da similaridade entre itens,
-estimados a partir de representações em matrizes de fator latente. O modelo FISM
-não é um modelo \textit{session-based}. Os itens avaliados por um usuário não
-tem distinção de sessão, contexto ou instante de tempo, uma vez que a fatoração
-de matrizes por fatores latentes não modela essas características. Cadeias de
-Markov, por outro lado, são capazes de modelar características temporais em suas
-transições de estado.
-
+\abbrev{FISM}{\textit{Factorized Item Similarity Models}} O modelo
+\textit{Factorized Item Similarity Models} (FISM) \cite{kabbur2013fism} é um
+modelo que gera recomendações a partir da similaridade entre itens, estimados a
+partir de representações em matrizes de fator latente. O modelo FISM original
+não foi proposto como um modelo \textit{session-based}: Os itens avaliados por
+um usuário não tem distinção de sessão, contexto ou instante de tempo, uma vez
+que a fatoração de matrizes por fatores latentes não modela essas
+características. Esse modelo é adaptado para o comparativo
+para atuar como um modelo \textit{session-based}.
 
 O modelo FISM gera as matrizes de vetores e fatores latentes a partir da matriz
 de avaliações. Em vez de estimar uma avaliação particular como o produto entre

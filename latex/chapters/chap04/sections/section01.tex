@@ -121,15 +121,14 @@ individuais de usuários ao criarem sessões.
   notícias. Os valores das tabelas \ref{tab:datasets} e
   \ref{tab:datasets_comparison} foram retirados de \citet{ludewig_2018}.
 
-  Observa-se que a base de dados do Indaband é a menor dentre as bases
-  de dados disponíveis, considerando quantidade de interações, sessões e itens
-  distintos. Isso se deve a dois motivos: primeiramente, a modelagem do problema
-  como recomendação do próximo usuário filtra uma grande quantidade de
-  interações, uma vez que o mesmo usuário grava várias faixas em uma mesma
-  sessão. Em razão disso, a quantidade de itens únicos por sessão é mais enxuta.
-  Além disso, a aplicação é mais recente que as demais, em fase de crescimento e
-  aquisição de usuários.
-
+  Observa-se que a base de dados do Indaband é a menor dentre as bases de dados
+  disponíveis, considerando quantidade de interações, sessões e itens distintos.
+  A quantidade menor de sessões e de valores diários se deve à recência da
+  aplicação. A quantidade menor de itens por sessão se deve à modelagem do
+  problema em que os itens são usuários distintos integrando cada sessão.
+  É possível observar que algumas das bases contém taxas de interações e
+  de itens únicos por sessão semelhantes às bases do Indaband.
+  
   \begin{table}[htbp]
     \centering
     \begin{tabular}{lcccccc}
@@ -191,10 +190,11 @@ individuais de usuários ao criarem sessões.
         Sessões por dia & 85 & 18 \\
         \bottomrule
     \end{tabular}
-    \caption{Análise dos conjuntos de dados do Indaband.}
+    \caption{Análise dos conjuntos de dados do Indaband. Base \textit{windowed} contém a média dos cinco \textit{splits}.}
     \label{tab:datasets_including_inda}
   \end{table}
   
+  \newpage
   \section{Experimentos} 
 
 % \begin{table}[htbp]
@@ -245,7 +245,7 @@ mesma sessão. Dessa forma, a tarefa do modelo é prever qual será o próximo u
 inédito a contribuir na sessão.
 
 
-  \begin{table}[htbp]
+  \begin{table}
     \centering
     \begin{tabular}{|l|l|l|l|l|l|l|}
       \hline
@@ -295,6 +295,8 @@ inédito a contribuir na sessão.
 De forma esperada, o modelo Random maximiza a cobertura, minimizando o índice de
 popularidade. O modelo de popularidade para sessões recentes (RPop) apresenta
 resultados superiores aos demais modelos de popularidade.
+Em seguida, na tabela \ref{tab_baseline}, são apresentados os resultados para os
+modelos de mineração de padrões e vizinhança, fatoração de matrizes e redes neurais.
 
 
 \subsubsection{Modelos por mineração de padrões e vizinhança}
@@ -304,7 +306,7 @@ resultados superiores aos demais modelos de popularidade.
   \abbrev{AR}{Regras de associação}
   \abbrev{SR}{Regras de sequência}
   \centering
-  \begin{tabular}{|l|l|l|l|l|l|l|l|}
+  \begin{tabular}{|l|l|l|l|l|l|l|r|}
     \hline
     Modelo & HR@5 & HR@10 & MRR@5 & MRR@10 & Cov@10 & Pop@10 & $\Delta t_{treino} [s]$ \\
     \hline
@@ -343,8 +345,8 @@ $\text{vsKNN}_{1}$ & 0,365 & 0,527 & 0,136 & 0,158 & 0,312 & 0,222 & 0.1 \\
     \hline
     BPRMF & 0,253 & 0,397 & 0,107 & 0,125 & 0,834 & 0,233 & 918,3 \\
     \hline
-    \hline
     Fossil & 0,243 & 0,399 & 0,100 & 0,121 & \textbf{0,848} & 0,253 & 917,7 \\
+    \hline
     \hline
     $\text{GNN}_1$ & \textbf{0,594} & \textbf{0,666} & \textbf{0,439} & \textbf{0,450} & 0,749 & 0,221 & 483,7 \\
     \hline
@@ -362,7 +364,7 @@ $\text{vsKNN}_{1}$ & 0,365 & 0,527 & 0,136 & 0,158 & 0,312 & 0,222 & 0.1 \\
     \hline
     $\text{NARM}_2$ &  0,273 & 0,377 & 0,165 & 0,179 & 0,699 & \textbf{0,213} & 2598,8 \\
     \hline
-    $\text{GRU4Rec}$ & 0,062 & 0,071 & 0,044 & 0,045 & 0,643 & 0,005 & 542,3 \\
+    $\text{GRU4Rec}$ & 0,262 & 0,371 & 0,144 & 0,145 & 0,643 & 0,205 & 542,3 \\
     \hline
     $\text{CSRM}_1$ & 0.229 & 0.315 & 0.134 & 0.146 & 0.623 & 0.148 &  128,5 \\
     \hline
@@ -387,33 +389,34 @@ $\text{vsKNN}_{1}$ & 0,365 & 0,527 & 0,136 & 0,158 & 0,312 & 0,222 & 0.1 \\
   \label{tab_baseline}  
 \end{table}
 
-Em seguida, é realizada a avaliação para predição do próximo item em modelos de
-mineração de padrões: regras de associação, cadeias de Markov, regras de
+Inclui regras de associação, cadeias de Markov, regras de
 sequência. Também é realizada para métodos de vizinhança: kNN, vskNN, STAN e
 VSTAN. Os modelos SR, skNN e vsKNN são otimizados com seus respectivos
-hiperparâmetros, obtidos a partir de uma otimização do MRR@10, cujas
-métricas constam na tabela \ref{tab_baseline}.
+hiperparâmetros, obtidos a partir de uma otimização do MRR@10.
 
-Os modelos de regras de sequência e baseado em cadeias de Markov apresentam
-resultados superiores, considerando as métricas HR@5, HR@10 e MRR@5 e MRR@10.
-Apesar dos modelos de vizinhança não apresentarem resultados inferiores de HitRate,
-o MRR decai consideravelmente.
+Os modelos de regras de sequência e baseados em cadeias de Markov, inclusive a
+árvore de contexto, apresentam resultados superiores, considerando as métricas
+HR@5, HR@10 e MRR@5 e MRR@10. Apesar dos modelos de vizinhança apresentarem
+bons resultados para o HR, o MRR decai consideravelmente nesses modelos.
+
+Quando comparados aos demais agrupamentos, os modelos por mineração de padrões e
+vizinhança obtiveram bons resultados para HR@5 e HR@10. Entre os modelos de
+vizinhança, o modelo $\text{skNN}_2$ apresentou os melhores resultados, seguido pelo
+modelo $\text{VSTAN}_1$, que é modelo mais complexo dentre os modelos de vizinhança.
 
 \subsubsection{Métodos baseados em fatoração}
-Em seguida, são avaliados os modelos baseados em fatoração: FPMC, FISM, Fossil,
-BPRMF e smf. Os resultados estão apresentados na tabela \ref{tab_baseline}.
-
-Os modelos smf apresentam resultados superiores aos demais modelos, tanto no
-HitRate quanto no MRR. Vale observar que o tempo de treinamento desses modelos é
-muito mais demorado que os de mineração de padrões e vizinhança.
+Avalia-se os modelos FPMC, FISM, Fossil,
+BPRMF e smf. Os modelos smf apresentam resultados bem superiores aos demais, tanto no HitRate
+quanto no MRR. Vale observar que a duração do treinamento de cada um dos modelos
+baseados em fatoração é consideravelmente maior do que os modelos de mineração
+de padrões e vizinhança.
 
 \subsubsection{Modelos baseados em redes neurais}
-Em seguida, são avaliados os modelos baseados em redes neurais: GRU4Rec, NARM,
-NextItNet, STAMP, GNN e Caser. Os resultados constam na tabela \ref{tab_baseline}.
-
-Os modelos GNN e STAMP apresentam resultados superiores aos demais modelos de
-redes neurais. São os modelos com melhor resultado entre todos da abordagem
-\textit{single}.
+Inclui os modelos GRU4Rec, NARM, NextItNet, STAMP, GNN e CSRM. Os modelos GNN e
+STAMP apresentam os melhores resultados globais para as medidas de HR. Os
+modelos STAMP e NextItNet apresentam bons resultados, enquanto que os modelos
+NARM, GRU4Rec e CSRM apresentam resultados inferiores, inclusive quando comparados
+a modelos mais simples, tais como regras de sequência ou baseados em vizinhança.
 
 
 \subsection{Abordagem \textit{windowed}, \textit{session-based}, \textit{next-item}}
@@ -422,7 +425,7 @@ suscetibilidade a efeitos aleatórios e a particularidades dos dados. Uma
 alternativa é a abordagem \textit{windowed}, que minimiza os riscos de os
 resultados serem influenciados por uma única configuração de treino e teste. A
 abordagem \textit{windowed} equivale a uma validação cruzada, com a limitação de
-que os dados são ordenados cronologicamente. \citet{ludewig_2018} divide os
+que os dados são ordenados cronologicamente. \citet{ludewig_2018} dividem os
 dados em cinco janelas de um mês, em que o último dia de cada janela é reservado
 para teste. O resultado final para as métricas é a média aritmética dos
 métricas obtidas em cada janela.
@@ -459,114 +462,126 @@ métricas obtidas em cada janela.
   \label{tab:windowed_data}
 \end{table}
 
-A seguir, são apresentados os resultados obtidos com a abordagem
-\textit{windowed}. Uma janela deslizante é aplicada por todo o período,
+Na abordagem
+\textit{windowed}, uma janela deslizante é aplicada por todo o período,
 separando em cinco pares distintos de treinamento e teste, descritos na tabela
 \ref{tab:windowed_data}. Nota-se o aumento gradual da quantidade de eventos,
-sessões e itens ao longo do tempo.
-
-Os resultados sob abordagem \textit{windowed} são obtidos a partir da média
+sessões e itens ao longo do tempo. Os resultados sob abordagem \textit{windowed} são obtidos a partir da média
 aritmética dos resultados obtidos em cada janela. Os resultados constam na
-tabela \ref{tab:windowed_next_item_all}
+tabela \ref{tab:windowed_next_item_all}.
 
 
 \begin{table}[htbp]
   \centering
-  \begin{tabular}{|l|l|l|l|l|l|l|l|}
+  \centerline{
+  \begin{tabular}{|l|l|l|l|l|l|l|r|}
     \hline
-    Modelo & HR@5 & HR@10 & MRR@5 & MRR@10 & Cov@10 & Pop@10 & $\Delta t_{treino} [s]$ \\
+    Modelo & HR@5 & HR@10 & MRR@5 & MRR@10 & Cov@10 & Pop@10 & $\Delta t[s]$ \\
     \hline
-    RPop & 0,222 & 0,356 & 0,116 & 0,133 & 0,065 & 0,355 & 0,006 \\
+    RPop & \textbf{0,222}\textpm0,061 & \textbf{0,356}\textpm0,079 & \textbf{0,116}\textpm0,045 & \textbf{0,13}3\textpm0,046 & 0,065\textpm0,045 & 0,355\textpm0,073 & 0,006 \\
     \hline
-    Pop & 0,202 & 0,325 & 0,114 & 0,130 & 0,034 & 0,493 & 0,001 \\
+    Pop & 0,202\textpm0,056 & 0,325\textpm0,063 & 0,114\textpm0,047 & 0,130\textpm0,045 & 0,034\textpm0,023 & 0,493\textpm0,099 & 0,001 \\
     \hline
-    SPop & 0,168 & 0,298 & 0,072 & 0,089 & 0,235 & 0,456 & 0,004 \\
+      SPop & 0,168\textpm0,073 & 0,298\textpm0,072 & 0,072\textpm0,030 & 0,089\textpm0,029 & 0,235\textpm0,036 & 0,456\textpm0,094 & 0,002 \\
     \hline
-    Random & 0,012 & 0,032 & 0,007 & 0,009 & 1,000 & 0,045 & 0,001 \\
-    \hline
-    \hline
-    $\text{smf}_{1}$ & 0,401 & 0,532 & 0,247 & 0,264 & 0,492 & 0,281 & 193 \\
-    \hline
-    $\text{smf}_{2}$ & 0,364 & 0,495 & 0,224 & 0,240 & 0,271 & 0,328 & 162 \\
-    \hline
-    FISM & 0,291 & 0,443 & 0,144 & 0,164 & 0,625 & 0,346 & 892 \\
-    \hline
-    FPMC & 0,291 & 0,438 & 0,140 & 0,159 & 0,613 & 0,350 & 897 \\
-    \hline
-    BPRMF & 0,290 & 0,421 & 0,149 & 0,166 & 0,624 & 0,343 & 893 \\
-    \hline
-    Fossil & 0,288 & 0,417 & 0,147 & 0,164 & 0,605 & 0,343 & 900 \\
+    Random & 0,012\textpm0,006 & 0,032\textpm0,019 & 0,007\textpm0,004 & 0,009\textpm0,005 & \textbf{1,000}\textpm0,000 & \textbf{0,045}\textpm0,024 & 0,001 \\
     \hline
     \hline
-    ct & 0,413 & 0,525 & \textbf{0{,}274} & \textbf{0{,}289} & 0,375 & 0,396 & 1,198 \\
+    $\text{smf}_{1}$ & \textbf{0,401}\textpm0,040 & \textbf{0,532}\textpm0,045 & \textbf{0,247}\textpm0,032 & \textbf{0,264}\textpm0,030 & 0,492\textpm0,020 & \textbf{0,281}\textpm0,082 & 193 \\
     \hline
-    $\text{SR}_{1}$ & 0,378 & 0,506 & 0,225 & 0,242 & 0,443 & 0,281 & 0,097 \\
+    $\text{smf}_{2}$ & 0,364\textpm0,030 & 0,495\textpm0,039 & 0,224\textpm0,024 & 0,240\textpm0,024 & 0,271\textpm0,044 & 0,328\textpm0,101 & 162 \\
     \hline
-    $\text{SR}_{2}$ & 0,375 & 0,508 & 0,224 & 0,241 & 0,453 & 0,273 & 0,106 \\
+    FISM & 0,291\textpm0,051 & 0,443\textpm0,081 & 0,144\textpm0,038 & 0,164\textpm0,041 & \textbf{0,625}\textpm0,041 & 0,346\textpm0,099 & 892 \\
     \hline
-    AR & 0,363 & 0,476 & 0,207 & 0,222 & 0,455 & 0,300 & 0,117 \\
+    FPMC & 0,291\textpm0,063 & 0,438\textpm0,088 & 0,140\textpm0,040 & 0,159\textpm0,042 & 0,613\textpm0,041 & 0,350\textpm0,098 & 897 \\
     \hline
-    Markov & 0,360 & 0,477 & 0,218 & 0,233 & 0,438 & 0,257 & 0,047 \\
+    BPRMF & 0,290\textpm0,049 & 0,421\textpm0,054 & 0,149\textpm0,036 & 0,166\textpm0,036 & 0,624\textpm0,044 & 0,343\textpm0,095 & 893 \\
     \hline
-    $\text{skNN}_{1}$ & 0,351 & 0,526 & 0,140 & 0,164 & 0,534 & 0,258 & 0,079 \\
-    \hline
-    $stan_{2}$ & 0,346 & 0,493 & 0,129 & 0,149 & 0,506 & 0,262 & 0,092 \\
-    \hline
-    $stan_{1}$ & 0,340 & 0,477 & 0,132 & 0,150 & 0,534 & 0,233 & 0,077 \\
-    \hline
-    $\text{skNN}_{2}$ & 0,334 & 0,507 & 0,132 & 0,156 & 0,491 & 0,282 & 0,059 \\
-    \hline
-    $\text{vsKNN}_{1}$ & 0,299 & 0,458 & 0,119 & 0,140 & 0,511 & 0,267 & 0,080 \\
+    Fossil & 0,288\textpm0,033 & 0,417\textpm0,041 & 0,147\textpm0,028 & 0,164\textpm0,027 & 0,605\textpm0,058 & 0,343\textpm0,091 & 900 \\
     \hline
     \hline
-    $\text{GNN}_2$ & \textbf{0{,}421} & \textbf{0{,}551} & 0,264 & 0,280 & 0,517 & 0,296 & 122 \\
+    ct & \textbf{0,413}\textpm0,058 & 0,525\textpm0,053 & \textbf{0{,}274}\textpm0,041 & \textbf{0{,}289}\textpm0,041 & 0,375\textpm0,009 & 0,396\textpm0,098 & 1,198 \\
     \hline
-    $\text{GNN}_1$ & 0,393 & 0,496 & 0,254 & 0,268 & 0,544 & 0,291 & 120 \\
+    $\text{SR}_{1}$ & 0,378\textpm0,053 & 0,506\textpm0,054 & 0,225\textpm0,021 & 0,242\textpm0,022 & 0,443\textpm0,055 & 0,281\textpm0,061 & 0,056 \\
     \hline
-    $\text{STAMP}_2$ & 0,395 & 0,515 & 0,249 & 0,266 & 0,592 & 0,268 & 31,1 \\
+    $\text{SR}_{2}$ & 0,375\textpm0,058 & 0,508\textpm0,042 & 0,224\textpm0,023 & 0,241\textpm0,023 & 0,453\textpm0,053 & 0,273\textpm0,062 & 0,065 \\
     \hline
-    $\text{STAMP}_1$ & 0,382 & 0,501 & 0,253 & 0,269 & 0,599 & 0,269 & 32,0 \\
+    AR & 0,363\textpm0,055 & 0,476\textpm0,041 & 0,207\textpm0,041 & 0,222\textpm0,039 & 0,455\textpm0,067 & 0,300\textpm0,073 & 0,117 \\
     \hline
-    $\text{NextItNet}_2$ & 0,352 & 0,461 & 0,235 & 0,250 & 0,381 & 0,316 & 83,8 \\  
+    $\text{VSTAN}_{1}$ & 0,363\textpm0,048 & 0,505\textpm0,061 & 0,145\textpm0,021 & 0,164\textpm0,022 & 0,487\textpm0,067 & 0,291\textpm0,062 & 0,291 \\
     \hline
-    $\text{NextItNet}_1$ & 0,336 & 0,451 & 0,221 & 0,236 & 0,326 & 0,327 & 107,3 \\
+      Markov & 0,360\textpm0,054 & 0,477\textpm0,040 & 0,218\textpm0,020 & 0,233\textpm0,020 & 0,438\textpm0,047 & 0,257\textpm0,056 & 0,047 \\
     \hline
-    $\text{NARM}_2$ & 0,295 & 0,426 & 0,173 & 0,190 & 0,586 & 0,264 & 193,9 \\
+      $\text{VSTAN}_{2}$ & 0,358\textpm0,061 & 0,493\textpm0,058 & 0,137\textpm0,024 & 0,155\textpm0,023 & 0,500\textpm0,071 & 0,293\textpm0,063 & 0,293 \\
     \hline
-    $\text{NARM}_1$ & 0,274 & 0,418 & 0,167 & 0,187 & 0,576 & 0,267 & 372,2 \\
+    $\text{skNN}_{1}$ & 0,351\textpm0,075 & \textbf{0,526}\textpm0,061 & 0,140\textpm0,029 & 0,164\textpm0,026 & \textbf{0,534}\textpm0,058 & 0,258\textpm0,062 & 0,079 \\
     \hline
-    $\text{CSRM}_1$ & 0,201 & 0,300 & 0,117 & 0,130 & 0,492 & 0,267 & 19,8 \\
+    $STAN_{2}$ & 0,346\textpm0,065 & 0,493\textpm0,057 & 0,129\textpm0,021 & 0,149\textpm0,020 & 0,506\textpm0,071 & 0,262\textpm0,059 & 0,037 \\
     \hline
-    $\text{CSRM}_2$ & 0,191 & 0,306 & 0,104 & 0,119 & 0,439 & 0,278 & 19,9 \\
+    $\text{vsKNN}_{2}$ & 0,340\textpm0,051 & 0,477\textpm0,060 & 0,132\textpm0,021 & 0,150\textpm0,018 & \textbf{0,534}\textpm0,056 & \textbf{0,233}\textpm0,052 & 0,077 \\
     \hline
-    GRU4Rec & 0,176 & 0,235 & 0,099 & 0,107 & \textbf{0{,}731} & \textbf{0,079} & 63,3 \\
+    $STAN_{1}$ & 0,339\textpm0,067 & 0,494\textpm0,072 & 0,132\textpm0,025 & 0,153\textpm0,025 & 0,463\textpm0,071 & 0,324\textpm0,068 & 0,324 \\
+    \hline
+    $\text{skNN}_{2}$ & 0,334\textpm0,070 & 0,507\textpm0,068 & 0,132\textpm0,024 & 0,156\textpm0,024 & 0,491\textpm0,060 & 0,282\textpm0,065 & 0,021 \\
+    \hline
+    $\text{vsKNN}_{1}$ & 0,299\textpm0,051 & 0,458\textpm0,040 & 0,119\textpm0,020 & 0,140\textpm0,019 & 0,511\textpm0,075 & 0,267\textpm0,060 & 0,029 \\
+    \hline
+    \hline
+    $\text{GNN}_2$ & \textbf{0{,}421}\textpm0,049 & \textbf{0{,}551}\textpm0,056 & \textbf{0,264}\textpm0,062 & \textbf{0,280}\textpm0,061 & 0,517\textpm0,055 & 0,296\textpm0,089 & 122 \\
+    \hline
+    $\text{GNN}_1$ & 0,393\textpm0,062 & 0,496\textpm0,068 & 0,254\textpm0,056 & 0,268\textpm0,056 & 0,544\textpm0,060 & 0,291\textpm0,079 & 120 \\
+    \hline
+    $\text{STAMP}_2$ & 0,395\textpm0,039 & 0,515\textpm0,035 & 0,249\textpm0,037 & 0,266\textpm0,035 & 0,592\textpm0,041 & 0,268\textpm0,071 & 31,1 \\
+    \hline
+    $\text{STAMP}_1$ & 0,382\textpm0,047 & 0,501\textpm0,042 & 0,253\textpm0,047 & 0,269\textpm0,046 & 0,599\textpm0,059 & 0,269\textpm0,059 & 32,0 \\
+    \hline
+    $\text{NextItNet}_2$ & 0,352\textpm0,045 & 0,461\textpm0,039 & 0,235\textpm0,042 & 0,250\textpm0,041 & 0,381\textpm0,088 & 0,316\textpm0,097 & 83,8 \\  
+    \hline
+    $\text{NextItNet}_1$ & 0,336\textpm0,076 & 0,451\textpm0,059 & 0,221\textpm0,059 & 0,236\textpm0,056 & 0,326\textpm0,107 & 0,327\textpm0,109 & 107,3 \\
+    \hline
+    $\text{NARM}_2$ & 0,295\textpm0,048 & 0,426\textpm0,067 & 0,173\textpm0,034 & 0,190\textpm0,037 & 0,586\textpm0,049 & 0,264\textpm0,076 & 193,9 \\
+    \hline
+    $\text{NARM}_1$ & 0,274\textpm0,037 & 0,418\textpm0,059 & 0,167\textpm0,024 & 0,187\textpm0,026 & 0,576\textpm0,029 & 0,267\textpm0,085 & 372,2 \\
+    \hline
+    $\text{CSRM}_1$ & 0,201\textpm0,034 & 0,300\textpm0,030 & 0,117\textpm0,017 & 0,130\textpm0,016 & 0,492\textpm0,063 & 0,267\textpm0,085 & 19,8 \\
+    \hline
+    $\text{CSRM}_2$ & 0,191\textpm0,029 & 0,306\textpm0,050 & 0,104\textpm0,027 & 0,119\textpm0,028 & 0,439\textpm0,046 & 0,278\textpm0,085 & 19,9 \\
+    \hline
+    GRU4Rec & 0,176\textpm0,055 & 0,235\textpm0,073 & 0,099\textpm0,016 & 0,107\textpm0,018 & \textbf{0,731}\textpm0,088 & \textbf{0,079}\textpm0,051 & 63,3 \\
     \hline
     \end{tabular}
-  \caption{Resultado dos modelos \textit{session-based} na abordagem
+  } \caption{Resultado dos modelos \textit{session-based} na abordagem
   \textit{windowed}, avaliando o próximo item da sessão. Valores exibidos são a
-  média dos cinco \textit{splits}. Valores agrupados por abordagem e ordenados internamente por HR@5.}
+  média dos cinco \textit{splits} acompanhada da variância. Valores agrupados por abordagem e ordenados
+  internamente por HR@5. Maiores valores para cada medida de desempenho
+  estão em negrito nos agrupamentos.}
 \label{tab:windowed_next_item_all}
 \end{table}
 
 
-O modelo GNN novamente apresenta resultados superiores aos demais modelos. No
-entanto, o modelo smf superou o modelo STAMP na média dos cinco \textit{splits}.
-Na figura \ref{fig:next-item-single}, é possível observar que os modelos de
-redes neurais começam com resultados inferiores aos demais modelos, mas passam a
-superar os demais conforme a quantidade de eventos por \textit{split} aumenta.
+Para cada agrupamento de modelos, os modelos smf, ct, SR, GNN e STAMP novamente
+apresentam os melhores resultados, tal que a GNN novamente apresenta o melhor
+resultado global para as métricas HR@5, HR@10. Novamente,
+ os modelos CSRM e GRU4Rec apresentam os piores resultados globais para o
+HR@5 e HR@10.
+
+Na figura
+\ref{fig:next-item-single-123}, é possível observar que os modelos de redes neurais
+começam com resultados inferiores aos demais modelos, mas passam a superar os
+demais conforme a quantidade de eventos por \textit{split} aumenta. Essa
+observação condiz com a característica de modelos de aprendizado profundo, em
+geral, dependerem de uma grande quantidade de dados para apresentarem resultados
+superiores. A figura \ref{fig:progressao} apresenta a progressão do HR e MRR conforme a
+quantidade de valores preditos para cada métrica.
+
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=1\textwidth]{chapters/chap04/images/hr10_splits.png}
   \caption{HR@10 em cada janela para alguns modelos da tabela
   \ref{tab:windowed_next_item_all}.}
-  \label{fig:next-item-single}
+  \label{fig:next-item-single-123}
 \end{figure}
-
-
-A figura \ref{fig:progressao} apresenta a progressão do HR e MRR conforme a
-quantidade de valores preditos. É possível observar que as pontuações tendem
-a convergir.
 
 
 \begin{figure}[htbp]
@@ -582,92 +597,98 @@ a convergir.
 \subsection{Abordagem \textit{windowed}, \textit{session-based}, \textit{remaining-items}}
 Para a abordagem \textit{remaining-items}, foi realizada uma nova otimização
 considerando a métrica MAP@10, uma vez que essa métrica substitui o HR@10 para
-avaliações de listas ou de conjuntos de itens.
-
-Dessa forma, os modelos com nome subscrito aqui presentes possuem hiperparâmetros
+avaliações de listas ou de conjuntos de itens. Dessa forma, os modelos com nome subscrito aqui presentes possuem hiperparâmetros
 distintos da abordagem anterior, constando no apêndice.
 
-\begin{table}[htbp]
+Os modelos que apresentaram melhores resultados para precisão, \textit{recall},
+NDCG e MAP foram os mesmos dos experimentos anteriores: smf, ct, SR, GNN e
+STAMP. Uma diferença observada foi o pior inferior do modelo baseado em cadeia
+de Markov de primeira ordem dentro de seu agrupamento, apesar do modelo de árvore de contexto permenecer
+com bons resultados. Também é possível observar que os modelos do agrupamento
+de regras de sequência e baseados em vizinhança obtiveram bons resultados, quando
+comparados aos demais agrupamentos.
+
+
+\begin{table}
   \centering
+  \centerline{
   \begin{tabular}{|l|l|l|l|l|l|l|}
     \hline
     Modelos & P@10 & R@10 & NDCG@10 & MAP@10 & Cov@10 & Pop@10 \\
     \hline
-    rpop & $\mathbf{0{,}086}$ & $\mathbf{0{,}361}$ & \textbf{0{,}240} & $\mathbf{0{,}042}$ & 0,065 & 0,355 \\
+    rpop & $\mathbf{0{,}086}$\textpm0{,}011 & $\mathbf{0{,}361}$\textpm0{,}092 & \textbf{0{,}240}\textpm0{,}060 & $\mathbf{0{,}042}$\textpm0{,}011 & 0{,}065\textpm0{,}045 & 0{,}355\textpm0{,}073 \\
     \hline
-    pop & 0,075 & 0,326 & 0,220 & 0,038 & 0,034 & 0,493 \\
+    pop & 0,075\textpm0,025 & 0,326\textpm0,063 & 0,220\textpm0,047 & 0,038\textpm0,010 & 0,034\textpm0,023 & 0,493\textpm0,099 \\
     \hline
-    spop & 0,065 & 0,298 & 0,179 & 0,032 & 0,235 & 0,456 \\
+    spop & 0,065\textpm0,017 & 0,298\textpm0,053 & 0,179\textpm0,036 & 0,032\textpm0,009 & 0,235\textpm0,036 & 0,456\textpm0,094 \\
     \hline
-    random & 0,007 & 0,033 & 0,018 & 0,003 & $\mathbf{1{,}000}$ & $\mathbf{0{,}046}$ \\
-    \hline
-    \hline
-    ct & \textbf{0{,}103} & \textbf{0{,}479} & \textbf{0{,}367} & \textbf{0{,}056} & 0,375 & 0,396 \\
-    \hline
-    $\text{smf}_1$ & 0,100 & 0,450 & 0,333 & 0,055 & 0,242 & 0,347 \\
-    \hline
-    $\text{smf}_2$ & 0,100 & 0,459 & 0,338 & 0,055 & 0,343 &\textbf{ 0{,}321} \\
-    \hline
-    fpmc & 0,086 & 0,403 & 0,267 & 0,044 & 0,607 & 0,345 \\
-    \hline
-    bprmf & 0,084 & 0,389 & 0,260 & 0,044 & 0,612 & 0,347 \\
-    \hline
-    fism & 0,083 & 0,396 & 0,264 & 0,045 & \textbf{0{,}616} & 0,346 \\
-    \hline
-    fossil & 0,081 & 0,373 & 0,252 & 0,042 & 0,606 & 0,346 \\
+    random & 0,007\textpm0,004 & 0,033\textpm0,023 & 0,018\textpm0,011 & 0,003\textpm0,002 & \textbf{1,000}\textpm0,000 & \textbf{0,046}\textpm0,024 \\
     \hline
     \hline
-    $\text{vsknn}_1$ & $\mathbf{0{,}101}$ & 0,471 & 0,301 & 0,057 & 0,477 & 0,295 \\
+    $\text{smf}_2$ & \textbf{0,100}\textpm0,017 & \textbf{0,459}\textpm0,035 & \textbf{0,338}\textpm0,027 & \textbf{0,055}\textpm0,006 & 0,343\textpm0,044 & \textbf{0,321}\textpm0,103 \\
     \hline
-    $\text{stan}_1$ & 0,100 & $\mathbf{0{,}482}$ & $\mathbf{0{,}303}$ & $\mathbf{0{,}059}$ & 0,464 & 0,304 \\
+    $\text{smf}_1$ & \textbf{0,100}\textpm0,017 & 0,450\textpm0,035 & 0,333\textpm0,023 & \textbf{0,055}\textpm0,005 & 0,242\textpm0,043 & 0,347\textpm0,109 \\
     \hline
-    $\text{stan}_2$ & 0,099 & 0,469 & 0,296 & 0,057 & 0,467 & 0,316 \\
+    fpmc & 0,086\textpm0,014 & 0,403\textpm0,079 & 0,267\textpm0,049 & 0,044\textpm0,007 & 0,607\textpm0,069 & 0,345\textpm0,094 \\
     \hline
-    $\text{vstan}_1$ & 0,098 & 0,463 & 0,296 & 0,057 & 0,468 & 0,319 \\
+    bprmf & 0,084\textpm0,013 & 0,389\textpm0,066 & 0,260\textpm0,049 & 0,044\textpm0,007 & 0,612\textpm0,051 & 0,347\textpm0,093 \\
     \hline
-    $\text{sknn}_1$ & 0,097 & 0,471 & 0,294 & 0,056 & 0,468 & 0,318 \\
+    fism & 0,083\textpm0,011 & 0,396\textpm0,084 & 0,264\textpm0,055 & 0,045\textpm0,009 & \textbf{0{,}616}\textpm0,047 & 0,346\textpm0,101 \\
     \hline
-    $\text{sknn}_2$ & 0,095 & 0,487 & 0,300 & 0,057 & 0,540 & 0,260 \\
+    fossil & 0,081\textpm0,014 & 0,373\textpm0,048 & 0,252\textpm0,042 & 0,042\textpm0,005 & 0,606\textpm0,042 & 0,346\textpm0,093 \\
     \hline
-    $\text{vsknn}_2$ & 0,091 & 0,426 & 0,268 & 0,051 & 0,542 & 0,216 \\
     \hline
-    $\text{vstan}_2$ & 0,088 & 0,441 & 0,266 & 0,052 & \textbf{0,571} & \textbf{0,212} \\
+    $\text{SR}_1$ & \textbf{0,104}\textpm0,018 & 0,457\textpm0,055 & 0,337\textpm0,030 & 0,057\textpm0,007 & 0,434\textpm0,061 & 0,286\textpm0,066 \\
     \hline
+    ct & 0,103\textpm0,015 & 0,479\textpm0,047 & \textbf{0,367}\textpm0,039 & 0,056\textpm0,006 & 0,375\textpm0,009 & 0,396\textpm0,098 \\
+    \hline
+     $\text{vsknn}_1$ & $0{,}101$\textpm0,015 & 0,471\textpm0,054 & 0,301\textpm0,036 & 0,057\textpm0,008 & 0,477\textpm0,063 & 0,295\textpm0,067 \\
+    \hline
+   $\text{SR}_2$ & 0,101\textpm0,014 & 0,455\textpm0,051 & 0,332\textpm0,035 & 0,056\textpm0,006 & 0,453\textpm0,053 & 0,273\textpm0,062 \\
+    \hline
+     $\text{STAN}_1$ & 0,100\textpm0,011 & $\mathbf{0{,}482}$\textpm0,068 & $0{,}303$\textpm0,042 & $\mathbf{0{,}059}$\textpm0,008 & 0,464\textpm0,067 & 0,304\textpm0,064 \\
+    \hline
+    $\text{STAN}_2$ & 0,099\textpm0,012 & 0,469\textpm0,072 & 0,296\textpm0,043 & 0,057\textpm0,008 & 0,467\textpm0,071 & 0,316\textpm0,065 \\
+    \hline
+    ar & 0,098\textpm0,014 & 0,442\textpm0,047 & 0,331\textpm0,040 & 0,054\textpm0,006 & 0,455\textpm0,067 & 0,300\textpm0,073 \\
    \hline
-   $\text{sr}_1$ & \textbf{0,104} & 0,457 & 0,337 & \textbf{0,057} & 0,434 & 0,286 \\
-   \hline
-   ct & 0,103 & \textbf{0,479} & \textbf{0,367} & 0,056 & 0,375 & 0,396 \\
-   \hline
-   $\text{sr}_2$ & 0,101 & 0,455 & 0,332 & 0,056 & 0,453 & 0,273 \\
-   \hline
-    ar & 0,098 & 0,442 & 0,331 & 0,054 & \textbf{0,455} & 0,300 \\
-   \hline
-    Markov & 0,091 & 0,420 & 0,310 & 0,050 & 0,438 & \textbf{0,257} \\
+    $\text{VSTAN}_1$ & 0,098\textpm0,013 & 0,463\textpm0,070 & 0,296\textpm0,047 & 0,057\textpm0,008 & 0,468\textpm0,072 & 0,319\textpm0,068 \\
+    \hline
+    $\text{skNN}_1$ & 0,097\textpm0,012 & 0,471\textpm0,072 & 0,294\textpm0,042 & 0,056\textpm0,009 & 0,468\textpm0,068 & 0,318\textpm0,075 \\
+    \hline
+    $\text{skNN}_2$ & 0,095\textpm0.014 & 0,487\textpm0,065 & 0,300\textpm0,045 & 0,057\textpm0,009 & 0,540\textpm0,055 & 0,260\textpm0,059 \\
+    \hline
+    $\text{vsKNN}_2$ & 0,091\textpm0,019 & 0,426\textpm0,051 & 0,268\textpm0,033 & 0,051\textpm0,010 & 0,542\textpm0,063 & 0,216\textpm0,047 \\
+    \hline
+    Markov & 0,091\textpm0,013 & 0,420\textpm0,041 & 0,310\textpm0,031 & 0,050\textpm0,004 & 0,438\textpm0,047 & 0,257\textpm0,056 \\
+    \hline
+    $\text{vstan}_2$ & 0,088\textpm0,012 & 0,441\textpm0,052 & 0,266\textpm0,033 & 0,052\textpm0,007 & \textbf{0,571}\textpm0,056 & \textbf{0,212}\textpm0,050 \\
    \hline
    \hline
-   GNN & \textbf{0,097} & \textbf{0,455} & \textbf{0,359} & \textbf{0,056} & 0,603 & 0,272 \\
+   GNN & \textbf{0,097}\textpm0,020 & \textbf{0,455}\textpm0,056 & \textbf{0,359}\textpm0,044 & \textbf{0,056}\textpm0,009 & 0,603\textpm0,060 & 0,272\textpm0,075 \\
    \hline
-   $\text{STAMP}_2$ & \textbf{0,097} & 0,453 & 0,341 & 0,052 & 0,608 & 0,285 \\
+   $\text{STAMP}_2$ & \textbf{0,097}\textpm0,018 & 0,453\textpm0,033 & 0,341\textpm0,041 & 0,052\textpm0,006 & 0,608\textpm0,038 & 0,285\textpm0,072 \\
    \hline
-   $\text{STAMP}_1$ & 0,096 & 0,445 & 0,331 & 0,052 & 0,560 & 0,286 \\
+   $\text{STAMP}_1$ & 0,096\textpm0,017 & 0,445\textpm0,042 & 0,331\textpm0,043 & 0,052\textpm0,006 & 0,560\textpm0,056 & 0,286\textpm0,080 \\
    \hline
-   $\text{NextItNet}_2$ & 0,095 & 0,435 & 0,310 & 0,051 & 0,531 & 0,293 \\
+   $\text{NextItNet}_2$ & 0,095\textpm0,014 & 0,435\textpm0,032 & 0,310\textpm0,011 & 0,051\textpm0,003 & 0,531\textpm0,034 & 0,293\textpm0,078 \\
    \hline
-   $\text{NextItNet}_1$ & 0,090 & 0,427 & 0,314 & 0,048 & 0,321 & 0,340 \\
+   $\text{NextItNet}_1$ & 0,090\textpm0,019 & 0,427\textpm0,036 & 0,314\textpm0,049 & 0,048\textpm0,007 & 0,321\textpm0,115 & 0,340\textpm0,112\\
    \hline
-   $\text{NARM}_2$ & 0,079 & 0,392 & 0,286 & 0,043 & 0,641 & 0,256 \\
+   $\text{NARM}_2$ & 0,079\textpm0,008 & 0,392\textpm0,045& 0,286\textpm0,035 & 0,043\textpm0,004 & 0,641\textpm0,037 & 0,256\textpm0,071 \\
    \hline
-   $\text{NARM}_1$ & 0,079 & 0,381 & 0,266 & 0,042 & 0,610 & 0,256 \\
+   $\text{NARM}_1$ & 0,079\textpm0,010 & 0,381\textpm0,045 & 0,266\textpm0,017 & 0,042\textpm0,004 & 0,610\textpm0,036 & 0,256\textpm0,068 \\
    \hline
-   $\text{CSRM}_2$ & 0,067 & 0,310 & 0,209 & 0,034 & 0,459 & 0,278 \\
+  $\text{CSRM}_2$ & 0,067\textpm0,013 & 0,310\textpm0,061 & 0,209\textpm0,043 & 0,034\textpm0,007 & 0,459\textpm0,070 & 0,278\textpm0,099 \\
    \hline
-   $\text{CSRM}_1$ & 0,064 & 0,314 & 0,210 & 0,033 & 0,473 & 0,279 \\
+  $\text{CSRM}_1$ & 0,064\textpm0,011 & 0,314\textpm0,054 & 0,210\textpm0,030 & 0,033\textpm0,004 & 0,473\textpm0,052 & 0,279\textpm0,089 \\
    \hline
-   $\text{GRU4Rec}_2$ & 0,017 & 0,081 & 0,053 & 0,008 & 0,416 & 0,026 \\
+   $\text{GRU4Rec}_2$ & 0,017\textpm0,015 & 0,081\textpm0,060 & 0,053\textpm0,048 & 0,008\textpm0,007 & 0,416\textpm0,234 & 0,026\textpm0,021 \\
    \hline
-   $\text{GRU4Rec}_1$ & 0,008 & 0,035 & 0,022 & 0,003 & \textbf{0,707} & \textbf{0,022} \\
+   $\text{GRU4Rec}_1$ & 0,008\textpm0,004 & 0,035 \textpm0,015  & 0,022\textpm0,012 & 0,003\textpm0,002 & \textbf{0,707}\textpm0,092 & \textbf{0,022}\textpm0,006 \\
    \hline
   \end{tabular}
+  }
   \caption{Resultados para abordagem \textit{remaining-items}. Em ordem, modelos
   de popularidade, fatoração de matrizes, modelos baseados em vizinhança, regras
   de associação e redes neurais.}
@@ -687,14 +708,17 @@ e teste separados em cinco janelas. Novamente, é possível observar o aumento
 gradual da quantidade de eventos, sessões e itens ao longo dos \textit{splits}.
 
 Metade dos modelos \textit{session-aware} apresentam resultados que superam
-todos os modelos da abordagem \textit{session-based}. O modelo de regras de
-sequência \textit{session-aware} é o único modelo com MRR@5 acima de 0,3. Os
-modelos NARM e iiRNN também obtiveram MRR@10 superior a 0,3. O modelo vsKNN
-\textit{session-aware} obteve um incremento considerável no HR@10 quando
-comparado ao seu equivalente \textit{session-based}.
+todos os modelos da abordagem \textit{session-based}. Os maiores valores para as
+medidas de avaliação entre todos os experimentos foram obtidos na presente
+abordagem. O modelo de regras de sequência \textit{session-aware} é o único
+modelo com MRR@5 acima de 0,3. Os modelos NARM e iiRNN também obtiveram MRR@10
+superior a 0,3. O modelo vsKNN \textit{session-aware} obteve um incremento
+considerável no HR@10 quando comparado ao seu equivalente
+\textit{session-based}. Os modelos \textit{session-aware} baseados no GRU4REC
+obtiveram resultados inferiores, o que também foi observado na abordagem
+\textit{session-based}.
 
-
-\begin{table}[htbp]
+\begin{table}
   \centering
   \begin{tabular}{|c|c|c|c|c|c|c|}
     \hline
@@ -745,35 +769,73 @@ comparado ao seu equivalente \textit{session-based}.
   \label{tab:windowed_data_session_aware}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}
+  \centerline{
   \begin{tabular}{|l|l|l|l|l|l|l|l|}
     \hline
-    Modelo & HR@5 & HR@10 & MRR@5 & MRR@10 & Cov@10 & Pop@10 & $\Delta t_{treino} [s]$ \\
+    Modelo & HR@5 & HR@10 & MRR@5 & MRR@10 & Cov@10 & Pop@10 \\
     \hline
-    USR & $\mathbf{0{,}487}$ & 0,627 & $\mathbf{0{,}325}$ & $\mathbf{0{,}344}$ & 0,812 & 0,242 & 0,112 \\
+    USR & $\mathbf{0{,}487}$\textpm0,046 & 0,627\textpm0,026 & $\mathbf{0{,}325}$\textpm0,031 & $\mathbf{0{,}344}$\textpm0,028 & 0,812\textpm0,062 & 0,242\textpm0,050 \\
     \hline
-    USTAN & 0,484 & 0,626 & 0,256 & 0,275 & 0,724 & 0,298 & 108,7 \\
+    USTAN & 0,484\textpm0,047 & 0,626\textpm0,059 & 0,256\textpm0,032 & 0,275\textpm0,031 & 0,724\textpm0,050 & 0,298\textpm0,060 \\
     \hline
-    UVSKNN & 0,474 & $\mathbf{0{,}648}$ & 0,243 & 0,267 & 0,697 & 0,300 & 0,079 \\
+    UVSKNN & 0,474\textpm0,068 & $\mathbf{0{,}648}$\textpm0,057 & 0,243\textpm0,035 & 0,267\textpm0,033 & 0,697\textpm0,080 & 0,300\textpm0,059 \\
     \hline
-    UNARM & 0,465 & 0,610 & 0,296 & 0,315 & 0,832 & 0,236 & 244,6 \\
+    UNARM & 0,465\textpm0,037 & 0,610\textpm0,049 & 0,296\textpm0,018 & 0,315\textpm0,017 & 0,832\textpm0,072 & 0,236\textpm0,051 \\
     \hline
-    iiRNN & 0,442 & 0,554 & 0,293 & 0,308 & 0,721 & 0,230 & 145,7 \\
+    iiRNN & 0,442\textpm0,058 & 0,554\textpm0,047 & 0,293\textpm0,054 & 0,308\textpm0,052 & 0,721\textpm0,073 & 0,230\textpm0,030 \\
     \hline
-    NSAR & 0,393 & 0,522 & 0,253 & 0,271 & 0,586 & 0,279 & 77,2 \\
+    NSAR & 0,393\textpm0,056 & 0,522\textpm0,067 & 0,253\textpm0,045 & 0,271\textpm0,047 & 0,586\textpm0,102 & 0,279\textpm0,069 \\
     \hline
-    NCFS & 0,368 & 0,493 & 0,225 & 0,241 & 0,452 & 0,370 & 21,6 \\
+    NCFS & 0,368\textpm0,077 & 0,493\textpm0,060 & 0,225\textpm0,064 & 0,241\textpm0,061 & 0,452\textpm0,0238 & 0,370\textpm0,139 \\
     \hline
-    UGRU4Rec & 0,358 & 0,471 & 0,238 & 0,253 & $\mathbf{0,910}$ & 0,116 & 44,4 \\
+    % 0.358,0.045,0.471,0.051,0.238,0.031,0.253,0.03,0.91,0.035,0.116,0.037
+    UGRU4Rec & 0,358\textpm0,045 & 0,471\textpm0,051 & 0,238\textpm0,031 & 0,253\textpm0,030 & $\mathbf{0,910}$\textpm0,035 & 0,116\textpm0,037 \\
     \hline
-    SHAN & 0,343 & 0,471 & 0,202 & 0,219 & 0,470 & 0,309 & 642,3 \\
+    SHAN & 0,343\textpm0,052 & 0,471\textpm0,065 & 0,202\textpm0,029 & 0,219\textpm0,030 & 0,470\textpm0,077 & 0,309\textpm0,050 \\
     \hline
-    HGRU4Rec & 0,296 & 0,377 & 0,190 & 0,201 & 0,762 & $\mathbf{0,113}$ & 14,5 \\
+    HGRU4Rec & 0,296\textpm0,028 & 0,377\textpm0,045 & 0,190\textpm0,018 & 0,201\textpm0,020 & 0,762\textpm0,075 & $\mathbf{0,113}$\textpm0,35 \\
     \hline
+    
     \end{tabular}
+  }
   \caption{Resultado dos modelos \textit{session-aware} na abordagem
   \textit{windowed}, avaliando o próximo item da sessão. Valores exibidos são a
-  média dos cinco \textit{splits}. Modelos ordenados por HR@5. }
+  média dos cinco \textit{splits} acompanhada da variância. Modelos ordenados por HR@5. }
+  \label{tab:windowed_}
 \end{table}
+
+\begin{table}
+  \centerline{
+  \begin{tabular}{|l|r|}
+    \hline
+    Modelo & $\Delta t[s]$ \\
+    \hline
+    USR & 0,112 \\
+    \hline
+    USTAN & 108,7 \\
+    \hline
+    UVSKNN & 0,079 \\
+    \hline
+    UNARM & 244,6 \\
+    \hline
+    iiRNN & 145,7 \\
+    \hline
+    NSAR & 77,2 \\
+    \hline
+    NCFS & 21,6 \\
+    \hline
+    UGRU4Rec & 44,4 \\
+    \hline
+    SHAN & 642,3 \\
+    \hline
+    HGRU4Rec & 14,5 \\
+    \hline
+  \end{tabular}
+  }
+  \caption{Duração média do treinamento de cada modelo da tabela \ref{tab:windowed_}}
+
+\end{table}
+
 \newpage
  

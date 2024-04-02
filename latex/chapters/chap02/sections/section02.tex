@@ -108,9 +108,10 @@ médias são $\bar{x}$ e $\bar{y}$, é dado por:
 \end{equation}
 \symbl{$\mathbb{R}$}{conjunto dos números reais}
 
-Para obter o coeficiente de correlação entre dois vetores de usuários $u$ e $v$,
-o coeficiente é calculado a partir dos itens avaliados em comum por ambos os
-usuários. Sendo $I_u$ e $I_v$ os conjuntos de itens avaliados pelos usuários $u$ e $v$:
+O coeficiente de correlação entre dois vetores de usuários $u$ e $v$ é calculado
+a partir dos itens avaliados em comum por ambos os usuários. Sendo $I_u$ e $I_v$
+os conjuntos de itens avaliados pelos usuários $u$ e $v$,
+o tamanho dos vetores $x$ e $y$ é dado por:
 \symbl{$I_u$}{conjunto de itens avaliados pelo usuário $u$}
 \symbl{$\cap$}{operador de interseção}
 \begin{equation}
@@ -118,9 +119,7 @@ usuários. Sendo $I_u$ e $I_v$ os conjuntos de itens avaliados pelos usuários $
 \end{equation}
 
 Seja $P_u (j)$ o subconjunto dos usuários de maior similaridade com o usuário
-$u$ que necessariamente avaliaram o item $j$.
-
-\symbl{$\hat{R}_{uj}$}{Avaliação predita do usuário $u$ ao item $j$}
+$u$ que necessariamente avaliaram o item $j$. \symbl{$\hat{R}_{uj}$}{Avaliação predita do usuário $u$ ao item $j$}
 A predição de avaliação
 $\hat{R}_{uj}$ do usuário $u$ a um único item $j$ é calculada a partir de uma
 normalização das avaliações dos demais usuários sobre esse mesmo item,
@@ -137,14 +136,11 @@ para realizar o ajuste em vez das médias $\bar{u}$ e $\bar{v}$, amplificam o
 peso $r(u,v)$ ao elevá-lo por uma potência maior que 1 e descontam o peso quando
 dois usuários tem poucos itens em comum.
 
-A equação \ref{eq:centered_mean} ajusta as avaliações de um usuário
-que avalia todos seus itens de forma muito rigorosa com notas baixas, enquanto
-que outro usuário muito satisfeito avalia todos seus itens com notas altas. Esse
-ajuste desconta a média das avaliações de determinado usuário, retornando uma avaliação
-centrada na média dele.
-
-é a média centrada das avaliações de
-determinado usuário $v$ sobre os itens que ele avaliou.
+A equação \ref{eq:centered_mean} ajusta tanto as avaliações de um usuário que
+avalia todos seus itens de forma muito rigorosa com notas baixas, quanto de
+outro usuário muito satisfeito que avalie todos seus itens com notas altas. Esse
+ajuste desconta a média das avaliações de determinado usuário, retornando uma
+avaliação centrada na média dele.
 
 A abordagem apresentada é considerada um problema de regressão, dado que o objetivo é prever
 o valor de uma variável contínua a partir de outras variáveis. Apesar disso, é
@@ -175,7 +171,7 @@ avaliação desvia da média das avaliações de determinado item.
 \end{align}
 
 A similaridade entre dois itens é calculada a partir das avaliações de todos os
-usuários que avaliaram ambos os itens. Nesse caso, o tamanho do vetor é dado por:
+usuários que avaliaram os dois itens $i$ e $j$. Nesse caso, o tamanho do vetor é dado por:
 
 \begin{equation}
     N = |U_i \cap U_j|.
@@ -195,7 +191,7 @@ usuário $u$ sobre os itens contidos em $Q_t (u)$:
 \subsubsection{Pares de Grupos}
 
 Uma otimização para estimar avaliações em tempo real consiste em pares de grupos
-pré-calculados. Esses pares são o conjunto limitado de usuários ou itens com
+pré-calculados~\cite{aggarwal2016recommender}. Esses pares são o conjunto limitado de usuários ou itens com
 maior similaridade entre si. Nessa abordagem, a etapa \textit{offline} gera os
 pares de grupos, atualizada periodicamente. A etapa \textit{online} estima uma
 avaliação a partir dos pares pré-calculados.
@@ -206,14 +202,13 @@ de maior similaridade com ele, o que exige complexidade de $O(m \cdot n')$ em
 tempo de execução ao perpassar por todos os $m$ usuários em cerca de $n'$ itens
 avaliados. A etapa \textit{online} consiste em estimar a avaliação a partir dos
 $k$ usuários do grupo, o que exige complexidade de $O(k)$ em tempo de execução,
-o que torna viável para calcular recomendações em tempo real.
+viabilizando-o para o cálculo de recomendações em tempo real.
  
 As principais vantagens dos métodos baseados em vizinhança são sua abordagem
 simples, intuitiva e de fácil implementação. A depender do tamanho da base, é
 impraticável estimar uma avaliação em tempo real sem o uso de pares de grupos,
-uma vez que a complexidade em tempo de execução seria de $O(m \cdot n')$, ao
-perpassar por todos os usuários e itens avaliados. Principalmente, há modelos
-atuais que são mais precisos, inclusive os baseados em modelos.
+em razão da alta complexidade em tempo de execução seria alta. Principalmente,
+há modelos atuais que são mais precisos, inclusive os baseados em modelos.
 
 \subsection{Sistemas de Recomendação \textit{Model-based}}
 A filtragem colaborativa baseada em modelos é um método de aprendizado em que um
@@ -222,7 +217,7 @@ treinamento e predição estritamente separadas. Essa característica  não é u
 restrição nos métodos baseados em vizinhança, apesar de ser uma prática que
 concede eficiência em sua execução.
 
-As principais vantagens dos métodos baseados em modelos, quando comparados aos de vizinhança, são:
+As principais vantagens dos métodos baseados em modelos, quando comparados aos de vizinhança, são~\cite{aggarwal2016recommender}:
 \begin{itemize}
     \item compressão do modelo, em que seu tamanho é bem menor que o da matriz de avaliações $R_{m \times n}$;
     \item rapidez de treinamento e predição, uma vez que o modelo é mais compacto, sendo necessário perpassar por menos dados.
@@ -233,7 +228,7 @@ As principais vantagens dos métodos baseados em modelos, quando comparados aos 
 A fatoração de matrizes pode ser empregada como alternativa aos métodos baseados
 em vizinhança, reduzindo a dimensionalidade do conjunto de dados. Nesse método,
 obtém-se vetores de variáveis latentes que representam os usuários e itens de
-forma compacta, reduzindo os transtornos associados à esparsidade do conjunto de
+forma compacta, reduzindo os efeitos associados à esparsidade do conjunto de
 dados.
 
 \abbrev{SVD}{\textit{singular value decomposition}}
@@ -298,8 +293,9 @@ não-negativos, seguindo a propriedade:
 \end{equation}
 
  Para obter uma base de autovetores que representam a matriz $S$ de forma
- compacta, utiliza-se a SVD para obter tanto os autovetores quanto os autovalores,
- para o caso particular em que $S$ é positiva semi-definida:
+ compacta, utiliza-se a SVD para obter tanto os autovetores quanto os
+ autovalores, aproveitando o caso particular em que $S$ é positiva
+ semi-definida:
 
 \begin{equation}
     S = P \Lambda P^{\mathbf{T}}
@@ -315,13 +311,12 @@ d$ com $d$ usuários, em vez de $m \times n$ com $n$ usuários, tal como na matr
 de avaliações original.
 
 A partir da matriz $R_{f}P_{d}$, é possível realizar a filtragem colaborativa
-baseada em itens e baseada em usuários, como descrito anteriormente.
+baseada em itens e baseada em usuários~\cite{aggarwal2016recommender}, como descrito anteriormente.
 
 \subsubsection{Modelo de Fatores Latentes}
 Um caso particular da SVD, denominado modelo de fatores latentes, ganhou
 visibilidade com a competição \textit{Netflix Prize}, cujo objetivo era superar
-o desempenho do algoritmo de recomendação vigente da empresa na época.
-\cite{lessons_netflix_prize}.
+o desempenho do algoritmo de recomendação vigente da empresa na época~\cite{lessons_netflix_prize}.
 
 No caso do modelo de fatores latentes, a matriz de avaliações $R$ é decomposta
 da seguinte forma \cite{aggarwal2016recommender}:
@@ -356,6 +351,7 @@ desse par:
 \begin{equation} \label{fator_latente}
     \hat{R}_{uj} = \mathbf{q}_j \mathbf{p}_u^{\mathbf{T}}
 \end{equation}
+
 
 \subsubsection{Regras de Associação}
 Regras de associação são técnicas para identificação de padrões relacionais
@@ -417,14 +413,14 @@ confiança são as recomendadas.
 
 O suporte de um conjunto de itens genérico é definido como a razão entre a
 quantidade de transações em que esse conjunto esteja contido pela quantidade
-total. Por exemplo, para o conjunto de itens X:
+total~\cite{larose2014discovering}. Por exemplo, para o conjunto de itens X:
 
 \begin{equation}
 s(X) = \frac{|\{T_i \in \mathcal{T} : X \subseteq T_i\}|}{|\mathcal{T}|} = P(X)
 \end{equation}
 
 Por sua vez, o suporte, a confiança e o \textit{lift} da regra de associação são três
-propriedades que avaliam a qualidade da mesma:
+propriedades que avaliam a qualidade da mesma~\cite{larose2014discovering}:
 
 \begin{align}
     s(X \Rightarrow Y) &= P( X \cup Y ) \\
@@ -465,6 +461,160 @@ sequências $S$ é a fração de sequências em $S$ que contém $Y$. A confianç
 uma regra de sequência $X \Rightarrow Y$ em $S$ é a taxa de sequências em
 $S$ que contém $X$ e $Y$.
     
+\subsubsection{Recomendação baseada em cadeias de Markov}
+Cadeias de Markov são modelos que representam sequências de variáveis aleatórias
+correspondentes a estados~\cite{ching2006markov}. Através das probabilidades
+associadas a cada estado e às transições entre eles, é possível estimar o
+próximo estado mais provável. São aplicados em uma variedade de áreas, sendo
+úteis inclusive em sistemas de recomendação baseados em sequências.
+
+Em uma cadeia de Markov de primeira ordem, dado o conjunto de estados
+$\mathcal{A} = \{\alpha_1, \alpha_2, \dots, \alpha_n\}$, a probabilidade de
+transição de um estado $s_j$ para um estado $s_{j+1}$ é obtida independentemente
+dos estados anteriores~\cite{rabiner1989tutorial}:
+
+\begin{equation}
+    P(s_{j+1} = \alpha_j | s_j = \alpha_i, s_{j-1} = \alpha_k, \dots) = P(s_{j+1} = \alpha_j | s_j = \alpha_i)
+    \label{eq:markov}
+\end{equation}
+Uma cadeia de Markov de n-ésima ordem está associada a quantidade de memória
+necessária para prever o próximo estado. Em uma cadeia de Markov de segunda
+ordem, por exemplo, o estado seguinte depende da probabilidade condicional dos
+dois estados anteriores.
+
+A partir da equação \ref{eq:markov}, o coeficiente contendo a probabilidade de
+transição entre dois estados $i$ e $j$ é dado por $a_{ij}$, enquanto o
+coeficiente contendo a probabilidade do estado inicial é dado por $c_i$:
+\begin{align}
+    a_{ij} &= P(s_{j+1} = \alpha_j | s_j = \alpha_i) \\
+    c_i &= P(s_1 = \alpha_i)
+\end{align}
+Finalmente, de posse dos coeficientes de transição e do estado inicial, a
+probabilidade de uma sequência específica ocorrer é calculada pelo
+produto dos coeficientes associados a cada estado nela presente.
+
+No caso de um sistema de recomendação, a fase de treinamento envolve o modelo
+aprendendo as probabilidades de transição para um subconjunto específico e
+isolado de dados, enquanto a fase de predição consiste em determinar o estado
+mais relevante com base nos $n$ itens mais recentes na sessão, associados à
+ordem do modelo~\cite{aggarwal2016recommender}.
+
+No comparativo, consta uma cadeia de primeira ordem como 
+base de comparação, além dos modelos \textit{session-based} Fossil e FPMC,
+baseados em cadeias de Markov.
+
+
+
+\subsubsection{Árvores de contexto}
+\abbrev{VMM}{modelo de Markov de ordem variável}
+Uma dificuldade ao aplicar cadeias de Markov de ordem fixa em sistemas de
+recomendação é como determinar a ordem ótima do modelo, o que não é um problema
+em modelos de Markov de ordem variável (VMMs, do inglês
+\textit{variable-order Markov models}), uma vez que a ordem depende do
+contexto da sequência ou da recomendação~\cite{mi2016adaptive}.
+
+Árvores de contexto~\cite{willems1995context} foram inicialmente criadas como
+uma forma de estimar VMMs, os quais foram inicialmente propostos para resolver
+problemas de compressão de dados sem perdas~\cite{begleiter2004prediction}. As
+árvores de contexto representam sequências de símbolos como uma hierarquia de
+contextos, cujas estatísticas compõem um modelo
+preditivo~\cite{garcin2013personalized}. Posteriormente, árvores de contexto
+foram utilizadas para tarefas de predição de sequências, inclusive em sistemas
+de recomendação.
+
+Ao implementar uma árvore de contexto, primeiramente define-se o conjunto
+$\mathcal{S}$ de todas as possíveis sequências de itens. Um sufixo $\xi$ é uma
+subsequência contida no final de uma sequência. Por exemplo, na sequência $s = [n_1,
+n_2, n_3, n_4]$, o sufixo $\xi = [n_3, i_4]$ é um sufixo de $s$. Dessa forma,
+o contexto $S$ é o subconjunto de todas as sequências em $\mathcal{S}$ que contém
+$\xi$:
+% S = {s ∈ S : ξ ≺ s}
+\begin{equation}
+    S = \{s \in \mathcal{S} : \xi \prec s\}, S \subset \mathcal{S}
+\end{equation}
+em que $\prec$ é o operador de precedência.
+
+\forestset{
+  red node/.style={
+    draw=red,
+  },
+}
+
+\begin{figure}
+    \centering
+    \begin{forest}
+      for tree={
+        circle,
+        draw,
+        % minimum size=1em,
+        % maximum size=10em,
+        edge={-latex},
+        s sep=10mm
+      },
+      [<>, red node
+        [<$n_1$>, red node
+          [\text{<$n_2$, $n_1$>}]
+          [\text{<$n_3$, $n_1$>}, red node
+            [\text{<$n_2$, $n_3$, $n_1$>}, red node
+          ]
+          ]
+        ]
+        [<$n_2$>]
+        [<$n_3$>
+        [\text{<$n_2$, $n_3$>}]
+      ]
+      ]
+    \end{forest}
+    \label{fig:context_tree}
+    \caption{Exemplo de uma árvore de contexto. Para a sequência $s = [n_2, n_3, n_1]$, os nós em vermelho representam os contextos com especialistas ativos.}
+    \end{figure}
+
+Uma árvore de contexto $\mathcal{T} = (\mathcal{V}, \mathcal{E})$ com nós
+$\mathcal{V}$ e arestas $\mathcal{E}$ é uma partição em árvore de todas as
+sequências de $\mathcal{S}$ em contextos. Cada nó representa um contexto. Caso
+o nó $i$ seja o ancestral do nó $j$, então $S_j \subset S_i$~\cite{mi2018context}.
+
+Cada nó possui um modelo de predição local, denominado especialista (do inglês
+\textit{expert}). Um especialista $\mu_i$ é uma função que calcula a
+probabilidade da ocorrência do próximo item $n_{t+1}$ dado o contexto $S_i$, igual a
+$P_i(n_{t+1} | s_t)$.
+
+Para um contexto $S_i = \{s: \xi_i \prec s_t\}$, os especialistas associados a
+nós que compartilham do mesmo sufixo $\xi_i$ são chamados de especialistas
+ativos. No exemplo da figura \label{fig:context_tree}, os contextos em vermelho
+representam os especialistas ativos para a sequência destacada.
+
+A probabilidade de um especialista é obtida ao multiplicar a probabilidade dos
+especialistas ativos $\mathcal{A}(s_t)$
+ que incluem o sufixo $\xi$:
+\begin{align}
+    \mathcal{A}(s_t) &= \{\mu_i : \xi \prec s_t\}\\
+    P(n_{t+1} = x | s_t) &= \sum_{i \in \mathcal{A(s_t)}} u_i(s_t)  P_i(n_{t+1} = x | s_t)
+\end{align}
+
+Tal que $u_i (s_t) = P(i|s_t)$ é a probabilidade do i-ésimo especialista
+relevante. Esse valor é obtido a partir de pesos que representam a utilidade de
+cada contexto da sequência em questão. A explicação detalhada da obtenção
+desses pesos consta em \citet{mi2018context}.
+
+
+
+
+
+% A context tree
+% T = (V, E) with nodes V and edges E is a partition tree over all
+% contexts of S. Each node i ∈ V in the context tree corresponds
+% to a context Si . If node i is the ancestor of node j then Sj ⊂ Si .
+
+
+
+
+
+
+
+
+
+
 \subsection{Sistemas de Recomendação Baseados em Conteúdo}
 
 Sistemas de recomendação baseados em conteúdo são utilizados em aplicações cujos
@@ -563,9 +713,9 @@ razão do decaimento.
 O modelo STAN (\textit{sequence and time-aware neighborhood}) é uma extensão do
 SKNN com três propriedades adicionadas às pontuações: posição dos itens na
 sessão ativa, recência da sessão vizinha e posição do item candidato na sessão
-vizinha. Cada um desses componentes possui sua própria função de decaimento.
+vizinha~\cite{garg2019sequence}. Cada um desses componentes possui sua própria função de decaimento.
 
-Por sua vez, o VSTAN combina características dos modelos STAN e vsKNN,
+Por sua vez, o VSTAN~\cite{ludewig_2021} combina características dos modelos STAN e vsKNN,
 adicionando dois novos pesos. O primeiro peso é associado à posição do último
 item da sessão ativa que coexiste na sessão vizinha. Além disso, um segundo peso
 é obtido a partir da medida do inverso da frequência do termo no documento (IDF,

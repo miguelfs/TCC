@@ -23,31 +23,29 @@ utilizadas nos comparativos publicados porque aproveitam todos os itens de cada
 sessão para o treinamento ou para a avaliação. No caso de uma aplicação em que
 haja redundância entre as sessões, em que usuários possam salvar, repetir e
 compartilhar sessões entre si, essas abordagens acabam por facilitar o trabalho
-do recomendador, uma vez que introduzem uma série de cópias com pequenas
-variações. O cenário mais desafiador é aquele em que o item a ser avaliado
-é necessariamente um item inédito.
+do recomendador, uma vez que cada iteração a mais no processo de treinamento
+significa uma nova oportunidade para minimizar o erro do modelo. O mesmo vale
+para a avaliação, em que identificar faixas \textit{forkadas} seria em tese uma
+tarefa mais fácil. O cenário mais desafiador é aquele em que o item a ser
+avaliado é necessariamente um item inédito no contexto daquela sessão.
 
 Em contraponto, a abordagem \textit{last-item} é a que mais se aproxima do
 cenário mencionado, uma vez que mantém inalterada a sequência de itens das
 sessões. O que muda é a forma de avaliação, que passa a considerar apenas o
 último item da sequência como o item a ser previsto, sem que os demais itens
-anteriores sejam avaliados.
+anteriores sejam avaliados, minimizando a influência de itens \textit{forkados}
+na avaliação.
 
-Com essa finalidade, foi criada uma nova base de treinamento apenas com sessões
-em que o último item da sequência é a adição de uma faixa inédita. Essa
-identificação é feita a partir de um metadado disponível, informando se a faixa
-foi gerada por um \textit{fork} ou foi criada, seja por gravação, por importação
-de uma faixa ou por separação de fontes.
+Com essa finalidade, a base de treinamento do presente trabalho é filtrada:
+Nesse último experimento, constam apenas sessões em que o último item da
+sequência é a adição de uma faixa inédita. Essa identificação é feita a partir
+de um metadado disponível, informando se a faixa foi gerada por um \textit{fork}
+ou foi criada, seja por gravação, por importação de uma faixa ou por separação
+de fontes.
 
 Para essa abordagem, é utilizado o avaliador \textit{last-item}. Esse avaliador
 considera apenas o último item da sequência como o item a ser previsto, sem que
 os demais itens advindos de \textit{fork} sejam recomendados.
-
-% Metrics;HitRate@1: ;HitRate@3: ;HitRate@5: ;HitRate@10: ;HitRate@15: ;HitRate@20: ;MRR@1: ;MRR@3: ;MRR@5: ;MRR@10: ;MRR@15: ;MRR@20: ;Coverage@10: ;Popularity@10: ;
-% csrm-hidden_units=100-epoch=10-lr=0.0009-memory_size=256;0.09594333547971667;0.2108821635544108;0.2640051513200258;0.3428847392144237;0.40019317450096586;0.44140373470701866;0.09594333547971667;0.14536381197681889;0.15772698003863458;0.16809631128691008;0.17263257240720203;0.17494414586567672;0.5957696827262045;0.13698027615786773;
-
-% Metrics;HitRate@1: ;HitRate@3: ;HitRate@5: ;HitRate@10: ;HitRate@15: ;HitRate@20: ;MRR@1: ;MRR@3: ;MRR@5: ;MRR@10: ;MRR@15: ;MRR@20: ;Coverage@10: ;Popularity@10: ;
-% csrm-hidden_units=100-epoch=10-lr=0.0009-memory_size=256;0.09594333547971667;0.2108821635544108;0.2640051513200258;0.3428847392144237;0.40019317450096586;0.44140373470701866;0.09594333547971667;0.14536381197681889;0.15772698003863458;0.16809631128691008;0.17263257240720203;0.17494414586567672;0.5957696827262045;0.13698027615786773;
 
 \begin{table}[htbp]
     \begin{tabular}{|l|l|l|l|l|l|l|l|}
@@ -58,14 +56,10 @@ os demais itens advindos de \textit{fork} sejam recomendados.
       \hline
       $\text{STAMP}_1$ & 0,519 & 0,584 & 0,377 & 0,386 & 0,610 & 0,217 \\
       \hline
-      % skNN & 0,518 & 0,647 & 0,213 & 0,231 & 0,643 & 0,169  \\
-%       Metrics;HitRate@1: ;HitRate@3: ;HitRate@5: ;HitRate@10: ;HitRate@15: ;HitRate@20: ;MRR@1: ;MRR@3: ;MRR@5: ;MRR@10: ;MRR@15: ;MRR@20: ;Coverage@10: ;Popularity@10: ;
-% sknn_best-k=100-sample_size=10000-similarity=jaccard;0.0489375402446877;0.33322601416613007;0.51513200257566;0.6416613007083065;0.6954282034771411;0.7189311010946555;0.0489375402446877;0.16688130500107215;0.20917042283751952;0.2263179815819878;0.23053885729352694;0.23185070674721797;0.5916568742655699;0.1971672051062875;
       sknn2 & 0,518 & 0,647 & 0,213 & 0,230 & 0,643 & 0,169 \\
       \hline
       sknn1 & 0,515 & 0,642 & 0,209 & 0,226 & 0,592 & 0,197 \\
       \hline
-% sknn_2nd-k=50-sample_size=1000-similarity=jaccard;0.05119124275595621;0.3415969092079845;0.5183515775917579;0.6471345782356729;0.6867353509336768;0.7009014810045074;0.05119124275595621;0.17235458252843872;0.21303391285683695;0.23086831427140594;0.23400714796400668;0.2348253638587173;0.6427732079905993;0.1689483377784831;
       ct & 0,509 & 0,579 & 0,390 & 0,399  & 0,477 & 0,349 \\
       \hline
       $\text{STAMP}_2$ & 0,506 & 0,590 & 0,366 & 0,377 & 0,609 & 0,201 \\
@@ -128,11 +122,11 @@ os demais itens advindos de \textit{fork} sejam recomendados.
     \textit{single item}, avaliando o último item da sessão. Modelos ordenados por HR@5. }
   \end{table}
 
-  A tabela \ref{tab:results_last_item} mostra os resultados obtidos pela abordagem
-  \textit{last-item}. As métricas obtiveram valores na mesma faixa
-  da abordagem \textit{next-item}, o que é positivo e demonstra que, por mais
-  que a avaliação seja reservada apenas ao último item da sequência, os modelos
-  conseguem manter um bom desempenho.
+  A tabela \ref{tab:results_last_item} mostra os resultados obtidos pela
+  abordagem \textit{last-item}. As métricas obtiveram valores na mesma faixa da
+  abordagem \textit{next-item}, demonstrando que, por mais que a avaliação e o
+  treinamento seja reservados apenas ao último item da sequência, os modelos
+  mantém desempenho equivalente.
   
   Novamente, o modelo GNN obteve os melhores resultados. Modelos
   mais simples, como o skNN e a árvore de contexto também obtiveram bons

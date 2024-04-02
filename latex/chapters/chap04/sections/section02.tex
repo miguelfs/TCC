@@ -1,26 +1,81 @@
-\subsection{Comparativo com outras bases de dados}
-A tabela \ref{tab:sr} compara os resultados obtidos entre as diferentes bases de
-dados, incluindo a base do presente trabalho.
+\subsection{Medidas de avaliação nas demais bases de dados}
+As tabelas \ref{tab:sr}, \ref{tab:gnn} e \ref{tab:smf} trazem as medidas de
+avaliação obtidas para os modelos que se destacaram no comparativo em relação às
+demais bases. A tabela \ref{tab:sr} compara os resultados obtidos para regras de
+sequência, a tabela \ref{tab:gnn} compara os resultados obtidos para sr-GNN e a
+tabela \ref{tab:smf} compara os resultados obtidos para smf. Os modelos estão
+ordenados por HR@5. Para as tabelas \ref{tab:sr} e \ref{tab:smf}, foi adicionada
+a posição de cada modelo nos comparativos de suas respectivas bases de dados. Os
+valores foram retirados de \citet{ludewig2020advances} e
+\citet{shehzad2024performance}.
 
-\begin{table}[htbp]
+Observa-se que os valores obtidos com a base do presente trabalho estão na mesma
+ordem de grandeza de algumas das demais bases de dados, a exemplo de RSC15,
+ZALANDO, INDABAND, CLEF e RETAILROCKET. Algumas bases obtém
+valores baixos para as métricas de avaliação, mesmo nos modelos com melhores
+resultados para essas bases.
+
+\begin{table}
 \centering
 \vspace{1mm}
-\begin{tabular}{ccccccc}
+\begin{tabular}{cccccccc}
 \hline
-Base de dados & HR@5 & HR@10 & MRR@5 & MRR@10 & COV@10 & POP@10 \\
+ & Posição & HR@5 & HR@10 & MRR@5 & MRR@10 & COV@10 & POP@10 \\
 \hline
-RSC15 & \textbf{0,457} & \textbf{0,569} & 0,283 & 0,298 & 0,592 & 0,073 \\
-ZALANDO & 0,429 & 0,462 & \textbf{0,298} & \textbf{0,302} & 0,433 & 0,066 \\
-INDABAND & 0,378 & 0,506 & 0,225 & 0,242 & 0,443 & 0,281 \\
-CLEF & 0,337 & 0,513 & 0,189 & 0,212 & \textbf{0,608} & 0,123 \\
-RETAILROCKET &  0,337 & 0,386 & 0,236 & 0,243 & 0,458 & 0,050 \\
-30MUSIC & 0,2845 & 0,2326 & 0,3120  & 0,2363 & 0,2913 & 0,0273 \\
-TMALL &  0,173 & 0,209 & 0,124 & 0,129 & 0,507 & \textbf{0,020} \\
-NOW PLAYING & 0,1395 & 0,1712 & 0,0988 & 0,1031 & 0,3605 & 0,0284 \\
-AOTM & 0,0107 & 0,0149 & 0,0068 & 0,0073 & 0,4481 & 0,0599 \\
-8TRACKS & 0,0090 & 0,0125 & 0,0056 & 0,0061 & 0,1076 & 0,0916 \\
+RSC15& $2^o$ & \textbf{0,457} & \textbf{0,569} & 0,283 & 0,298 & 0,592 & 0,073 \\
+ZALANDO& $1^o$ & 0,429 & 0,462 & \textbf{0,298} & \textbf{0,302} & 0,433 & 0,066 \\
+INDABAND& $7^o$ & 0,378 & 0,506 & 0,225 & 0,242 & 0,443 & 0,281 \\
+CLEF& $6^o$ & 0,337 & 0,513 & 0,189 & 0,212 & \textbf{0,608} & 0,123 \\
+RETAILROCKET& $7^o$ &  0,337 & 0,386 & 0,236 & 0,243 & 0,458 & 0,050 \\
+30MUSIC& $1^o$ & 0,2845 & 0,2326 & 0,3120  & 0,2363 & 0,2913 & 0,0273 \\
+TMALL& $8^o$ &  0,173 & 0,209 & 0,124 & 0,129 & 0,507 & \textbf{0,020} \\
+NOWPLAYING& $1^o$ & 0,1395 & 0,1712 & 0,0988 & 0,1031 & 0,3605 & 0,0284 \\
+AOTM& $3^o$ & 0,0107 & 0,0149 & 0,0068 & 0,0073 & 0,4481 & 0,0599 \\
+8TRACKS& $4^o$ & 0,0090 & 0,0125 & 0,0056 & 0,0061 & 0,1076 & 0,0916 \\
 \hline
 \end{tabular}
 \caption{Regras de sequência, \textit{windowed}, \textit{session-based}. Ordenados por HR@5.}
 \label{tab:sr}
 \end{table}
+
+\begin{table}
+    \centering
+    \vspace{1mm}
+    \begin{tabular}{ccccccc}
+    \hline
+     & HR@5 & HR@10 & MRR@5 & MRR@10 \\
+    \hline
+    RETAIL ROCKET & \textbf{0,833} & \textbf{0,886} & \textbf{0,621} & \textbf{0,629} & \\
+    DIGINETICA & 0,469 & 0,591 & 0,305 & 0,321 & \\
+    RSC15 (1/64) & 0,450 & 0,563 & 0,313 & 0,328 & \\
+    INDABAND & 0,421 & 0,551 & 0,264 & 0,280 &  \\
+    RSC15 (1/12) & 0,384 & 0,497 & 0,230 & 0,245 & \\
+    \hline
+    \end{tabular}
+    \caption{sr-GNN, \textit{windowed}, \textit{session-based}. Ordenados por HR@5.}
+    \label{tab:gnn}
+    \end{table}
+
+
+    \begin{table}
+        \centering
+        \vspace{1mm}
+        \begin{tabular}{cccccccc}
+        \hline
+        &Posição& HR@5 & HR@10 & MRR@5 & MRR@10 & COV@10 & POP@10 \\
+        \hline
+        RSC15& $3^o$ & \textbf{0,459} & \textbf{0,575} & \textbf{0,280} & \textbf{0,295} & \textbf{0,486} & 0,073 \\
+        INDA& $3^o$ & 0,401 & 0,532 & 0,247 & 0,264 & 0,492 & 0,281 \\
+        ZALANDO& $8^o$& 0,380 & 0,418 & 0,259 & 0,265 & 0,239 & 0,103 \\
+        CLEF& $3^o$ & 0,354 & 0,529 & 0,198 & 0,222 & 0,582 & 0,097\\
+        RETAILROCKET& $1^o$ & 0,322 & 0,393 & 0,211 & 0,221 & 0,360 & 0,092 \\
+        30MUSIC& $5^o$ & 0,2223 & 0,2547 & 0,1712 & 0,1756 & 0,1117 & 0,1062 \\
+        TMALL& $9^o$& 0,168 &  0,213 & 0,112 & 0,118 & 0,193 & \textbf{0,039} \\
+        8TRACKS& $3^o$ & 0,0092 & 0,0148  & 0,0051 & 0,058 & 0,1076 & 0,0916 \\
+        NOWPLAYING& $6^o$ & 0,1181 & 0,1484 & 0,0818 & 0,0859 & 0,1847 & 0,0960\\
+        AOTM& $1^o$ & 0,0149 & 0,0205 & 0,0097 & 0,105 & 0,1795 & 0,2085\\
+        \hline
+        \end{tabular}
+        \caption{smf, \textit{windowed}, \textit{session-based}. Ordenados por HR@5.}
+        \label{tab:smf}
+        \end{table}
