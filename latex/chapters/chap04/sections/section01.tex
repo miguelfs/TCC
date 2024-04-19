@@ -195,103 +195,7 @@ individuais de usuários ao criarem sessões.
   \end{table}
   
   \newpage
-
-  \section{Experimentos}
-  Cinco experimentos foram realizados para avaliar os modelos de recomendação em
-  diferentes cenários, apresentados na tabela \ref{tab:experiments}. Para todos
-  os experimentos, apenas sessões com um mínimo de dois usuários estão
-  presentes, como ilustrado na FIGURA \ref{fig:next-item-single}. Similarmente,
-  o suporte mínimo dos itens é igual a 2. Dessa forma, há apenas usuários que
-  constam em pelo menos duas sessões publicadas. Essa abordagem é distinta da
-  maioria dos comparativos, que utilizam suporte mínimo igual a 3. Essa decisão
-  foi tomada pela menor quantidade de dados disponíveis, em comparação com as
-  demais bases de dados. Essa distinção é necessária ser destacada, em razão do
-  eventual uso desses dados para comparativos com outras bases. Uma vez que o
-  foco do presente trabalho é a avaliação dentro do contexto da aplicação, essa
-  foi a decisão mais adequada para manter a maior quantidade de dados possível.
-
-
-
-  Como
-  mencionado anteriormente, a recomendação \textit{session-based} não utiliza a
-  informação do usuário dono da sessão: esse característica pertence à
-  recomendação \textit{session-aware}.
-  \begin{table}
-    \centering
-    \begin{tabular}{|l|l|l|l|}
-      \hline
-      Experimento & Tipo de problema & Dados & Avaliação \\ \hline
-      1 & \textit{session-based} & \textit{single-split} & \textit{next-item} \\ \hline
-      2 & \textit{session-based} & \textit{windowed} & \textit{next-item} \\ \hline
-      3 & \textit{session-based} & \textit{windowed} & \textit{remaining-items} \\ \hline
-      4 & \textit{session-aware} & \textit{windowed} & \textit{next-item} \\ \hline
-      5 & \textit{session-based} & \textit{single-split} & \textit{last-item} \\ \hline
-    \end{tabular}
-    \caption{Experimentos realizados para avaliar os modelos de recomendação.}
-    \label{tab:experiments}
-  \end{table}
-
-  A abordagem \textit{single-split} divide o conjunto inteiro de dados em um
-  único conjunto de treinamento e teste, cuja distribuição de usuários por
-  sessão está destacada na FIGURA \ref{fig:next-item-single}. Algumas das
-  limitações da abordagem \textit{single-split} envolvem a maior suscetibilidade
-  a efeitos aleatórios e a particularidades dos dados afetarem os resultados.
-  
-  Por sua vez, a abordagem \textit{windowed} divide a base de dados em cinco
-  conjuntos espaçados temporalmente, cada um dividido em treinamento e teste. O
-  mesmo modelo é treinado e avaliado cinco vezes, uma vez para cada janela temporal.
-  Dessa forma, minimizam-se os riscos de os resultados serem influenciados por
-  uma única configuração de treino e teste, equivalendo a uma validação cruzada,
-  com a ordem cronológica dos dados ser levada em conta. O
-  resultado final para as métricas é a média aritmética dos métricas obtidas em
-  cada janela. A distribuição das sessões por janela é apresentada na FIGURA
-  \ref{fig:scatter_plot}.
-
-  As formas de avaliação \textit{next-item}, \textit{remaining-items} e
-  \textit{last-item} foram descritas na seção \ref{chap:desempenho}.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{chapters/chap04/images/scatter_plot.png}
-  \caption{Distribuição das sessões por janela de tempo na abordagem
-  \textit{windowed}, ao longo do ano de 2023.}
-  \label{fig:scatter_plot}
-\end{figure}
-
-
-  \begin{table}
-    \centering
-    \begin{tabular}{|l|l|l|l|l|l|l|}
-      \hline
-      Conjunto & Eventos & Sessões & Itens & $\Delta$ & $\sigma$ & Janela de tempo \\ \hline 
-         Treinamento & 90.801 & 26.649 & 1.702 & 3,3 & 2,0 & 01/01/2023 a 03/12/2023 \\ \hline
-        Teste & 11.265 & 3.106 & 589 & 3,6 & 2,0 & 02/08/2023 a 18/12/2023 \\ \hline
-    \end{tabular}
-    \caption{Informações sobre o \textit{dataset} utilizado na abordagem
-    \textit{single}. $\Delta$ e $\sigma$ são a média e o desvio padrão da quantidade de
-    usuários por sessão.}
-    \label{tab:split_data}
-  \end{table}
-
-  \begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{chapters/chap04/images/histograma.png}
-    \caption{Distribuição da quantidade de usuários por sessão na abordagem
-    \textit{single}. A distribuição de treinamento está empilhada acima da
-    distribuição de teste.}
-    \label{fig:next-item-single}
-  \end{figure}
-
-% Na abordagem apresentada, apenas a primeira interação de cada usuário na
-% sessão consta na base, de forma que nenhum usuário apareça mais de uma vez na
-% mesma sessão. Dessa forma, a tarefa do modelo é prever qual será o próximo usuário
-% inédito a contribuir na sessão.
-
-
-  % build a table with 5 experiments. columns are if is session-based or aware, single-split or windowed, and the evaluation method.
-
-  \chapter{Resultados}
-  % \section{Experimentos} 
+  \section{Experimentos} 
 
 % \begin{table}[htbp]
 %   \centering
@@ -310,11 +214,59 @@ individuais de usuários ao criarem sessões.
 %   \label{tab_dataset}
 % \end{table}
 
-\section{Abordagem \textit{single-split}, \textit{session-based}, \textit{next-item}}
+\subsection{Abordagem \textit{single-split}, \textit{session-based}, \textit{next-item}}
+
+\citet{HidasiKBT15} utiliza a abordagem \textit{single-split} para comparar a
+avaliação dos modelos, de forma que o conjunto de treinamento é composto pelos
+últimos seis meses, enquanto que o conjunto de teste é composto pelo último dia
+do conjunto completo \cite{ludewig_2018}. Essa é a abordagem mais próxima de um
+modelo em produção.
+
+O \textit{dataset} é dividido segundo a abordagem \textit{single split}, em um
+único conjunto de treinamento e teste, tal como na tabela
+\ref{tab:split_data}. Nesses experimentos, os modelos de base de comparação
+desconsideram o usuário dono da sessão. Dessa forma, não há modelos
+\textit{session-aware}.
+
+Apenas sessões com um mínimo de dois usuários estão presentes, como ilustrado na
+figura \ref{fig:next-item-single}. Similarmente, o suporte mínimo dos itens é
+igual a 2. Dessa forma, há apenas usuários que constam em pelo menos duas
+sessões publicadas. Essa abordagem é distinta da maioria dos comparativos, que
+utilizam suporte mínimo igual a 3. Essa decisão foi tomada pela menor quantidade
+de dados disponíveis, em comparação com as demais bases de dados. Essa distanção
+é necessária ser destacada, em razão do eventual uso desses dados
+para comparativos com outras bases. Uma vez que o foco do presente trabalho é a
+avaliação dentro do contexto da aplicação, essa foi a decisão mais adequada para
+manter a maior quantidade de dados possível.
+
+Na abordagem apresentada, apenas a primeira interação de cada usuário na
+sessão consta na base, de forma que nenhum usuário apareça mais de uma vez na
+mesma sessão. Dessa forma, a tarefa do modelo é prever qual será o próximo usuário
+inédito a contribuir na sessão.
 
 
+  \begin{table}
+    \centering
+    \begin{tabular}{|l|l|l|l|l|l|l|}
+      \hline
+      Conjunto & Eventos & Sessões & Itens & $\Delta$ & $\sigma$ & Janela de tempo \\ \hline 
+         Treinamento & 90.801 & 26.649 & 1.702 & 3,3 & 2,0 & 01/01/2023 a 03/12/2023 \\ \hline
+        Teste & 11.265 & 3.106 & 589 & 3,6 & 2,0 & 02/08/2023 a 18/12/2023 \\ \hline
+    \end{tabular}
+    \caption{Informações sobre o \textit{dataset} utilizado na abordagem
+    \textit{single}. $\Delta$ e $\sigma$ são a média e o desvio padrão da quantidade de
+    usuários por sessão.}
+    \label{tab:split_data}
+  \end{table}
 
-
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{chapters/chap04/images/histograma.png}
+    \caption{Distribuição da quantidade de usuários por sessão na abordagem
+    \textit{single}. A distribuição de treinamento está empilhada acima da
+    distribuição de teste.}
+    \label{fig:next-item-single}
+  \end{figure}
  
 
   \subsubsection{Modelos não-personalizados}
@@ -467,7 +419,18 @@ NARM, GRU4Rec e CSRM apresentam resultados inferiores, inclusive quando comparad
 a modelos mais simples, tais como regras de sequência ou baseados em vizinhança.
 
 
-\section{Abordagem \textit{windowed}, \textit{session-based}, \textit{next-item}}
+\subsection{Abordagem \textit{windowed}, \textit{session-based}, \textit{next-item}}
+Algumas das limitações da abordagem \textit{single-split} envolvem a maior
+suscetibilidade a efeitos aleatórios e a particularidades dos dados. Uma
+alternativa é a abordagem \textit{windowed}, que minimiza os riscos de os
+resultados serem influenciados por uma única configuração de treino e teste. A
+abordagem \textit{windowed} equivale a uma validação cruzada, com a limitação de
+que os dados são ordenados cronologicamente. \citet{ludewig_2018} dividem os
+dados em cinco janelas de um mês, em que o último dia de cada janela é reservado
+para teste. O resultado final para as métricas é a média aritmética dos
+métricas obtidas em cada janela.
+
+
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|}
@@ -510,9 +473,6 @@ tabela \ref{tab:windowed_next_item_all}.
 
 \begin{table}[htbp]
   \centering
-  \small
-  % reduce space between columns and rows:
-  \setlength{\tabcolsep}{2pt}
   \centerline{
   \begin{tabular}{|l|l|l|l|l|l|l|r|}
     \hline
@@ -569,9 +529,9 @@ tabela \ref{tab:windowed_next_item_all}.
     \hline
     $\text{GNN}_2$ & \textbf{0{,}421}\textpm0,049 & \textbf{0{,}551}\textpm0,056 & \textbf{0,264}\textpm0,062 & \textbf{0,280}\textpm0,061 & 0,517\textpm0,055 & 0,296\textpm0,089 & 122 \\
     \hline
-    $\text{STAMP}_2$ & 0,395\textpm0,039 & 0,515\textpm0,035 & 0,249\textpm0,037 & 0,266\textpm0,035 & 0,592\textpm0,041 & 0,268\textpm0,071 & 31,1 \\
-    \hline
     $\text{GNN}_1$ & 0,393\textpm0,062 & 0,496\textpm0,068 & 0,254\textpm0,056 & 0,268\textpm0,056 & 0,544\textpm0,060 & 0,291\textpm0,079 & 120 \\
+    \hline
+    $\text{STAMP}_2$ & 0,395\textpm0,039 & 0,515\textpm0,035 & 0,249\textpm0,037 & 0,266\textpm0,035 & 0,592\textpm0,041 & 0,268\textpm0,071 & 31,1 \\
     \hline
     $\text{STAMP}_1$ & 0,382\textpm0,047 & 0,501\textpm0,042 & 0,253\textpm0,047 & 0,269\textpm0,046 & 0,599\textpm0,059 & 0,269\textpm0,059 & 32,0 \\
     \hline
@@ -634,7 +594,7 @@ quantidade de valores preditos para cada métrica.
   \label{fig:progressao}
   \end{figure}
 
-\section{Abordagem \textit{windowed}, \textit{session-based}, \textit{remaining-items}}
+\subsection{Abordagem \textit{windowed}, \textit{session-based}, \textit{remaining-items}}
 Para a abordagem \textit{remaining-items}, foi realizada uma nova otimização
 considerando a métrica MAP@10, uma vez que essa métrica substitui o HR@10 para
 avaliações de listas ou de conjuntos de itens. Dessa forma, os modelos com nome subscrito aqui presentes possuem hiperparâmetros
@@ -651,7 +611,6 @@ comparados aos demais agrupamentos.
 
 \begin{table}
   \centering
-  \small
   \centerline{
   \begin{tabular}{|l|l|l|l|l|l|l|}
     \hline
@@ -738,7 +697,7 @@ comparados aos demais agrupamentos.
 
 \newpage
 
-\section{Abordagem \textit{windowed}, \textit{session-aware}, \textit{next-item}}
+\subsection{Abordagem \textit{windowed}, \textit{session-aware}, \textit{next-item}}
 
 Em seguida, são apresentados os resultados obtidos com a abordagem
 \textit{windowed} e \textit{session-aware}. Os modelos passaram por otimização
@@ -811,7 +770,6 @@ obtiveram resultados inferiores, o que também foi observado na abordagem
 \end{table}
 
 \begin{table}
-  \small
   \centerline{
   \begin{tabular}{|l|l|l|l|l|l|l|l|}
     \hline
@@ -846,6 +804,7 @@ obtiveram resultados inferiores, o que também foi observado na abordagem
   média dos cinco \textit{splits} acompanhada da variância. Modelos ordenados por HR@5. }
   \label{tab:windowed_}
 \end{table}
+
 \begin{table}
   \centerline{
   \begin{tabular}{|l|r|}
