@@ -38,7 +38,7 @@ na avaliação.
 
 Com essa finalidade, a base de treinamento do presente trabalho é filtrada:
 Nesse último experimento, constam apenas sessões em que o último item da
-sequência é a adição de uma faixa inédita. Essa identificação é feita a partir
+sequência é a adição de uma faixa inédita na plataforma. Essa identificação é feita a partir
 de um metadado disponível, informando se a faixa foi gerada por um \textit{fork}
 ou foi criada, seja por gravação, por importação de uma faixa ou por separação
 de fontes.
@@ -48,6 +48,8 @@ considera apenas o último item da sequência como o item a ser previsto, sem qu
 os demais itens advindos de \textit{fork} sejam recomendados.
 
 \begin{table}[htbp]
+  \small
+  \centering
     \begin{tabular}{|l|l|l|l|l|l|l|l|}
       \hline
       Modelo & HR@5 & HR@10 & MRR@5 & MRR@10 & Cov@10 & Pop@10  \\

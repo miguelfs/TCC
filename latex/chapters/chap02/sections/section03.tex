@@ -311,7 +311,7 @@ aplicação específica:
   dos $N$ itens recomendados equivale aos verdadeiros e falsos positivos:
 
   \begin{equation}
-    \text{Precisão@N} = \frac{\text{Qntd. de itens relevantes nas primeiras N recomendações}}{N}
+    \text{Precisão@N} = \frac{\text{Qntd. de itens relevantes nas } N \text{ recomendações}}{N}
   \end{equation}
 
   Por sua vez, o Recall@N equivale a quantidade de itens relevantes entre
@@ -320,23 +320,31 @@ aplicação específica:
   aos verdadeiros positivos e falsos negativos:
 
   \begin{equation}
-    \text{Recall@N} = \frac{\text{Qntd. de itens relevantes nas primeiras N recomendações}}{\text{Quantidade de itens relevantes}}
+    \text{Recall@N} = \frac{\text{Qntd. de itens relevantes nas } N \text{ recomendações}}{\text{Quantidade de itens relevantes}}
   \end{equation}
 
   \subsubsection{\textit{Mean Average Precision} (MAP)} O MAP@N calcula a média
-  da precisão média (AP@N) para cada consulta. Após cada item relevante ser
-  recomendado, a precisão é medida, tal que a média é calculada por~\cite{carnevali2023offline}:
-
+  da precisão média (AP@N) para cada consulta $q$ (do inglês
+  \textit{query})~\cite{carnevali2023offline}. Após uma variedade de consultas
+  ser realizada -- cada uma retornando uma lista ordenada de recomendações mais
+  relevantes --, obtém-se a precisão média de cada consulta:
+  
   \begin{align}
-    \text{AP@N} &= \frac{\sum_{i = 1}^{K}\text{Precisão@k} \times \text{rel}_{k}}{\text{qntd. de resultados relevantes}} \\
-    \text{rel}_k &= \begin{cases}
-      1 & \text{se} \quad k \leq N \\
+    \text{AP@N} &= \frac{\sum_{n = 1}^{N}\text{Precisão@n} \times \text{rel}_{n}}{\text{qntd. de resultados relevantes}} \\
+    \text{rel}_n &= \begin{cases}
+      1 & \text{se} \quad n \leq N \\
       0 & \text{caso contrário} 
-    \end{cases} \\
-    \text{MAP@N} &= \frac{1}{Q}\sum_{q = 1}^{Q} \text{AP@N}_{q}
+    \end{cases}
   \end{align}
-  em que $K$ é a quantidade de itens recomendados, $\text{rel}_{k}$ é a
-  relevância do item na posição $k$ e $Q$ é a quantidade de consultas.
+  em que $K$ é a quantidade de itens recomendados e $\text{rel}_{k}$ é a
+  relevância do item na posição $k$. Em seguida, a média da precisão média é
+  calculada para todas as $Q$ consultas:
+
+  \begin{equation}
+    \text{MAP@N} = \frac{1}{Q}\sum_{q = 1}^{Q} \text{AP@N}_{q}
+  \end{equation}
+  
+
 
   \subsubsection{\textit{Normalized Discounted Cumulative Gain} (NDCG)}
   O NDCG é baseado no ganho cumulativo (CG). O ganho cumulativo é a soma dos
@@ -364,9 +372,10 @@ aplicação específica:
 
 
   \subsubsection{F1}
-É calculado a partir da média harmônica entre a precisão e o \textit{recall}. Dessa forma,
-um valor baixo ou próximo de zero para qualquer uma dessas duas métricas derruba
-o valor do F1~\cite{sessionbaseddp}:
+É calculado a partir da média harmônica entre a precisão e o \textit{recall}.
+Dessa forma, um valor baixo ou próximo de zero para qualquer uma dessas duas
+métricas diminui muito o valor do F1~\cite{sessionbaseddp}, o que exprime a precisão e
+o \textit{recall} de forma equilibrada, sendo calculado por:
 
 \begin{equation}
   \text{F1} = \frac{2 \times \text{Precisão} \times \text{Recall}}{\text{Precisão} + \text{Recall}}
@@ -396,13 +405,7 @@ Redes neurais recorrentes (RNNs, do inglês \textit{recurrent neural networks})
 onde $g$ é uma função suave e limitada entre 0 e 1, como uma função logística
 sigmoide ou tangente hiperbólica, $\mathbf{x_t}$ é a entrada da unidade no
 instante atual, $W$ e $U$ são os pesos associados à entrada e ao estado
-anterior, $\mathbf{h_{t-1}}$ é o estado no instante anterior. Uma RNN gera uma
-distribuição de probabilidade sobre o próximo elemento da sequência a partir do
-estado atual:
-
-\begin{equation}
-    p(\mathbf{x_t}|\mathbf{x_1},\ldots , \mathbf{x_{t-1}}) = g(\mathbf{h_t})
-\end{equation}
+anterior, $\mathbf{h_{t-1}}$ é o estado no instante anterior.
 
 Um problema típico da arquitetura básica de RNNs é o desaparecimento ou explosão
 do gradiente ao minimizar a função de custo, uma vez que o incremento ou
@@ -415,12 +418,10 @@ sob a forma de LSTMs ou GRUs foram propostas para resolver esse problema.
 \abbrev{LSTM}{memória de curto e longo prazo}
 A memória de curto e longo prazo (LSTM, do inglês \textit{long short-term
 memory}) \cite{chung2014empirical} substitui a unidade típica de uma RNN. Sua
-principal melhoria, tanto na LSTM é a capacidade de manter o estado atual
+principal melhoria é a capacidade de manter o estado atual
 de suas células, em vez de sobrescrevê-lo a cada iteração. Dessa forma, a
 unidade pode detectar e manter informações relevantes de forma dinâmica,
-inclusive em sequências longas.
-
-Sua arquitetura resolve os problemas de dissipação ou explosão do
+inclusive em sequências longas. Sua arquitetura resolve os problemas de dissipação ou explosão do
 gradiente, uma vez que a etapa de \textit{backpropagation} não envolve a
 multiplicação de todos os pesos.
 
@@ -430,7 +431,8 @@ $\mathbf{h_t}$, é dada por:
     \mathbf{h_t} = \mathbf{o_t}\tanh(\mathbf{c_t})
 \end{equation}
 em que $\mathbf{o_t}$ é a porta de saída, a qual controla a quantidade de
-exposição, cujo valor é dado por:
+exposição, cujo valor é dado em função da entrada atual $\mathbf{x_t}$, da memória atual $\mathbf{c_t}$ e do
+estado anterior $\mathbf{h_{t-1}}$:
 
 \begin{equation}
     \mathbf{o_t} = \sigma(W_o\mathbf{x_t} + U_o\mathbf{h_{t-1}} + V_o\mathbf{c_t})
@@ -463,7 +465,7 @@ recurrent unit}), também possui estados auxiliares, denominados portas, que
 controlam a atualização de seu estado principal, e ambas realizam a soma linear
 entre o estado anterior com o estado candidato. A principal diferença entre
 essas duas unidades é a capacidade da LSTM controlar o quanto do estado anterior
-é assimilado, o que não há na GRU~\cite{chung2014empirical}.
+é assimilado, o que não há na GRU~\cite{chung2014empirical}. Por ter uma porta a menos, a GRU possui menos parâmetros e a duração de seu treinamento é mais rápida.
 
 Na GRU, porta de atualização $\mathbf{z_t}$ pondera o quanto do
 estado candidato $\mathbf{\hat{h_t}}$ e do estado anterior $\mathbf{h_{t-1}}$
@@ -535,16 +537,16 @@ como uma unidade LSTM, e $q(\cdot)$ é uma função sobre os estados ocultos. Po
 exemplo, caso a função $q$ retorne apenas o último estado, $q(\mathbf{h_1}, \ldots, \mathbf{h_{T_x}}) =
 \mathbf{h_{T_x}}$.
 
-O decodificador é treinado para prever a próxima palavra $\mathbf{y_t}$, dado o
-vetor intermediário $\mathbf{c}$ e todas as palavras previamente preditas
+O decodificador é treinado para prever a próxima palavra $\mathbf{y_t}$ dado o
+vetor intermediário de contexto $\mathbf{c}$ e todas as palavras previamente preditas
 $\mathbf{y_1}, \ldots, \mathbf{y_{t-1}}$. O decodificador define uma
 distribuição de probabilidade conjunta sobre a tradução $\mathbf{y}$, decompondo
 a probabilidade conjunta em probabilidades condicionais ordenadas:
 \begin{equation}
-    p(\mathbf{y}) = \prod_{t=1}^T p(y_t | y_1, \ldots, y_{t-1}, \mathbf{c})
+    p(\mathbf{y}) = \prod_{t=1}^T p(\textbf{y}_t | \textbf{y}_1, \ldots, \textbf{y}_{t-1}, \mathbf{c})
 \end{equation}
 \begin{equation}
-    p(y_t | y_1, \ldots, y_{t-1}, \mathbf{c}) = g(y_{t-1}, \mathbf{s_t}, \mathbf{c})
+    p(\textbf{y}_t | \textbf{y}_1, \ldots, \textbf{y}_{t-1}, \mathbf{c}) = g(\textbf{y}_{t-1}, \mathbf{s_t}, \mathbf{c})
 \end{equation}
 em que $g$ é uma função não-linear que retorna a probabilidade de
 $\mathbf{y_t}$, sendo $\mathbf{s_t}$ o estado oculto de $y_t$ na saída.
@@ -558,36 +560,48 @@ na arquitetura.
 
 \subsection{Mecanismo de atenção}
 Modelos sequenciais ou recorrentes, durante o processo de treinamento, efetuam
-uma série de cálculos de forma sequencial, uma vez que cada estado oculto
-$\mathbf{h_t}$ depende do estado anterior $\mathbf{h_{t-1}}$ e da entrada no
-estado atual $\mathbf{x_t}$. Esse processo sequencial impede a paralelização, o
+uma série de cálculos de forma sequencial, uma vez que cada estado oculto depende do estado anterior e da entrada no
+estado atual. Esse processo sequencial impede a paralelização, o
 que gera um gargalo de processamento.
 
 O mecanismo de atenção \cite{bahdanau2016neural} resolve esse problema ao
 receber conjuntamente todos os estados ocultos, cuja importância de cada um é
-ponderada pelos pesos de atenção $\mathbf{\alpha_{ij}}$:
+ponderada pelos pesos de atenção $\alpha_{ij}$. No contexto de mecanismo
+de atenção, os vetores $h_t$, $h_{t-1}$, $\ldots$, $h_1$ são vetores de anotações em que o codificador mapeia a sequência de entrada. O vetor de contexto é obtido a partir da soma ponderada dos vetores de anotações, em que os pesos de atenção são obtidos a partir de uma função de alinhamento:
 
 
 \begin{align}
-    c_i &= \sum_{j=1}^{T_x} \alpha_{ij} \mathbf{h_j} \\
+    c_i &= \sum_{j=1}^{T_x} \alpha_{ij} h_j \\
     \alpha_{ij} &= \frac{\exp(e_{ij})}{\sum_{k=1}^{T_x} \exp(e_{ik})} \\
     \alpha_{ij} &=  \text{softmax}(e_{ij})
 \end{align}
+em que $c_i$ é o vetor de contexto na i-ésima posição de saída e $\alpha_{ij}$ é
+o peso associado a cada estado oculto $\mathbf{h_j}$, na i-ésima posição de
+saída e j-ésima posição de entrada. O vetor de contexto no mecanismo de atenção é calculado para cada posição de saída, ao contrário
+da arquitetura codificador-decodificador, em que o vetor de contexto é calculado uma única vez para toda a sequência de saída.
+
 
 Cada peso de atenção é obtido a partir de um modelo de alinhamento $\mathbf{e}$,
 que identifica a relevância conjunta das entradas em torno da posição $i$ e das
 saídas em torno da posição $j$ entre si. O ato de atribuir pesos de atenção a
-cada estado oculto é denominado \textit{pooling} de atenção.
-
-O modelo de alinhamento é uma camada de
+cada estado oculto é denominado \textit{pooling} de atenção. O modelo de alinhamento é uma camada de
 rede neural, obtida por:
 
 \begin{equation}
-    e_{ij} = a(\mathbf{s_{i-1}}, \mathbf{h_j}) = \mathbf{v_a}^\top \tanh(\mathbf{W_a}s_{i-1} + \mathbf{U_a}h_j)
+    e_{ij} = a(s_{i-1}, h_j) = \mathbf{v_a}^\top \tanh(\mathbf{W_a}s_{i-1} + \mathbf{U_a}h_j)
 \end{equation}
 em que $\mathbf{v_a} \in \mathbb{R}^n$, $\mathbf{W_a} \in \mathbb{R}^{n \times
 n}$ e $\mathbf{U_a} \in \mathbb{R}^{n \times m}$ são as matrizes com os pesos da
-camada.
+camada. Os estados ocultos são calculados a partir do estado anterior, do vetor de contexto atual e da saída anterior:
+
+\begin{equation}
+    s_i = f(s_{i-1}, y_{i-1}, c_i)
+\end{equation}
+Note que o vetor de contexto agrega a informação de todos os vetores de anotações e dos pesos de atenção. Finalmente, a probabilidade condicional de $y_i$ associada ao estado oculto $s_i$ é dada por:
+\begin{equation}
+  % p(yi|y1, . . . , yi−1, x) = g(yi−1, si, ci),
+  p(y_i | y_1, \ldots, y_{i-1}, x) = g(y_{i-1}, s_i, c_i)
+\end{equation}
 
 A literatura recente de aprendizado profundo concedeu destaque a modelos de
 auto-atenção (do inglês \textit{self-attention}), dado que são o componente
@@ -891,7 +905,7 @@ são consideradas o atual estado da arte em SBRS.
 \abbrev{CSRM}{\textit{Collaborative Session-based Recommendation Machine}}
 O \textit{Collaborative Session-based Recommendation Machine} (CSRM) é um modelo
 híbrido que avalia o comportamento de sessões vizinhas para melhorar a
-recomendação da sessão atual \cite{collaborative2018}. O modelo é composto um
+recomendação da sessão atual \cite{collaborative2018}. O modelo é composto por um
 codificador de memória interna, responsável por codificar informação da sessão
 vigente, um codificador de memória externa, que registra as sessões mais
 recentes como sessões vizinhas em potential, e um decodificador de recomendação,
@@ -963,9 +977,7 @@ A arquitetura da NextItNet utiliza blocos residuais, proporcionando vantagens em
 comparação às CNNs tradicionais \cite{he2016deep}. Um aspecto das CNNs
 tradicionais durante o treinamento é o acúmulo de ruído nos valores produzidos
 pela camada de saída. Isso ocorre devido aos pesos aleatórios na inicialização
-da rede, resultando em uma convergência lenta do gradiente em redes profundas.
-
-Os blocos residuais tratam dessa questão ao agrupar as camadas da rede em
+da rede, resultando em uma convergência lenta do gradiente em redes profundas.  Os blocos residuais tratam dessa questão ao agrupar as camadas da rede em
 blocos, tal que a entrada de cada bloco é diretamente transmitida à entrada do
 bloco seguinte, somada ou concatenada à saída do bloco anterior. Isso elimina a
 necessidade de os blocos aprenderem quais informações da camada de entrada devem
@@ -986,7 +998,7 @@ convolução dilatada e uma segunda camada de normalização.
 Outro aspecto importante da arquitetura é evitar que o item a ser previsto tenha
 acesso aos itens seguintes da sequência. Isso é feito a partir de uma máscara
 aplicada na entrada da rede, que realiza operações de translação e deslocamento
-no vetor unidimensional de entrada.
+no vetor unidimensional de entrada, ocultando os itens futuros.
 
 \subsubsection{NARM}
 \abbrev{NARM}{\textit{Neural Attentive Session-based Recommendation Model}}
@@ -1036,11 +1048,7 @@ O modelo \textit{Session-based Recommendation with Graph Neural Networks}
 atenção, representando internamente os dados como \textit{embeddings} de itens
 e \textit{embeddings} de sessões. \cite{gnn}.
 
-Na bibliografia descritiva do modelo, os autores identificam dois problemas
-comuns das demais arquiteturas. O primeiro é a dificuldade em prever
-corretamente qual o usuário associado à sessão prevista, uma vez que em muitas
-bases de dados e situações reais, o usuário é anônimo, ao contrário da abordagem
-\textit{session-aware}. O segundo problema é a modelagem da sessão em transições
+Na bibliografia descritiva do modelo, os autores apontam que um problema comum das arquiteturas anteriores é a modelagem da sessão em transições
 de itens consecutivos em um único caminho, negligenciando transições entre
 contextos distintos que acarretam em itens distintos na sessão. Por
 consequência, transições mais complexas são negligenciadas por esses modelos
@@ -1073,25 +1081,21 @@ da sessão. Para isso, é utilizada uma função de ativação \textit{softmax}.
 empregada é a entropia cruzada.
 
 \subsubsection{STAMP}
-\abbrev{STAMP}{\textit{Short-Term Attention/Memory Priority}}
-O modelo \textit{Short-Term Attention/Memory Priority} (STAMP)~\cite{stamp}, assim como o
-modelo NARM, distingue e identifica os padrões de curto e longo prazo
-nas interações dos usuários. Sua principal diferença é o reforço explícito na
-última interação realizada na sessão, como medida para realizar essa distinção.
+\abbrev{STAMP}{\textit{Short-Term Attention/Memory Priority}} O modelo
+\textit{Short-Term Attention/Memory Priority} (STAMP)~\cite{stamp}, assim como o
+modelo NARM, distingue e identifica os padrões de curto e longo prazo nas
+interações dos usuários. Sua principal diferença é o reforço explícito na última
+interação realizada na sessão, permitindo que o modelo extraia atributos tanto
+do objetivo principal da sessão quanto de desvios de curto prazo.
 
 Um ponto levantado pelos autores a modelos baseados em filtragem colaborativa,
 fatoração de matrizes e cadeias de Markov é a dificuldade em adaptarem-se para
 padrões de curto prazo, favorecendo padrões de preferência geral. Por outro
 lado, modelos baseados em aprendizado profundo são capazes de, em sua modelagem,
-lidarem com esse tipo de problema. No caso particular do STAMP, a ênfase
-explícita na última interação da sessão permite que o modelo extraia atributos
-tanto do objetivo principal da sessão quanto de desvios de curto prazo nela.
+lidarem com esse tipo de problema.
 
 Primeiramente, o modelo gera um vetor de \textit{embeddings} para cada item da
-sessão. O próprio modelo deve aprender a gerar a representação em
-\textit{embedding} para cada item.
-
-O mecanismo de atenção escolhido é uma rede neural \textit{feed-forward}, em que
+sessão. O mecanismo de atenção escolhido é uma rede neural \textit{feed-forward}, em que
 o coeficiente de atenção para o i-ésimo item é calculado com uma função de
 ativação sigmoide. A função recebe uma combinação linear dos \textit{embeddings} do
 i-ésimo item, do último item da sessão e da motivação geral da sessão. A
@@ -1115,22 +1119,16 @@ baixo-nível é repassado à entrada de uma RNN de alto-nível. A RNN de alto-n�
 é responsável por prever um vetor de inicialização para o próximo estado da RNN
 de baixo-nível. Os estados ocultos dessas redes são compostas por GRUs.
 
-No caso do HGru4Rec, cada unidade é composta por duas GRUs. A primeira GRU, à
+No caso do HGru4Rec, cada unidade é composta por duas GRUs. A primeira GRU, a
 nível de sessão, é responsável por modelar a atividade do usuário dentro de
-sessões e gerar recomendações. A segunda GRU, à nível de usuário, é responsável
+sessões e gerar recomendações. A segunda GRU, a nível de usuário, é responsável
 por modelar a evolução das preferências dos usuários entre as sessões, além de
 inicializar a GRU da próxima sessão. A modelagem de usuário faz com que essa abordagem
 seja \textit{session-aware}.
 
 % explicar que usa mini-batch training
 O modelo é treinado em \textit{mini-batches}. A função de custo utilizada foi a
-  TOP1 \cite{HidasiKBT15}, que consiste na posição relativa do item relevante,
-  calculada como:
-  \begin{equation}
-    L_s = \frac{1}{N_s} \sum_{j=1}^{N_s}I\{ \hat{r}_{s,j} > \hat{r}_{s,i}\}
-  \end{equation}
-  em que $N_s$ é o tamanho da amostra, $I$ é a função indicadora aproximada por
-  uma sigmoide, $i$ é o item em questão da predição e $j$ é um item da amostra.
+  TOP1 \cite{HidasiKBT15}, que consiste na posição relativa do item relevante.
 
 \subsubsection{IIRNN}
 \abbrev{IIRNN}{\textit{Inter-Intra Recurrent Neural Network}}
@@ -1168,16 +1166,17 @@ modelo às preferências mais recentes dos usuários, mantendo capacidade de
 generalização. 
 
 \subsubsection{NCSF}
-\abbrev{NCSF}{\textit{Neural Cross-Session Filtering}}
-Os autores do modelo \textit{Neural Cross-Session Filtering} (NCSF)~\cite{hu2018neural} discorrem
+\abbrev{NCSF}{\textit{Neural Cross-Session Filtering}} Os autores do modelo
+\textit{Neural Cross-Session Filtering} (NCSF)~\cite{hu2018neural} discorrem
 sobre três problemas que afetam o desempenho em sistemas de recomendação
 \textit{session-based}: a falta do contexto da sessão, em que um item adquirido
 recentemente pode significar a falta de desejo nele; a modelagem da ordem dos
 itens de forma rígida, em situações em que a ordem não é determinante; e a
-distinção entre os contextos intra e inter-sessão, tal como o modelo IIRNN aborda.
-Dessa forma, o modelo NCSF propõe o uso de um codificador associado ao histórico de sessões
-e outro associado à sessão vigente. Um terceiro codificador recebe os estados ocultos das saídas
-dos dois primeiros codificadores e gera a predição.
+distinção entre os contextos intra e inter-sessão, tal como o modelo IIRNN
+aborda. Dessa forma, o modelo NCSF propõe uma arquitetura menos rígida e mais
+flexível, a partir do uso de um codificador associado ao histórico de sessões e
+outro associado à sessão vigente. Um terceiro codificador recebe os estados
+ocultos das saídas dos dois primeiros codificadores e gera a predição.
 
 O codificador de histórico de sessões consiste em RNN de camadas GRU. O
 codificador recebe como entrada \textit{embeddings} de sessões. Esses
@@ -1195,7 +1194,7 @@ as saídas dos dois codificadores são repassadas a um codificador intra e
 inter-sessão. Uma função de ativação é utilizada como porta, filtrando a
 informação dos dois codificadores anteriores. Essa função concatena os dois
 vetores de saída, aplicando um peso e uma função sigmoide em seguida, gerando o
-vetor de porta. A partir desse vetor, o veto de \textit{embedding} do contexto
+vetor de porta. A partir desse vetor, o vetor de \textit{embedding} do contexto
 é calculado como a combinação linear dos dois \textit{embeddings} de sessão,
 ponderados pelo vetor de porta.
 
@@ -1334,66 +1333,7 @@ modelos em cenários \textit{session-based} são adaptações de seus usos
 originais~\cite{ludewig2020advances}. O único modelo originalmente projetado
 para cenários \textit{session-based} é justamente o SMF.
 
-\section{Indaband}
 
-O aplicativo móvel Indaband contém uma série de funcionalidades e abstrações
-para a gravação e distribuição de música colaborativa. Para maior entendimento
-do do sistema de recomendação a ser proposto, é necessário compreender as
-principais entidades do aplicativo.
-
-\subsubsection{Sessão}
-
-A sessão é o ambiente digital colaborativo que permite a adição, edição, remoção e mixagem de faixas. Sessão também é o nome dado ao conjunto de faixas introduzidas pelos usuários que constituem uma determinada música.
-
-O usuário que cria a sessão é considerado seu dono. Os demais
-usuários que aceitam o convite para ingressar na sessão são considerados
-participantes.
-
-A sessão contém uma funcionalidade de cabine de gravação, permitindo que os
-participantes gravem faixas de áudio ou de vídeo. Além disso, o usuário pode
-importar mídias de áudio ou de vídeo, tal que cada mídia importada equivale a
-uma faixa.
-
-Toda sessão publicada é disponível para visualização pública e contém ao menos
-uma faixa. A publicação pode ser posteriormente removida pelo dono da sessão.
-
-
-\begin{figure}[h]
-  \begin{center}
-    \subfigure[]{\includegraphics[width=0.4\textwidth]{chapters/chap02/images/wayfaring_original.jpeg}}
-    \subfigure[]{\includegraphics[width=0.4\textwidth]{chapters/chap02/images/wayfaring_fork.jpg}}
-    \caption{Duas sessões publicadas no aplicativo Indaband. A primeira sessão é
-    a sessão original, enquanto a segunda é um \textit{fork} subsequente da
-    primeira. Ambas compartilham o mesmo nome e as faixas da primeira sessão. A
-    segunda sessão contém faixas adicionais.}
-    \label{fig:session_and_fork}
-  \end{center}
-  \end{figure}
-
-\subsubsection{\textit{Fork}}
-Toda sessão publicada disponibiliza a funcionalidade de \textit{fork} para os
-demais usuários da plataforma. O \textit{fork} é uma cópia da sessão original,
-em que é possível adicionar gravações inéditas, editar e remover faixas pré-existentes sem afetar a publicação original.
-
-Quando publicada, a sessão \textit{fork} exibe o autor original das faixas
-pré-existentes que forem mantidas, além da referência para a sessão anterior.
-
-O \textit{fork} é uma das principais formas de colaboração assíncrona entre
-usuários. A FIGURA \ref{fig:session_and_fork} ilustra duas sessões, sendo a
-segunda um \textit{fork} subseqeuente da primeira. Note que a quantidade de
-faixas e usuários presentes na segunda sessão aumenta. Além disso, conta com
-maior quantidade de visualizações, comentários e outras formas de engajamento
-positivo. Entre essas duas sessões, houve uma série de \textit{forks}
-intermediários, realizados por cada um dos usuários que adicionaram faixas às
-suas sessões.
-
-
-\subsubsection{Faixa}
-A faixa é uma mídia com áudio e vídeo que geralmente contém a gravação de um
-instrumento ou voz. Uma faixa necessariamente é criada a partir de um entre três
-recursos: tal como uma gravação original, tal como um \textit{fork} de uma faixa
-publicada anteriormente ou como uma importação de uma mídia de áudio ou de
-vídeo.
 
   % \subsection{Exemplos}
 

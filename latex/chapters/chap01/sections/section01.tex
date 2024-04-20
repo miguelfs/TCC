@@ -74,17 +74,73 @@ publicamente em Agosto de 2022. O quadro de funcionários é majoritariamente
 brasileiro, enquanto que o produto possui distribuição global. A FIGURA
 \ref{fig:cap_tela} exibe capturas de tela da interface visual.
 
+
+O aplicativo móvel Indaband contém uma série de funcionalidades e abstrações
+para a gravação e distribuição de música colaborativa. Para maior entendimento
+do do sistema de recomendação a ser proposto, é necessário compreender as
+principais entidades do aplicativo.
+
+
+\subsubsection{Sessão}
+
 Na aplicação, usuários podem criar sessões, que são ambientes colaborativos de
 gravação entre os participantes. As sessões contam com ferramentas para gravação
 e mixagem. O ambiente de pré-visualização, edição e produção da sessão chama-se
-\textit{Studio}.
+\textit{Studio}. Nesse ambiente, há funcionalidades de adição, edição,
+remoção e mixagem de faixas. Sessão também é o nome dado ao conjunto de faixas
+introduzidas pelos usuários que constituem uma determinada música.
 
-Uma vez que o usuário conclua as etapas de produção da sessão no \textit{Studio}
-e esteja satisfeito com o resultado final, ele tem a opção de publicar a sessão
-no \textit{Feed} público da aplicação. No \textit{Feed}, todos os usuários da
-plataforma podem visualizar e interagir com a sessão publicada adicionando
-comentários, aplausos e compartilhando com outros usuários dentro e fora da
-aplicação.
+A sessão contém uma funcionalidade de cabine de gravação, permitindo que os
+participantes gravem faixas de áudio ou de vídeo. Além disso, o usuário pode
+importar mídias de áudio ou de vídeo, tal que cada mídia importada equivale a
+uma faixa.
+
+O usuário que cria a sessão é considerado seu dono, enquanto os demais usuários
+que aceitam o convite para ingressar são considerados participantes. Toda sessão
+publicada é disponível para visualização pública e contém ao menos uma faixa. A
+publicação pode ser posteriormente removida pelo dono da sessão.
+
+
+\begin{figure}[h]
+  \begin{center}
+    \subfigure[]{\includegraphics[width=0.4\textwidth]{chapters/chap02/images/wayfaring_original.jpeg}}
+    \subfigure[]{\includegraphics[width=0.4\textwidth]{chapters/chap02/images/wayfaring_fork.jpg}}
+    \caption{Duas sessões publicadas no aplicativo Indaband. A primeira sessão é
+    a sessão original, enquanto a segunda é um \textit{fork} subsequente da
+    primeira. Ambas compartilham o mesmo nome e as faixas da primeira sessão. A
+    segunda sessão contém faixas adicionais.}
+    \label{fig:session_and_fork}
+  \end{center}
+  \end{figure}
+
+\subsubsection{\textit{Fork}} Toda sessão publicada disponibiliza a
+funcionalidade de \textit{fork} para os demais usuários da plataforma. O
+\textit{fork} é uma cópia da sessão original, em que é possível adicionar
+gravações inéditas, editar e remover faixas pré-existentes sem afetar a
+publicação original. Quando publicada, a sessão \textit{fork} exibe o autor original das faixas
+pré-existentes que forem mantidas, além da referência para a sessão anterior.
+
+O \textit{fork} é uma das principais formas de colaboração assíncrona entre
+usuários. A FIGURA \ref{fig:session_and_fork} ilustra duas sessões, sendo a
+segunda um \textit{fork} subseqeuente da primeira. Note que a quantidade de
+faixas e usuários presentes na segunda sessão aumenta. Além disso, conta com
+maior quantidade de visualizações, comentários e outras formas de engajamento
+positivo. Entre essas duas sessões, houve uma série de \textit{forks}
+intermediários, realizados por cada um dos usuários que adicionaram faixas às
+suas sessões.
+
+
+\subsubsection{Faixa}
+A faixa é uma mídia com áudio e vídeo que geralmente contém a gravação de um
+instrumento ou voz. Uma faixa necessariamente é criada a partir de um entre três
+recursos: tal como uma gravação original, tal como um \textit{fork} de uma faixa
+publicada anteriormente ou como uma importação de uma mídia de áudio ou de
+vídeo.
+
+
+
+
+\section{Sobrecarga de informação}
 
 Após três anos de desenvolvimento, a aplicação conta com dezenas de milhares de
 usuários cadastrados, os quais centenas gravam mensalmente. Dado o grande
@@ -93,8 +149,6 @@ similares demanda tempo e esforço. O mesmo ocorre ao procurar uma sessão que
 seja de interesse em meio ao grande volume de conteúdo publicado. Essa
 dificuldade percebida pelo usuário é conhecida na literatura de sistemas de
 recomendação como sobrecarga de informação \cite{roetzel2019information}.
-
-\section{Sobrecarga de informação}
 
 A sobrecarga de informação, segundo \citet{roetzel2019information}, é um estado em que um tomador de decisões observa um
 conjunto ou uma carga de informações de complexidades distintas, a qual inibe a
@@ -146,18 +200,18 @@ sobrecarga de informação e a insatisfação gerada pela sobrecarga.
 
 \abbrev{RS}{sistemas de recomendação}
 Sistemas de recomendação (RS, do inglês \textit{recommender systems}) são
-ferramentas de \textit{software} que sugerem itens úteis para um usuário
-\cite{ricci2010introduction}. Esses sistemas, que podem ser personalizados ou
-não-personalizados, ajudam usuários a lidarem com processos de tomada de decisão
-em meio a sobrecarga de informações, seja na escolha de um produto em um
-\textit{e-commerce} ou na seleção de um filme em um serviço de
-\textit{streaming}. Ao contrário de uma ferramenta de busca em que o usuário
-ativamente procura por um item específico, sistemas de recomendação são úteis
-quando o usuário explora um catálogo diversificado, otimizando a distribuição
-dos itens a partir de suas preferências pessoais. As FIGURAS \ref{fig:spotify} e
-\ref{fig:twitter} ilustram sistemas de recomendação para tarefas distintas:
-recomendação de \textit{playlists} na plataforma Spotify e recomendação de
-perfis de usuário na plataforma Twitter, respectivamente.
+ferramentas de \textit{software} que sugerem itens úteis para um usuário, de
+acordo com a disponibilidade de seu histórico \cite{ricci2010introduction}. Esses
+sistemas, que podem ser personalizados ou não-personalizados, ajudam usuários a
+lidarem com processos de tomada de decisão em meio a sobrecarga de informações,
+seja na escolha de um produto em um \textit{e-commerce} ou na seleção de um
+filme em um serviço de \textit{streaming}. Ao contrário de uma ferramenta de
+busca em que o usuário ativamente procura por um item específico, sistemas de
+recomendação são úteis quando o usuário explora um catálogo diversificado,
+otimizando a distribuição dos itens a partir de suas preferências pessoais. As
+FIGURAS \ref{fig:spotify} e \ref{fig:twitter} ilustram sistemas de recomendação
+para tarefas distintas: recomendação de \textit{playlists} na plataforma Spotify
+e recomendação de perfis de usuário na plataforma Twitter, respectivamente.
 
 
 \begin{figure}[ht]

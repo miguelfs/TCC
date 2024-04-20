@@ -154,6 +154,7 @@ individuais de usuários ao criarem sessões.
   
   \begin{table}
     \centering
+    \small
     \begin{tabular}{lcccccc}
         \toprule
         \textbf{Dataset} & \textbf{8TRACKS} & \textbf{30MUSIC} & \textbf{AOTM} & \textbf{NOW PLAYING} & \textbf{CLEF} \\
@@ -195,7 +196,31 @@ individuais de usuários ao criarem sessões.
   \end{table}
   
   \newpage
-  \section{Experimentos} 
+  \section{Experimentos}
+
+  Cinco experimentos são apresentados a seguir. A TABELA
+  \ref{tab:experiments_done} apresenta uma relação dos experimentos realizados,
+  caracterizados por três fatores: o tipo de problema -- \textit{session-based}
+  ou \textit{session-aware} --, a abordagem de divisão dos dados --
+  \textit{single} ou \textit{windowed} -- e a avaliação utilizada --
+  \textit{next-item}, \textit{rem. items} ou \textit{last-item} -- . Os fatores
+  serão detalhados conjuntamente com a descrição de cada experimento.
+
+
+\begin{table}
+ \centering
+ \begin{tabular}{|l|l|l|l|}
+   \hline
+   \textbf{Experimento} & \textbf{Tipo} & \textbf{Divisão dos Dados} & \textbf{Avaliação} \\ \hline 
+   1 &\textit{Session-based} & \textit{Single} & \textit{Next-item}\\ \hline
+   2 & \textit{Session-based} & \textit{Windowed} & \textit{Rem. items} \\ \hline
+   4 & \textit{Session-aware} & \textit{Windowed} & \textit{Next-item}\\ \hline
+   5 & \textit{Session-based} & \textit{Single} & \textit{Last-item}\\ \hline
+ \end{tabular}
+ \caption{Relação dos experimentos realizados.}
+ \label{tab:experiments_done}
+\end{table}
+
 
 % \begin{table}[htbp]
 %   \centering
@@ -214,6 +239,19 @@ individuais de usuários ao criarem sessões.
 %   \label{tab_dataset}
 % \end{table}
 
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|l|l|l|l|l|}
+    \hline
+    Conjunto & Eventos & Sessões & Itens & $\Delta$ & $\sigma$ & Janela de tempo \\ \hline 
+       Treinamento & 90.801 & 26.649 & 1.702 & 3,3 & 2,0 & 01/01/2023 a 03/12/2023 \\ \hline
+      Teste & 11.265 & 3.106 & 589 & 3,6 & 2,0 & 02/08/2023 a 18/12/2023 \\ \hline
+  \end{tabular}
+  \caption{Informações sobre o \textit{dataset} utilizado na abordagem
+  \textit{single}. $\Delta$ e $\sigma$ são a média e o desvio padrão da quantidade de
+  usuários por sessão.}
+  \label{tab:split_data}
+\end{table}
 \subsection{Abordagem \textit{single-split}, \textit{session-based}, \textit{next-item}}
 
 \citet{HidasiKBT15} utiliza a abordagem \textit{single-split} para comparar a
@@ -227,6 +265,15 @@ O \textit{dataset} é dividido segundo a abordagem \textit{single split}, em um
 \ref{tab:split_data}. Nesses experimentos, os modelos de base de comparação
 desconsideram o usuário dono da sessão. Dessa forma, não há modelos
 \textit{session-aware}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=1\textwidth]{chapters/chap04/images/histograma.png}
+  \caption{Distribuição da quantidade de usuários por sessão na abordagem
+  \textit{single}. A distribuição de treinamento está empilhada acima da
+  distribuição de teste.}
+  \label{fig:next-item-single}
+\end{figure}
 
 Apenas sessões com um mínimo de dois usuários estão presentes, como ilustrado na
 FIGURA \ref{fig:next-item-single}. Similarmente, o suporte mínimo dos itens é
@@ -243,35 +290,9 @@ Na abordagem apresentada, apenas a primeira interação de cada usuário na
 sessão consta na base, de forma que nenhum usuário apareça mais de uma vez na
 mesma sessão. Dessa forma, a tarefa do modelo é prever qual será o próximo usuário
 inédito a contribuir na sessão.
-
-
-  \begin{table}
-    \centering
-    \begin{tabular}{|l|l|l|l|l|l|l|}
-      \hline
-      Conjunto & Eventos & Sessões & Itens & $\Delta$ & $\sigma$ & Janela de tempo \\ \hline 
-         Treinamento & 90.801 & 26.649 & 1.702 & 3,3 & 2,0 & 01/01/2023 a 03/12/2023 \\ \hline
-        Teste & 11.265 & 3.106 & 589 & 3,6 & 2,0 & 02/08/2023 a 18/12/2023 \\ \hline
-    \end{tabular}
-    \caption{Informações sobre o \textit{dataset} utilizado na abordagem
-    \textit{single}. $\Delta$ e $\sigma$ são a média e o desvio padrão da quantidade de
-    usuários por sessão.}
-    \label{tab:split_data}
-  \end{table}
-
-  \begin{figure}[ht]
-    \centering
-    \includegraphics[width=1\textwidth]{chapters/chap04/images/histograma.png}
-    \caption{Distribuição da quantidade de usuários por sessão na abordagem
-    \textit{single}. A distribuição de treinamento está empilhada acima da
-    distribuição de teste.}
-    \label{fig:next-item-single}
-  \end{figure}
  
 
-  \subsubsection{Modelos não-personalizados}
-
-  Pop é o modelo de popularidade, com pontuações proporcionais ao suporte dos
+\textbf{Modelos não-personalizados}: Pop é o modelo de popularidade, com pontuações proporcionais ao suporte dos
   itens, limitado aos 100 itens mais populares. Random é o modelo aleatório,
   retornando uma pontuação aleatória para cada item. SPop é o modelo de
   popularidade de sessão, em que as pontuações são proporcionais à maior
@@ -300,9 +321,6 @@ popularidade para sessões recentes (RPop) apresenta resultados superiores aos
 demais modelos de popularidade. Em seguida, na TABELA \ref{tab_baseline}, são
 apresentados os resultados para os modelos de mineração de padrões e vizinhança,
 fatoração de matrizes e redes neurais.
-
-
-\subsubsection{Modelos por mineração de padrões e vizinhança}
 
 \begin{table}[htbp]
   \abbrev{CT}{\textit{Context Tree}}
@@ -392,7 +410,7 @@ $\text{vsKNN}_{1}$ & 0,365 & 0,527 & 0,136 & 0,158 & 0,312 & 0,222 & 0.1 \\
   \label{tab_baseline}  
 \end{table}
 
-Inclui regras de associação, cadeias de Markov, regras de
+\textbf{Modelos por mineração de padrões e vizinhança}: Inclui regras de associação, cadeias de Markov, regras de
 sequência. Também é realizada para métodos de vizinhança: kNN, vskNN, STAN e
 VSTAN. Os modelos SR, skNN e vsKNN são otimizados com seus respectivos
 hiperparâmetros, obtidos a partir de uma otimização do MRR@10.
@@ -407,15 +425,13 @@ vizinhança obtiveram bons resultados para HR@5 e HR@10. Entre os modelos de
 vizinhança, o modelo $\text{skNN}_2$ apresentou os melhores resultados, seguido pelo
 modelo $\text{VSTAN}_1$, que é modelo mais complexo dentre os modelos de vizinhança.
 
-\subsubsection{Métodos baseados em fatoração}
-Avalia-se os modelos FPMC, FISM, Fossil,
+\textbf{Métodos baseados em fatoração}: Avalia-se os modelos FPMC, FISM, Fossil,
 BPRMF e smf. Os modelos smf apresentam resultados bem superiores aos demais, tanto no HitRate
 quanto no MRR. Vale observar que a duração do treinamento de cada um dos modelos
 baseados em fatoração é consideravelmente maior do que os modelos de mineração
 de padrões e vizinhança.
 
-\subsubsection{Modelos baseados em redes neurais}
-Inclui os modelos GRU4Rec, NARM, NextItNet, STAMP, GNN e CSRM. Os modelos GNN e
+\textbf{Modelos baseados em redes neurais}: Inclui os modelos GRU4Rec, NARM, NextItNet, STAMP, GNN e CSRM. Os modelos GNN e
 STAMP apresentam os melhores resultados globais para as medidas de HR. Os
 modelos STAMP e NextItNet apresentam bons resultados, enquanto que os modelos
 NARM, GRU4Rec e CSRM apresentam resultados inferiores, inclusive quando comparados
@@ -519,11 +535,11 @@ TABELA \ref{tab:windowed_next_item_all}.
     \hline
     $\text{skNN}_{1}$ & 0,351\textpm0,075 & \textbf{0,526}\textpm0,061 & 0,140\textpm0,029 & 0,164\textpm0,026 & \textbf{0,534}\textpm0,058 & 0,258\textpm0,062 & 0,079 \\
     \hline
-    $STAN_{2}$ & 0,346\textpm0,065 & 0,493\textpm0,057 & 0,129\textpm0,021 & 0,149\textpm0,020 & 0,506\textpm0,071 & 0,262\textpm0,059 & 0,037 \\
+    $\text{STAN}_{2}$ & 0,346\textpm0,065 & 0,493\textpm0,057 & 0,129\textpm0,021 & 0,149\textpm0,020 & 0,506\textpm0,071 & 0,262\textpm0,059 & 0,037 \\
     \hline
     $\text{vsKNN}_{2}$ & 0,340\textpm0,051 & 0,477\textpm0,060 & 0,132\textpm0,021 & 0,150\textpm0,018 & \textbf{0,534}\textpm0,056 & \textbf{0,233}\textpm0,052 & 0,077 \\
     \hline
-    $STAN_{1}$ & 0,339\textpm0,067 & 0,494\textpm0,072 & 0,132\textpm0,025 & 0,153\textpm0,025 & 0,463\textpm0,071 & 0,324\textpm0,068 & 0,324 \\
+    $\text{STAN}_{1}$ & 0,339\textpm0,067 & 0,494\textpm0,072 & 0,132\textpm0,025 & 0,153\textpm0,025 & 0,463\textpm0,071 & 0,324\textpm0,068 & 0,324 \\
     \hline
     $\text{skNN}_{2}$ & 0,334\textpm0,070 & 0,507\textpm0,068 & 0,132\textpm0,024 & 0,156\textpm0,024 & 0,491\textpm0,060 & 0,282\textpm0,065 & 0,021 \\
     \hline
@@ -580,7 +596,7 @@ quantidade de valores preditos para cada métrica.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=1\textwidth]{chapters/chap04/images/hr10_splits.png}
+  \includegraphics[width=0.9\textwidth]{chapters/chap04/images/hr10_splits.png}
   \caption{HR@10 em cada janela para alguns modelos da TABELA
   \ref{tab:windowed_next_item_all}.}
   \label{fig:next-item-single-123}

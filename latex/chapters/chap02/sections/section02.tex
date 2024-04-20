@@ -7,7 +7,7 @@ individual de cada usuário é posta em detrimento da preferência coletiva.
 
 Uma recomendação não-personalizada típica é a de itens mais populares, podendo
 ser modelada de formas distintas. Por exemplo, os modelos \textit{MostPop},
-\textit{RecentPop} e \textit{DecayPop} \cite{ji2020re, jing2023capturing}
+\textit{RecentPop} e \textit{DecayPop}~\cite{ji2020re, jing2023capturing}
 representam, respectivamente, os itens com maior popularidade global, maior
 popularidade da última semana e mais populares das últimas seis semanas com
 decaimento exponencial.
@@ -15,12 +15,12 @@ decaimento exponencial.
 Uma característica da recomendação por popularidade é a distribuição em
 cauda-longa da frequência de recomendações: uma pequena parcela dos itens
 concentra a maior parte das avaliações. Como consequência, essa forma de
-recomendação possui diversidade mínima \cite{aggarwal2016recommender}. A
+recomendação possui diversidade mínima~\cite{aggarwal2016recommender}. A
 diversidade implica que, em uma lista de recomendações, cada recomendação
 individual seja o mais distinta possível das demais. Esse aspecto evita que,
 caso o usuário não se interesse por determinado item, ele não se interesse por
 nenhum dos demais. Uma maior diversidade de um sistema de recomendação implica
-em uma maior cobertura desse mesmo sistema \cite{aggarwal2016recommender}.
+em uma maior cobertura desse mesmo sistema~\cite{aggarwal2016recommender}.
 
 Uma abordagem de recomendação não-personalizada com diversidade máxima é a
 recomendação aleatória. Possui pouco uso prático ao usuário final, exceto em
@@ -31,7 +31,7 @@ de taxa de acerto a ser superada. Um recomendador útil deve superar a taxa de
 acerto de um recomendador aleatório.
 
 \section{Filtragem Colaborativa Baseada em Vizinhança} A filtragem
-colaborativa baseada em vizinhança é um método de aprendizado não-supervisionado
+colaborativa baseada em vizinhança~\cite{aggarwal2016recommender} é um método de aprendizado não-supervisionado
 que divide-se em duas categorias:
 \begin{enumerate}
     \item baseada em usuário, em
@@ -95,7 +95,7 @@ de usuário quanto os vetores de item podem utilizar Pearson ou cosseno.
 
 \subsubsection{Similaridade de Usuário}
 O coeficiente de correlação de Pearson é a razão da covariância com o produto
-do desvio padrão de duas variáveis aleatórias.
+do desvio padrão de duas variáveis aleatórias~\cite{aggarwal2016recommender}.
 
 \symbl{$r$}{coeficiente de correlação de Pearson}
 \symbl{$\bar{x}$}{média de um vetor $x$}
@@ -134,7 +134,7 @@ s_{vj} &= R_{vj} - \bar{v} \label{eq:centered_mean}
 As variações da função de predição em \ref{eq:predicao} utilizam o desvio padrão
 para realizar o ajuste em vez das médias $\bar{u}$ e $\bar{v}$, amplificam o
 peso $r(u,v)$ ao elevá-lo por uma potência maior que 1 e descontam o peso quando
-dois usuários tem poucos itens em comum.
+dois usuários tem poucos itens em comum~\cite{aggarwal2016recommender}.
 
 A equação \ref{eq:centered_mean} ajusta tanto as avaliações de um usuário que
 avalia todos seus itens de forma muito rigorosa com notas baixas, quanto de
@@ -207,7 +207,7 @@ viabilizando-o para o cálculo de recomendações em tempo real.
 As principais vantagens dos métodos baseados em vizinhança são sua abordagem
 simples, intuitiva e de fácil implementação. A depender do tamanho da base, é
 impraticável estimar uma avaliação em tempo real sem o uso de pares de grupos,
-em razão da alta complexidade em tempo de execução seria alta. Principalmente,
+em razão da alta complexidade em tempo de execução. Principalmente,
 há modelos atuais que são mais precisos, inclusive os baseados em modelos.
 
 \section{Sistemas de Recomendação \textit{Model-based}}
@@ -265,9 +265,9 @@ $\tilde{A}$ é igual a $r$ \cite{brunton2022data}:
     A \approx \tilde{A} = \sum_{k=1}^{r}\sigma_k \mathbf{u}_k \mathbf{v}_k^{\mathbf{T}}
 \end{equation}
 
-Uma importante propriedade da aproximação pela SVD truncada é a minimização do
-erro quadrático entre a matriz original e a matriz aproximada de forma ótima,
-para uma matriz de posto $r$:
+Uma importante propriedade da aproximação pela SVD truncada é a garantia da
+minimização do erro quadrático de forma ótima entre a matriz original e a matriz
+aproximada, para uma matriz de posto $r$:
 
 \begin{equation} \label{echart_young}
     \min_{\tilde{A} \mid \text{posto}(\tilde{A}) = r } \|A - \tilde{A}\|_F = \sqrt{\sum_{i=r+1}^{n}\sigma_i^2}
@@ -404,11 +404,11 @@ em que cada linha representa uma transação e cada coluna representa um item.
 %     \end{table}
     
 
-No contexto de sistemas de recomendação, filtra-se as regras de associação a partir
-de um limiar mínimo de suporte, confiança e \textit{lift}. Para gerar uma recomendação
-a partir de uma transação em curso, basta buscar pelas regras de associação em
-que essa transação seja o subconjunto antecedente. Essas regras de associação com maior
-confiança são as recomendadas.
+No contexto de sistemas de recomendação, filtra-se as regras de associação a
+partir de um limiar mínimo de suporte, confiança e \textit{lift}. Para gerar uma
+recomendação a partir de uma transação em curso, basta buscar pelas regras de
+associação em que essa transação seja o subconjunto antecedente, cujas regas com
+maior confiança são as recomendadas.
 
 
 O suporte de um conjunto de itens genérico é definido como a razão entre a
@@ -433,7 +433,7 @@ O suporte indica o quão frequente são as transações que contém X e Y, indic
 pares de conjuntos poucos frequentes que possam ser desconsiderados, ou pares
 muito frequentes que devam ser considerados para regras de associação.
 
-A confiança correspondente à probabilidade condicional de Y dado X, informando
+A confiança equivale a probabilidade condicional de Y dado X, informando
 se há correspondência entre dois conjuntos particulares de itens.
 
 O \textit{lift} avalia o grau de dependência entre X e Y. Quando X e Y são
@@ -448,7 +448,7 @@ que a ocorrência conjunta de X e Y é menos frequente do esperado se fossem
 eventos independentes, indicando que são conjuntos substituíveis entre si.
 
 \subsubsection{Regras de Sequência}
-Regras de sequência herdam o mesmo racional das regras de associação, de forma
+Regras de sequência herdam o mesmo raciocínio das regras de associação, de forma
 que a sequência de subconjuntos de itens seja considerada~\cite{liu2007web}.
 
 Uma regra de sequência é uma implicação da forma $X \Rightarrow Y$, em que $Y$ é
@@ -464,7 +464,7 @@ $S$ que contém $X$ e $Y$.
 \subsubsection{Recomendação baseada em cadeias de Markov}
 Cadeias de Markov são modelos que representam sequências de variáveis aleatórias
 correspondentes a estados~\cite{ching2006markov}. Através das probabilidades
-associadas a cada estado e às transições entre eles, é possível estimar o
+associadas a cada estado e das transições entre eles, é possível estimar o
 próximo estado mais provável. São aplicados em uma variedade de áreas, sendo
 úteis inclusive em sistemas de recomendação baseados em sequências.
 
@@ -672,8 +672,10 @@ de treinamento $\mathcal{D}$ e um novo vetor de entrada $x$:
 \begin{equation}
     p(y=c|x, \mathcal{D}) = \frac{1}{K} \sum_{n \in N_k (x, \mathcal{D})} \mathbb{I}(y_n = c)
 \end{equation}
-em que $\mathcal{D} = \{(x_i, y_i )\}^{N}_{i=1}$ e $\mathbb{I}$ é a função
-indicadora caso o item pertença à 
+em que $\mathcal{D} = \{(x_i, y_i )\}^{N}_{i=1}$ estipula a bijeção
+entre um vetor de entrada e sua saída correspondente, $N_k(x, \mathcal{D})$
+são os índices dos $K$ vizinhos mais próximos de $x$ em $\mathcal{D}$ e $\mathbb{I}$ é a função
+indicadora caso o item obtenha a classificação estipulada.
 
 \subsubsection{skNN e vskNN}
 \abbrev{skNN}{\textit{Session-Based} kNN}
@@ -685,8 +687,8 @@ foram propostas, a exemplo do skNN (\textit{Session-Based} kNN) e do vsKNN
 o modelo skNN considera todos os itens da sessão ao calcular a similaridade
 entre as sessões. Todos os itens tem o mesmo peso e contribuem de forma
 igualitária na pontuação de similaridade, independentemente de sua
-recência ou de sua posição~\cite{ludewig_2019}. A pontuação de um item candidato para sessão
-é dado pelo somatório das similaridades entre a sessão vigente às sessões vizinhas
+recência ou de sua posição~\cite{ludewig_2019}. A pontuação de um item candidato para a sessão
+é dado pelo somatório das similaridades entre a sessão vigente em relação às sessões vizinhas
 que contém o item candidato:
 
 \begin{equation}
@@ -702,8 +704,8 @@ sessão.
 
 O vsKNN, por sua vez, concede maior importância a eventos mais recentes,
 aplicando uma decaimento sobre o peso dos eventos. Quanto mais antigo, maior o
-decaimento. O nome ``\textit{Vector Multiplication}'' se dá pelo calculo da
-similaridade com a sessão $s$ representada como um vetor de valores reais em
+decaimento. O nome ``\textit{Vector Multiplication}'' se dá pelo cálculo da
+similaridade com a sessão $s$, representada como um vetor de valores reais em
 razão do decaimento.
 
 
