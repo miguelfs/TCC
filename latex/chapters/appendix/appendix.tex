@@ -1,6 +1,6 @@
 \chapter{Otimização dos hiperparâmetros}
 
-\section{\textit{session-based}, \textit{next-item}}
+\section{\textit{session-based}, \textit{single}, \textit{next-item}}
 \subsubsection{skNN e vskNN}
 \abbrev{IDF}{\textit{Inverse Document Frequency}}
 Em que $k$ é a quantidade de vizinhos os quais a pontuação dos itens é
@@ -10,8 +10,285 @@ de decaimento que determina peso das ações individuais na sessão atual,
 $W_{candidato}$ é a função de decaimento que determina o peso dos itens
 candidatos de uma sessão vizinha e selecionados por itens clicados menos
 recentemente na sessão atual e $IDF$ é o peso associado à frequência inversa do
-documento (\textit{Inverse Document Frequency}).
+documento (\textit{Inverse Document Frequency}). TABELAS \ref{app:sknn} e
+\ref{app:vsknn}.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+    \multicolumn{3}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+    \hline
+    k & N & Sim & MRR & HR & Cov & Pop\\
+    \hline
+    50 & 500 & Cosseno & \textbf{0,162} & 0.561 & \textbf{0,605} & \textbf{0,214} \\
+    \hline
+    100 & 2500 & Cosseno & \textbf{0,182} & \textbf{0,567} & 0.621 & 0.212 \\
+    \hline
+  \end{tabular}
+  \label{app:sknn}
+  \caption{\textit{session-based} kNN (sKNN)}
+\end{table}
 
+\begin{table}[htbp]
+  \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline
+      \multicolumn{5}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      k & N & $W_{atual}$ & $W_{candidato}$ & IDF & MRR & HR & Cov & Pop \\
+      \hline
+      50 & 500 & Linear & log & 4 & 0,126 & 0,513  & 0,631 & \textbf{0,176} \\
+      \hline
+      50 & 2500 & N/A & Log & 1 & \textbf{0,141} & \textbf{0,523} & \textbf{0,612} & 0,221 \\
+      \hline
+    \end{tabular}
+    \label{app:vsknn}
+    \caption{\textit{Vector multiplication session-based} kNN (vsKNN)}
+  \end{table}
+
+  \subsubsection{Regras de sequência}
+Métricas são a quantidade de passos e a função de pesos. TABELA \ref{app:sr}.
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \multicolumn{2}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas} \\
+        \hline
+        Passos & W & MRR@10 & HR@10 & Cov@10 & Pop@10 \\
+        \hline
+        6 & Div & 0.259 & \textbf{0,528} & 0.497 & 0.251 \\
+        \hline
+        6 & Quadrático & \textbf{0,265} & \textbf{0,528} & 0.511 & 0.228 \\
+        \hline
+        12 & Quadrático & \textbf{0,265} & \textbf{0,528} & \textbf{0,512} & 0.220 \\
+        \hline
+        \end{tabular}
+    \caption{Regras de sequência}
+    \label{app:sr}
+\end{table}
+
+
+\subsubsection{STAN}
+$stan_1$ é o modelo com $k$ igual a 2000, $N$ igual a 2500,
+$\lambda_{\text{spw}}$ igual a 3,62. $stan_2$ é o modelo com $k$ igual a 100,
+$N$ igual a 2500, $\lambda_{\text{spw}}$ igual a 1,81. TABELA \ref{app:stan}.
+
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline
+      \multicolumn{5}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      k & N & $\lambda_{\text{spw}}$ & $\lambda_{\text{snh}}$ & $\lambda_{\text{inh}}$ & MRR & HR & Cov & Pop \\
+      \hline
+      2000 & 2500 & 3,62 & 100 & 7,24 & \textbf{0,191} & \textbf{0,626} & 0,206 & 0,266 \\
+      \hline
+      200 & 2500 & 7,24 & 100 & 1,81& 0,179 & \textbf{0,626} & 0,227 & 0,206 \\
+      \hline
+      100 & 5000 & $10^{-5}$ & 100 & 1,81 & 0,163 & 0,512 & \textbf{0,257} & \textbf{0,178} \\
+      \hline
+
+    \end{tabular}
+    \caption{stan}
+    \label{app:stan}
+  \end{table}
+
+
+\subsubsection{VSTAN}
+$vstan_1$ é o modelo com $k$ igual a 1000 e $N$ igual a 5000. 
+$vstan_2$ é o modelo com $k$ igual a 2000 e $N$ igual a 1000. TABELA \ref{app:vstan}.
+
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      \multicolumn{8}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      k & N & Sim & $\lambda_{\text{spw}}$ & $\lambda_{\text{snh}}$ & $\lambda_{\text{inh}}$ & $\lambda_{\text{ipw}}$ & $\lambda_{\text{IDF}}$ & MRR & HR & Cov & Pop \\
+      \hline
+      1000 & 5000 & Cosseno & 10 & 40 & 5 & $10^{-5}$ & False & \textbf{0,199} & \textbf{0,470} & 0,626 & 0,235 \\
+      \hline
+      2000 & 1000 & Vetorial & 10 & 100 & 0,622 & 1,247 & False & 0,184 & 0,444 & \textbf{0,641} & 0,249 \\
+      \hline
+      1000 & 10000 & Vetorial & $10^{-5}$ & 10 & 10 & 5 & 1 & 0,177 & 0,419 & 0,539 & \textbf{0,170} \\
+      \hline
+    \end{tabular}
+    \caption{vstan}
+    \label{app:vstan}
+  \end{table}
+
+\subsubsection{smf}
+$smf_{1}$ é o modelo com função objetiva BPR e skip igual a 0,2.
+$smf_{2}$ é o modelo com função objetiva TOP1 com taxa de aprendizado igual a 0,05.
+TABELA \ref{app:smf}.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{6}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      BPR & Linear & 0,3 & 0,2 & 0 & 0,01 & \textbf{0,339} & 0,611 & 0,184 & 0,263 \\
+      \hline
+      TOP1 & Linear & 0,1 & 0,3 & 0,1 & 0,05 & 0,322 & \textbf{0,651} & 0,233 & 0,231 \\
+      \hline
+      BPR & Linear & 0,3 & 0 & 0 & 0,07 & 0,319 & 0,611 & \textbf{0,301} & \textbf{0,235} \\
+      \hline
+      \end{tabular}
+      \caption{smf}
+      \label{app:smf}
+    \end{table}
+
+\subsubsection{NARM}
+$\text{NARM}_{1}$ é o modelo com 100 unidades ocultas e taxa de aprendizado 0,006.
+$\text{NARM}_{2}$ é o modelo com 50 unidades ocultas e taxa de aprendizado 0,01.
+TABELA \ref{app:narm}.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{4}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      Epochs & fatores & un. ocultas & lr & MRR & HR & Cov & Pop \\
+      \hline
+      20 & 50 & 100 & 0,006 & \textbf{0,193} & \textbf{0,388} & 0,336 & 0,199 \\
+      \hline
+      20 & 50 & 100 & 0,005 & 0,191 & \textbf{0,388} & 0,326 & 0,201 \\
+      \hline
+      20 & 50 & 50 & 0,01 & 0,172 & 0,361 & \textbf{0,359} & 0,188 \\
+      \hline
+      20 & 100 & 50 & 0,002 & 0,151 & 0,338 & 0,340 & \textbf{0,178} \\
+      \hline
+      \end{tabular}
+      \caption{NARM}
+      \label{abb:narm}
+\end{table}
+
+\subsubsection{GNN}
+otimização para GNN com \textit{hidden size} igual a 100, \textit{out size} igual a 100,
+\textit{step} igual a 1, \textit{nonhybrid} igual a True, \textit{batch size} igual a 100,
+\textit{n epoch} igual a 10, \textit{batch predict} igual a True.
+
+O modelo $\text{GNN}_{1}$ é o modelo com taxa de aprendizado igual a 0,004.
+O modelo $\text{GNN}_{2}$ é o modelo com taxa de aprendizado igual a 0,006. TABELA \ref{app:gnn}.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{4}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      lr & l2 & lr dc & lr dc step & MRR & HR & Cov & Pop \\
+      \hline
+      0,004 & $6 \times 10^{-6}$ & 0,366 & 5 & \textbf{0,439} & \textbf{0,715} & 0,310 & 0,233 \\
+      \hline
+      0,006 & $3 \times 10^{-6}$ & 0,1 & 5 & 0,424 & 0,645 & \textbf{0,369} & 0,218 \\
+      \hline
+      0,008 & $8 \times 10^{-5}$ & 0,455 & 3 & 0,412 & 0,650 & 0,362 & \textbf{0,208} \\
+      \hline
+      \end{tabular}
+      \caption{GNN}
+      \label{app:gnn}
+\end{table}
+
+\subsubsection{NextItNet}
+$nextitnet_1$ é o modelo com taxa de aprendizado igual a 0,0007, $nextitnet_2$ é
+o modelo com taxa de aprendizado igual a 0,0009. TABELA \ref{app:nextitnet}.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{3}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      lr & it. & neg. & MRR & HR & Cov & Pop \\
+      \hline
+      0,0007 & 30 & True & \textbf{0,308} & 0,561 & 0,227 & 0,299 \\
+      \hline
+      0,0009 & 30 & False & 0,304 & \textbf{0,576} & 0,263 & 0,294 \\
+      \hline
+      0,005 & 30 & True & 0,197 & 0,470 & \textbf{0,270} & 0,278 \\
+      \hline
+      0,01 & 20 & True & 0,132 & 0,291 & 0,193 & \textbf{0,252} \\
+      \hline
+    \end{tabular}
+    \caption{NextItNet} \label{app:nextitnet}
+\end{table}
+
+\subsubsection{STAMP}
+
+
+n epochs igual a 30. O modelo $\text{STAMP}_{1}$ e $\text{STAMP}_{2}$
+são o primeiro e segundo modelos na tabela. TABELA \ref{app:stamp}.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{2}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      lr inicial & decay & MRR & HR & Cov & Pop \\
+      \hline
+      0,008 & 0,5 & \textbf{0,413} & \textbf{0,646} & 0,312 & 0,229 \\
+      \hline
+      0,006 & 0 & 0,360 & 0,589 & \textbf{0,408} & \textbf{0,198} \\
+      \hline
+    \end{tabular}
+    \caption{STAMP} \label{app:stamp}
+\end{table}
+
+
+\subsubsection{GRU4Rec}
+
+% Metrics	MRR@10: HitRate@10:  Coverage@10:	Popularity@10:
+% dropout_p_hidden=0.2-momentum=	0.120705 0.2395437 0.55415	0.044515
+% dropout_p_hidden=0.5-momentum=	0.1030222 0.18821 0.52358	0.052286
+
+Função de custo BPR max, função de ativação final ELU, \textit{dropout} igual a 0,5,
+\textit{momentum} igual a 0, \textit{constrained embedding} igual a False. TABELA \ref{app:gru4rec}.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{2}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      lr  & dropout & MRR & HR & Cov & Pop \\
+      \hline
+      0,09  & 0,2 & \textbf{0,121} & \textbf{0,240} & \textbf{0,554} & \textbf{0,045} \\
+      \hline
+      0,04  & 0,5 & 0,103 & 0,188 & 0,524 & 0,052 \\
+      \hline
+    \end{tabular}
+    \caption{GRU4Rec}
+    \label{app:gru4rec}
+\end{table}
+
+
+
+\subsubsection{CSRM}
+TABELA \ref{app:csrm}.
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+      \multicolumn{4}{|c|}{Parâmetros} & \multicolumn{4}{c|}{Métricas @10} \\
+      \hline
+      un. ocultas & \textit{epochs}  & lr  & m.s. & MRR & HR & Cov & Pop \\
+      \hline
+      100  & 10 & 0,0008 & 256 & \textbf{0,167} & 0,319 & \textbf{0,328} & \textbf{0,151} \\
+      \hline
+      100  & 10 & 0,0005 & 128 & 0,148 & \textbf{0,323} & 0,148 & 0,302 \\
+      \hline
+    \end{tabular}
+    \caption{CSRM}
+    \label{app:csrm}
+\end{table}
+
+\newpage
+
+
+\section{\textit{session-based}, \textit{windowed}, \textit{next-item}}
+\subsubsection{skNN e vskNN}
+TABELA \ref{app:sknn2} e \ref{app:vsknn2}.
 \begin{table}[htbp]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|c|}
@@ -34,15 +311,9 @@ documento (\textit{Inverse Document Frequency}).
       \hline
     \end{tabular}
     \caption{\textit{session-based} kNN (sKNN)}
+    \label{app:sknn2}
   \end{table}
 
-%   vsknn-k=1500-sample_size=2500-weighting=same-weighting_score=div-idf_weighting=10
-% vsknn-k=1500-sample_size=500-weighting=quadratic-weighting_score=log-idf_weighting=False
-% vsknn-k=1500-sample_size=500-weighting=same-weighting_score=linear-idf_weighting=10
-% mrr10 0.1462788940342183 0.15546196009033428 0.14208841138517056
-% hr10 0.5071205750712058 0.4885392648853926 0.48528414485284144
-% cov10 0.5794019933554817 0.5242524916943522 0.574750830564784
-% pop10 0.24168610581871308 0.28216181416939157 0.21287151000442397
 
 \begin{table}[htbp]
 \centering
@@ -66,10 +337,11 @@ documento (\textit{Inverse Document Frequency}).
     \hline
   \end{tabular}
   \caption{\textit{Vector multiplication session-based} kNN (vsKNN)}
+  \label{app:vsknn2}
 \end{table}
 
 \subsubsection{Regras de sequência}
-Métricas são a quantidade de passos e a função de pesos.
+Métricas são a quantidade de passos e a função de pesos. TABELA \ref{app:sr2}.
 \begin{table}[htbp]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|}
@@ -94,6 +366,7 @@ Métricas são a quantidade de passos e a função de pesos.
         \hline
         \end{tabular}
     \caption{Regras de sequência}
+\label{app:sr2}
 \end{table}
 
 
@@ -102,6 +375,7 @@ Métricas são a quantidade de passos e a função de pesos.
 % stan-k=100-sample_size=2500-lambda_spw=1.81-lambda_snh=40-lambda_inh=0.197
 $stan_1$ é o modelo com $k$ igual a 2000, $N$ igual a 2500, $\lambda_{\text{spw}}$ igual a 3,62.
 $stan_2$ é o modelo com $k$ igual a 100, $N$ igual a 2500, $\lambda_{\text{spw}}$ igual a 1,81.
+TABELA \ref{app:stan2}.
 
 
 \begin{table}[htbp]
@@ -126,6 +400,7 @@ $stan_2$ é o modelo com $k$ igual a 100, $N$ igual a 2500, $\lambda_{\text{spw}
       \hline
 
     \end{tabular}
+    \label{app:stan2}
     \caption{stan}
   \end{table}
 
@@ -133,7 +408,7 @@ $stan_2$ é o modelo com $k$ igual a 100, $N$ igual a 2500, $\lambda_{\text{spw}
 \subsubsection{VSTAN}
 $vstan_1$ é o modelo com $k$ igual a 1000 e $N$ igual a 5000. 
 $vstan_2$ é o modelo com $k$ igual a 2000 e $N$ igual a 1000. 
-
+TABELA \ref{app:vstan2}.
 
 \begin{table}[htbp]
     \centering
@@ -157,11 +432,13 @@ $vstan_2$ é o modelo com $k$ igual a 2000 e $N$ igual a 1000.
       \hline
     \end{tabular}
     \caption{vstan}
+    \label{app:vstan2}
   \end{table}
 
 \subsubsection{smf}
 $smf_{1}$ é o modelo com função objetiva BPR e skip igual a 0,2.
 $smf_{2}$ é o modelo com função objetiva TOP1 com taxa de aprendizado igual a 0,05.
+TABELA \ref{app:smf2}.
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
@@ -182,12 +459,13 @@ $smf_{2}$ é o modelo com função objetiva TOP1 com taxa de aprendizado igual a
       \hline
       \end{tabular}
       \caption{smf}
+      \label{app:smf2}
 \end{table}
 
 \subsubsection{NARM}
 $\text{NARM}_{1}$ é o modelo com 100 unidades ocultas e taxa de aprendizado 0,006.
 $\text{NARM}_{2}$ é o modelo com 50 unidades ocultas e taxa de aprendizado 0,01.
-
+TABELA \ref{app:narm2}.
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|c|c|}
@@ -206,12 +484,13 @@ $\text{NARM}_{2}$ é o modelo com 50 unidades ocultas e taxa de aprendizado 0,01
       \hline
       \end{tabular}
       \caption{NARM}
+      \label{app:narm2}
 \end{table}
 
 \subsubsection{GNN}
 otimização para GNN com \textit{hidden size} igual a 100, \textit{out size} igual a 100,
 \textit{step} igual a 1, \textit{nonhybrid} igual a True, \textit{batch size} igual a 100,
-\textit{n epoch} igual a 10, \textit{batch predict} igual a True.
+\textit{n epoch} igual a 10, \textit{batch predict} igual a True. TABELA \ref{app:gnn2}.
 
 O modelo $\text{GNN}_{1}$ é o modelo com taxa de aprendizado igual a 0,004.
 O modelo $\text{GNN}_{2}$ é o modelo com taxa de aprendizado igual a 0,006.
@@ -229,13 +508,13 @@ O modelo $\text{GNN}_{2}$ é o modelo com taxa de aprendizado igual a 0,006.
       \hline
       0,008 & $8 \times 10^{-5}$ & 0,455 & 3 & 0,410 & 0,648 & 0,360 & \textbf{0,206} \\
       \hline
-      \end{tabular}
+      \end{tabular} \label{app:gnn2}
       \caption{GNN}
 \end{table}
 
 \subsubsection{NextItNet}
 $nextitnet_1$ é o modelo com taxa de aprendizado igual a 0,0007, $nextitnet_2$ é
-o modelo com taxa de aprendizado igual a 0,0009.
+o modelo com taxa de aprendizado igual a 0,0009. TABELA \ref{app:nextitnet2}.
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -252,7 +531,7 @@ o modelo com taxa de aprendizado igual a 0,0009.
       \hline
       0,01 & 20 & True & 0,132 & 0,291 & 0,193 & \textbf{0,252} \\
       \hline
-    \end{tabular}
+    \end{tabular} \label{app:nextitnet2}
     \caption{NextItNet}
 \end{table}
 
@@ -263,7 +542,7 @@ o modelo com taxa de aprendizado igual a 0,0009.
 % stamp-decay_rate=0.6-init_lr=0.009	0.393594  0.62547    0.3401993	0.22372
 % stamp-decay_rate=0.0-init_lr=0.006	0.360398 0.58935 0.4079734	0.19806
 n epochs igual a 30. O modelo $\text{STAMP}_{1}$ e $\text{STAMP}_{2}$
-são o primeiro e segundo modelos na tabela.
+são o primeiro e segundo modelos na TABELA \ref{app:stamp2}.
 
 \begin{table}[htbp]
   \centering
@@ -277,7 +556,7 @@ são o primeiro e segundo modelos na tabela.
       \hline
       0,006 & 0 & 0,360 & 0,589 & \textbf{0,408} & \textbf{0,198} \\
       \hline
-    \end{tabular}
+    \end{tabular} \label{app:stamp2}
     \caption{STAMP}
 \end{table}
 
@@ -289,7 +568,7 @@ são o primeiro e segundo modelos na tabela.
 % dropout_p_hidden=0.5-momentum=	0.1030222 0.18821 0.52358	0.052286
 
 Função de custo BPR max, função de ativação final ELU, \textit{dropout} igual a 0,5,
-\textit{momentum} igual a 0, \textit{constrained embedding} igual a False.
+\textit{momentum} igual a 0, \textit{constrained embedding} igual a False. TABELA \ref{app:gru4rec2}.
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|}
@@ -302,13 +581,13 @@ Função de custo BPR max, função de ativação final ELU, \textit{dropout} ig
       \hline
       0,04  & 0,5 & 0,103 & 0,188 & 0,524 & 0,052 \\
       \hline
-    \end{tabular}
+    \end{tabular} \label{app:gru4rec2}
     \caption{GRU4Rec}
 \end{table}
 
 
 
-\subsubsection{CSRM}
+\subsubsection{CSRM} TABELA \ref{app:csrm2}.
 
 % Metrics	MRR@10: HitRate@10:  Coverage@10:	Popularity@10:
 % dropout_p_hidden=0.2-momentum=	0.120705 0.2395437 0.55415	0.044515
@@ -325,7 +604,7 @@ Função de custo BPR max, função de ativação final ELU, \textit{dropout} ig
       \hline
       100  & 10 & 0,0005 & 128 & 0,148 & \textbf{0,323} & 0,148 & 0,302 \\
       \hline
-    \end{tabular}
+    \end{tabular} \label{app:csrm2}
     \caption{CSRM}
 \end{table}
 
@@ -354,16 +633,16 @@ Função de custo BPR max, função de ativação final ELU, \textit{dropout} ig
 %     \caption{GRU4Rec}
 % \end{table}
 
-\section{\textit{session-aware}, \textit{next-item}}
+\section{\textit{session-aware}, \textit{windowed}, \textit{next-item}}
 
 % Metrics	MRR@10:	HitRate@10:	Coverage@10:	Popularity@10:
 % steps=5-weighting=quadratic-boost_own_sessions=3.9	0.3301 0.5561 0.7293	0.1861
 % steps=7-weighting=quadratic-boost_own_sessions=1.7	0.32566 0.553 0.7351	0.1873
 % steps=2-weighting=div-boost_own_sessions=3.7	0.3285 0.5377 	0.7176	0.1825
-A otimização indica que o modelo com 5 passos na tabela \ref{opt:seq_rules}
+A otimização indica que o modelo com 5 passos na TABELA \ref{opt:seq_rules}
 retorna as melhores métricas. Ao realizar o \textit{finetuning} para esse
 obtemos o modelo $usr$ com \textit{remind sessions number} igual a 8 $W_{base}$
-igual a 2 e $W_{IRec}$ igual a 8.
+igual a 2 e $W_{IRec}$ igual a 8, na TABELA \ref{opt:seq_rules_finetuning}.
 
 \begin{table}[htbp]
   \centering
@@ -383,6 +662,7 @@ igual a 2 e $W_{IRec}$ igual a 8.
       \caption{Regras de sequência}
       \label{opt:seq_rules}
 \end{table}
+
 \begin{table}
   \centering
   \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -397,6 +677,7 @@ igual a 2 e $W_{IRec}$ igual a 8.
      \hline
   \end{tabular}
   \caption{\textit{Finetuning} para o modelo de regras de sequência com 5 passos.}
+  \label{opt:seq_rules_finetuning}
 \end{table}
 
 \subsubsection{Modelos kNN}
@@ -422,6 +703,8 @@ igual a 3,9, \textit{reminders} igual a True, \textit{remind strategy} igual a
 \textit{recency}, \textit{remind mode} igual a \textit{top}, \textit{remind
 sessions num} igual a 9 e \textit{reminders num} igual a 3.
 
+Valores na TABELA \ref{app:knn_models_aware}.
+
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|c|c|c|c|c|}
@@ -436,7 +719,7 @@ sessions num} igual a 9 e \textit{reminders num} igual a 3.
       \hline
       USTAN & \textbf{0,390} & \textbf{0,646} & 0,680 & 0,386 \\
       \hline
-      \end{tabular}
+      \end{tabular} \label{app:knn_models_aware}
       \caption{Modelos kNN}
 \end{table}
 
@@ -475,6 +758,8 @@ O modelo UNARM com \textit{n epochs} igual a 20, \textit{factors} igual a 100,
 \textit{lr} igual a 0,008 e \textit{extend session length} igual a 19. $W_{base}$
 igual a 1 e $W_{IRec}$ igual a 2, \textit{remind sessions num} igual a 5.
 
+Valores na TABELA \ref{app:nn_models_aware}.
+
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|c|c|c|c|c|}
@@ -503,9 +788,9 @@ igual a 1 e $W_{IRec}$ igual a 2, \textit{remind sessions num} igual a 5.
 \end{table}
 
 
-\section{\textit{session-based}, \textit{remaining items}}
+\section{\textit{session-based}, \textit{windowed}, \textit{remaining items}}
 
-A duração da otimização para cada modelo consta na tabela
+A duração da otimização para cada modelo consta na TABELA
 \ref{tab:duration_opt_remaining}. Todas as otimizações foram realizadas com
 40 iterações.
 
@@ -526,7 +811,8 @@ A duração da otimização para cada modelo consta na tabela
 GNN com \textit{hidden size} igual a 100, \textit{out size} igual a 100,
 \textit{step} igual a 1, \textit{nonhybrid} igual a True, \textit{batch size}
 igual a 100, \textit{n epoch} igual a 10, \textit{batch predict} igual a True.
-Resultados na tabela \ref{opt:GNN_rem}. O modelo selecionado é o com NDCG@10 igual a 0,555.
+Resultados na tabela \ref{opt:GNN_rem}. O modelo selecionado é o com NDCG@10
+igual a 0,555. TABELA \ref{opt:GNN_rem}.
 
 \begin{table}[htbp]
   \centering
@@ -554,7 +840,7 @@ Resultados na tabela \ref{opt:GNN_rem}. O modelo selecionado é o com NDCG@10 ig
 
 Os parâmetros da tabela são: função de custo, função de ativação final,
 \textit{dropout}, \textit{momentum}, \textit{constrained embedding}, respectivamente.
-Resultados na tabela \ref{opt:GRU4Rec_rem}.
+Resultados na TABELA \ref{opt:GRU4Rec_rem}.
 
 \begin{table}[htbp]
   \centering
@@ -576,7 +862,7 @@ Resultados na tabela \ref{opt:GRU4Rec_rem}.
 \end{table}
 
 \subsubsection{NARM}
-Otimização com 20 epochs. Resultados na tabela \ref{opt:NARM_rem}.
+Otimização com 20 epochs. Resultados na TABELA \ref{opt:NARM_rem}.
 
 \begin{table}[htbp]
   \centering
@@ -600,7 +886,7 @@ Otimização com 20 epochs. Resultados na tabela \ref{opt:NARM_rem}.
 \subsubsection{NextItNet}
 
 As colunas de parâmetros são iterações, taxa de aprendizado e amostras
-negativas, respectivamente. Resultados na tabela \ref{opt:NextItNet_rem}.
+negativas, respectivamente. Resultados na TABELA \ref{opt:NextItNet_rem}.
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -620,7 +906,7 @@ negativas, respectivamente. Resultados na tabela \ref{opt:NextItNet_rem}.
 
 \subsubsection{skNN}
 Parâmetros são quantidade de $k$ vizinhos, tamanho da amostra e função de
-similaridade, respectivamente. Resultados na tabela \ref{opt:skNN_rem}.
+similaridade, respectivamente. Resultados na TABELA \ref{opt:skNN_rem}.
 \begin{table}[htbp]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -643,7 +929,7 @@ similaridade, respectivamente. Resultados na tabela \ref{opt:skNN_rem}.
 \subsubsection{smf}
 Parâmetros são função objetivo, função de ativação final, \textit{dropout},
 \textit{skip}, \textit{momentum} e taxa de aprendizado, respectivamente.
-Resultados na tabela \ref{opt:smf_rem}.
+Resultados na TABELA \ref{opt:smf_rem}.
 
 \begin{table}[htbp]
   \centering
@@ -666,7 +952,7 @@ Resultados na tabela \ref{opt:smf_rem}.
 
 % sr
 \subsubsection{Regras de sequência}
-Parâmetros são número de passos e o peso, respectivamente. Resultados na tabela
+Parâmetros são número de passos e o peso, respectivamente. Resultados na TABELA
 \ref{opt:sr_rem}.
 
 \begin{table}[htbp]
@@ -690,7 +976,7 @@ Parâmetros são número de passos e o peso, respectivamente. Resultados na tabe
 
 \subsubsection{STAMP}
 Parâmetros são número de épocas, taxa de decaimento e taxa de aprendizado inicial, respectivamente.
-Resultados na tabela \ref{opt:stamp_rem}.
+Resultados na TABELA \ref{opt:stamp_rem}.
 
 \begin{table}[htbp]
   \centering
@@ -716,7 +1002,7 @@ Resultados na tabela \ref{opt:stamp_rem}.
 % vsknn
 \subsubsection{vsKNN}
 Parâmetros sao a quantidade de vizinhos $k$, tamanho da amostra, peso e peso na
-pontuação e peso idf.
+pontuação e peso idf. Resultados na TABELA \ref{opt:vsknn_rem}.
 
 
 \begin{table}[htbp]
@@ -737,6 +1023,9 @@ pontuação e peso idf.
       \caption{vsKNN}
       \label{opt:vsknn_rem}
 \end{table}
+
+\subsubsection{STAN, vSTAN e CSRM}
+Valores nas TABELAS \ref{opt:stan_rem}, \ref{opt:vstan_rem} e \ref{opt:csrm_rem}.
 
 \begin{table}[htbp]
   \centering
@@ -798,7 +1087,9 @@ pontuação e peso idf.
 
 \newpage
 
-\section{\textit{session-based}, \textit{last item}}
+\section{\textit{session-based}, \textit{single}, \textit{last item}}
+Duração da otimização para cada modelo consta na TABELA \ref{tab:duration_opt_last}.
+
 
 \begin{table}[htbp]
   \centering
@@ -810,10 +1101,16 @@ pontuação e peso idf.
       \hline
       \end{tabular}
       \caption{Duração da otimização, em horas e minutos para cada modelo.}
+      \label{tab:duration_opt_last}
 \end{table}
 
-A seguir, otimizações para os modelos \textit{session-based} com abordagem \textit{last
-item}. Os parâmetros fixos são os mesmos para a otimização na abordagem \textit{remaining items}.
+A seguir, otimizações para os modelos \textit{session-based} com abordagem
+\textit{last item}. Os parâmetros fixos são os mesmos para a otimização na
+abordagem \textit{remaining items}. Valores apresentados nas TABELAS
+\ref{opt:GNN_last}, \ref{opt:GRU4Rec_last}, \ref{opt:NARM_last},
+\ref{opt:stamp_last}, \ref{opt:NextItNet_last}, \ref{opt:skNN_last},
+\ref{opt:smf_last}, \ref{opt:sr_last}, \ref{opt:vsknn_last},
+\ref{opt:stan_last} e \ref{opt:vstan_last}.
 
 \begin{table}[htbp]
   \centering
@@ -1046,8 +1343,6 @@ item}. Os parâmetros fixos são os mesmos para a otimização na abordagem \tex
       \hline
       100 & 10 & 0,001 & 256 & 0,175 & 0,405 & 0,274 & 0,134 \\
       \hline
-
-
 \end{tabular}
       \caption{CSRM}
       \label{opt:csrm_last}

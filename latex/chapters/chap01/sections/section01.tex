@@ -134,7 +134,7 @@ curto prazo) ou equipamento relacionado à tarefa (por exemplo, orçamento ou
 tempo para tomar uma decisão). A probabilidade de alcançar a melhor decisão
 possível é definida como o desempenho de tomada de decisão. A correspondência
 entre a carga de informação e o desempenho da tomada de decisão é ilustrada na
-Figura \ref{fig:u_invertida} \cite{roetzel2019information}.
+FIGURA \ref{fig:u_invertida} \cite{roetzel2019information}.
 
 Experimentos realizados por \citet{liang2006personalized} mostraram que, ao
 avaliar a satisfação de voluntários com um sistema de recomendação de notícias,
@@ -276,7 +276,8 @@ recomendar uma sessão inteira \cite{domingues_large_2023, survey_wang_2021}.
         \node[draw, dashed, rectangle, minimum width=2cm, minimum height=1cm] (topcell4) at (7.5, 1.0) {?};
 
     \end{tikzpicture}
-    \caption{Exemplo de uma sessão em andamento, em que a ação A corresponde a navegar ao perfil de determinado artista, enquanto que a ação B corresponde a criar uma \textit{playlist} vazia. Nem toda ação é necessariamente associada a um item. A predição atua sobre a interação subsequente.}
+    \caption{Exemplo de uma sessão em andamento.}
+    \label{fig:sessao_beyonce}
 \end{figure}
 
 Cada interação das sessões está associada a tuplas que contém um ou mais dos
@@ -285,7 +286,11 @@ foi executada e o usuário responsável pela ação. Por exemplo, uma sessão po
 representar uma lista ordenada de itens selecionados por um usuário anônimo, ou
 uma lista de ações executadas por usuários de uma mesma sessão, sem que essas
 ações estejam necessariamente atreladas cada uma a um item. Isso é um aspecto
-útil dos SBRS, por prover recomendações em aplicações em que não há
-distinção entre usuários, ou quando as preferências de longo prazo de um
-usuário novo da plataforma não foram identificadas.
+útil dos SBRS, por prover recomendações em aplicações em que não há distinção
+entre usuários, ou quando as preferências de longo prazo de um usuário novo da
+plataforma não foram identificadas. A FIGURA \ref{fig:sessao_beyonce} ilustra um
+exemplo de sessão em andamento, em que a ação A corresponde a navegar ao perfil
+de determinado artista, enquanto que a ação B corresponde a criar uma
+\textit{playlist} vazia. Nem toda ação é necessariamente associada a um item,
+como expresso na Ação B.
 \vspace{0.4cm}

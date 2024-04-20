@@ -53,9 +53,9 @@ de 2023.
   \label{tab_sessoes}
 \end{table}
 
-Verifica-se na tabela \ref{tab_sessoes} uma grande quantidade de faixas criadas,
+Verifica-se na TABELA \ref{tab_sessoes} uma grande quantidade de faixas criadas,
 \textit{forkadas} e publicadas na plataforma. Essas faixas são criadas por um
-número pequeno de usuários. Por sua vez, na tabela \ref{tab_convites}, a
+número pequeno de usuários. Por sua vez, na TABELA \ref{tab_convites}, a
 quantidade de convites enviados e aceitos é ainda menor em relação ao número de
 usuários ativos no período.
 
@@ -118,7 +118,7 @@ individuais de usuários ao criarem sessões.
  \section{Outros domínios}
  A seguir, são apresentadas as bases de dados utilizadas na bibliografia de
   SBRS. O domínio de cada uma dessas bases é de comércio eletrônico, música e
-  notícias. Os valores das tabelas \ref{tab:datasets} e
+  notícias. Os valores das TABELAS \ref{tab:datasets} e
   \ref{tab:datasets_comparison} foram retirados de \citet{ludewig_2018}.
 
   Observa-se que a base de dados do Indaband é a menor dentre as bases de dados
@@ -223,13 +223,13 @@ do conjunto completo \cite{ludewig_2018}. Essa é a abordagem mais próxima de u
 modelo em produção.
 
 O \textit{dataset} é dividido segundo a abordagem \textit{single split}, em um
-único conjunto de treinamento e teste, tal como na tabela
+único conjunto de treinamento e teste, tal como na TABELA
 \ref{tab:split_data}. Nesses experimentos, os modelos de base de comparação
 desconsideram o usuário dono da sessão. Dessa forma, não há modelos
 \textit{session-aware}.
 
 Apenas sessões com um mínimo de dois usuários estão presentes, como ilustrado na
-figura \ref{fig:next-item-single}. Similarmente, o suporte mínimo dos itens é
+FIGURA \ref{fig:next-item-single}. Similarmente, o suporte mínimo dos itens é
 igual a 2. Dessa forma, há apenas usuários que constam em pelo menos duas
 sessões publicadas. Essa abordagem é distinta da maioria dos comparativos, que
 utilizam suporte mínimo igual a 3. Essa decisão foi tomada pela menor quantidade
@@ -290,13 +290,16 @@ inédito a contribuir na sessão.
     RPop & \textbf{0,204} & \textbf{0,294} & \textbf{0,125} & \textbf{0,137} & \textbf{0,204} & 0,010 & 0,321 \\ \hline
     SPop & 0,109 & 0,221 & 0,045 & 0,058 & 0,114 & 0,301 & 0,473 \\ \hline
   \end{tabular}
+  \caption{Resultados dos modelos não-personalizados na abordagem \textit{single}.}
+  \label{tab_non_perso}
 \end{table}
 
-De forma esperada, o modelo Random maximiza a cobertura, minimizando o índice de
-popularidade. O modelo de popularidade para sessões recentes (RPop) apresenta
-resultados superiores aos demais modelos de popularidade.
-Em seguida, na tabela \ref{tab_baseline}, são apresentados os resultados para os
-modelos de mineração de padrões e vizinhança, fatoração de matrizes e redes neurais.
+Os resultados estão na TABELA \ref{tab_non_perso}.  Como esperado, o modelo
+Random maximiza a cobertura, minimizando o índice de popularidade. O modelo de
+popularidade para sessões recentes (RPop) apresenta resultados superiores aos
+demais modelos de popularidade. Em seguida, na TABELA \ref{tab_baseline}, são
+apresentados os resultados para os modelos de mineração de padrões e vizinhança,
+fatoração de matrizes e redes neurais.
 
 
 \subsubsection{Modelos por mineração de padrões e vizinhança}
@@ -464,11 +467,11 @@ métricas obtidas em cada janela.
 
 Na abordagem
 \textit{windowed}, uma janela deslizante é aplicada por todo o período,
-separando em cinco pares distintos de treinamento e teste, descritos na tabela
+separando em cinco pares distintos de treinamento e teste, descritos na TABELA
 \ref{tab:windowed_data}. Nota-se o aumento gradual da quantidade de eventos,
 sessões e itens ao longo do tempo. Os resultados sob abordagem \textit{windowed} são obtidos a partir da média
 aritmética dos resultados obtidos em cada janela. Os resultados constam na
-tabela \ref{tab:windowed_next_item_all}.
+TABELA \ref{tab:windowed_next_item_all}.
 
 
 \begin{table}[htbp]
@@ -565,20 +568,20 @@ resultado global para as métricas HR@5, HR@10. Novamente,
  os modelos CSRM e GRU4Rec apresentam os piores resultados globais para o
 HR@5 e HR@10.
 
-Na figura
+Na FIGURA
 \ref{fig:next-item-single-123}, é possível observar que os modelos de redes neurais
 começam com resultados inferiores aos demais modelos, mas passam a superar os
 demais conforme a quantidade de eventos por \textit{split} aumenta. Essa
 observação condiz com a característica de modelos de aprendizado profundo, em
 geral, dependerem de uma grande quantidade de dados para apresentarem resultados
-superiores. A figura \ref{fig:progressao} apresenta a progressão do HR e MRR conforme a
+superiores. A FIGURA \ref{fig:progressao} apresenta a progressão do HR e MRR conforme a
 quantidade de valores preditos para cada métrica.
 
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=1\textwidth]{chapters/chap04/images/hr10_splits.png}
-  \caption{HR@10 em cada janela para alguns modelos da tabela
+  \caption{HR@10 em cada janela para alguns modelos da TABELA
   \ref{tab:windowed_next_item_all}.}
   \label{fig:next-item-single-123}
 \end{figure}
@@ -600,7 +603,7 @@ considerando a métrica MAP@10, uma vez que essa métrica substitui o HR@10 para
 avaliações de listas ou de conjuntos de itens. Dessa forma, os modelos com nome subscrito aqui presentes possuem hiperparâmetros
 distintos da abordagem anterior, constando no apêndice.
 
-Os modelos que apresentaram melhores resultados para precisão, \textit{recall},
+Os resultados constam na tabela \ref{tab:model_metrics_remaining_items}. Os modelos que apresentaram melhores resultados para precisão, \textit{recall},
 NDCG e MAP foram os mesmos dos experimentos anteriores: smf, ct, SR, GNN e
 STAMP. Uma diferença observada foi o pior inferior do modelo baseado em cadeia
 de Markov de primeira ordem dentro de seu agrupamento, apesar do modelo de árvore de contexto permenecer
@@ -692,7 +695,7 @@ comparados aos demais agrupamentos.
   \caption{Resultados para abordagem \textit{remaining-items}. Em ordem, modelos
   de popularidade, fatoração de matrizes, modelos baseados em vizinhança, regras
   de associação e redes neurais.}
-  \label{tab:model_metrics}
+  \label{tab:model_metrics_remaining_items}
 \end{table}
 
 \newpage
@@ -703,9 +706,11 @@ Em seguida, são apresentados os resultados obtidos com a abordagem
 \textit{windowed} e \textit{session-aware}. Os modelos passaram por otimização
 de seus hiperparâmetros, cujos resultados constam no apêndice.
 
-A tabela \ref{tab:windowed_data_session_aware} apresenta os conjuntos de treino
+A TABELA \ref{tab:windowed_data_session_aware} apresenta os conjuntos de treino
 e teste separados em cinco janelas. Novamente, é possível observar o aumento
 gradual da quantidade de eventos, sessões e itens ao longo dos \textit{splits}.
+Os resultados constam na TABELA \ref{tab:windowed_}, com a duração
+média do treinamento para cada modelo na TABELA \ref{tab:windowed_time}.
 
 Metade dos modelos \textit{session-aware} apresentam resultados que superam
 todos os modelos da abordagem \textit{session-based}. Os maiores valores para as
@@ -833,7 +838,9 @@ obtiveram resultados inferiores, o que também foi observado na abordagem
     \hline
   \end{tabular}
   }
-  \caption{Duração média do treinamento de cada modelo da tabela \ref{tab:windowed_}}
+  \label{tab:windowed_time}
+  \caption{Duração média do treinamento de cada modelo da TABELA
+  \ref{tab:windowed_time}.}
 
 \end{table}
 

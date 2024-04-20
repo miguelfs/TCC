@@ -78,7 +78,7 @@ item inédito a ele.
 \symbl{$R_{m \times n}$}{Matriz de avaliações com $m$ usuários e $n$ itens}
 \symbl{$R_{uj}$}{Avaliação do usuário $u$ ao item $j$}
 Para viabilizar a filtragem colaborativa, utiliza-se a matriz de avaliações
-$R_{m \times n}$, a exemplo da Figura \ref{fig:ratings_matrix}: $m$ é a quantidade de usuários, $n$ é a quantidade de
+$R_{m \times n}$, a exemplo da FIGURA \ref{fig:ratings_matrix}: $m$ é a quantidade de usuários, $n$ é a quantidade de
 itens e $R_{uj}$ é a avaliação dada pelo usuário $u$ ao item $j$, quando
 preenchida. Assume-se que a matriz $R_{m \times n}$ é esparsa, com poucos
 valores preenchidos.
@@ -382,33 +382,33 @@ pode ser implementado com a estrutura de dados de dicionário da seguinte forma:
 em que A, B e C são subconjuntos de itens antecedentes e X, Y e Z são
 subconjuntos de itens consequentes, com uma, duas e três ocorrências,
 respectivamente. O dicionário é implementado a partir de uma matriz de ocorrências,
-em que cada linha representa uma transação e cada coluna representa um item, tal
-como a tabela \ref{tab:transactions}.
+em que cada linha representa uma transação e cada coluna representa um item.
+
+% \begin{table}
+%     \begin{center}
+%         \begin{tabular}{|c|c|c|c|c|c|}
+%             \hline
+%             \textbf{Consumidor} & pão & manteiga & leite & presunto & queijo \\
+%             \hline
+%             João & 1 & 1 & 0 & 0 & 0 \\
+%             Maria & 1 & 1 & 1 & 0 & 0 \\
+%             Pedro & 0 & 0 & 1 & 1 & 0 \\
+%             Roberta & 0 & 1 & 0 & 1 & 1 \\
+%             Carol & 0 & 1 & 0 & 0 & 1 \\
+%             José & 1 & 1 & 1 & 1 & 1 \\
+%             \hline
+%         \end{tabular}
+%         \label{tab:transactions_transacoes}
+%     \end{center}
+%     \caption{Tabela de transações de compras de supermercado, utilizada como uma matriz de ocorrências em um modelo de regras de associação.}
+%     \end{table}
+    
 
 No contexto de sistemas de recomendação, filtra-se as regras de associação a partir
 de um limiar mínimo de suporte, confiança e \textit{lift}. Para gerar uma recomendação
 a partir de uma transação em curso, basta buscar pelas regras de associação em
 que essa transação seja o subconjunto antecedente. Essas regras de associação com maior
 confiança são as recomendadas.
-
-\begin{table}
-\begin{center}
-    \begin{tabular}{|c|c|c|c|c|c|}
-        \hline
-        \textbf{Consumidor} & pão & manteiga & leite & presunto & queijo \\
-        \hline
-        João & 1 & 1 & 0 & 0 & 0 \\
-        Maria & 1 & 1 & 1 & 0 & 0 \\
-        Pedro & 0 & 0 & 1 & 1 & 0 \\
-        Roberta & 0 & 1 & 0 & 1 & 1 \\
-        Carol & 0 & 1 & 0 & 0 & 1 \\
-        José & 1 & 1 & 1 & 1 & 1 \\
-        \hline
-    \end{tabular}
-    \label{tab:transactions}
-\end{center}
-\caption{Tabela de transações de compras de supermercado, utilizada como uma matriz de ocorrências em um modelo de regras de associação.}
-\end{table}
 
 
 O suporte de um conjunto de itens genérico é definido como a razão entre a
@@ -581,10 +581,8 @@ $P_i(n_{t+1} | s_t)$.
 
 Para um contexto $S_i = \{s: \xi_i \prec s_t\}$, os especialistas associados a
 nós que compartilham do mesmo sufixo $\xi_i$ são chamados de especialistas
-ativos. No exemplo da figura \label{fig:context_tree}, os contextos em vermelho
-representam os especialistas ativos para a sequência destacada.
-
-A probabilidade de um especialista é obtida ao multiplicar a probabilidade dos
+ativos. No exemplo da FIGURA \ref{fig:context_tree}, os contextos em vermelho
+representam os especialistas ativos para a sequência destacada. A probabilidade de um especialista é obtida ao multiplicar a probabilidade dos
 especialistas ativos $\mathcal{A}(s_t)$
  que incluem o sufixo $\xi$:
 \begin{align}
